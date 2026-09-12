@@ -10,7 +10,9 @@ services:
       - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: sk-bazaar-db
-          property: connectionString
+          property: jdbcConnectionString
+      - key: SPRING_AI_GOOGLE_GENAI_API_KEY
+        value: "your-api-key-here" # Replace with actual key in Render dashboard
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
 
