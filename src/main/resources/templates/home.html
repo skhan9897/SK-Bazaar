@@ -22,56 +22,115 @@
             background-color: var(--dark-color) !important;
         }
         .mega-hero {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #2874f0 0%, #00d2ff 100%);
             color: white;
-            padding: 50px 0;
-            border-radius: 12px;
-            margin-bottom: 30px;
+            padding: 40px 0;
+            border-radius: 4px;
+            margin-bottom: 20px;
         }
-        .category-badge {
-            background-color: #ffffff;
-            color: var(--dark-color);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-right: 12px;
-            margin-bottom: 12px;
-            display: inline-block;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            text-decoration: none;
+        .category-item {
+            text-align: center;
+            padding: 10px;
             transition: all 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--dark-color);
         }
-        .category-badge:hover {
-            background-color: var(--secondary-color);
-            color: white;
-            transform: translateY(-2px);
+        .category-item i {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 8px;
+            color: #2874f0;
+        }
+        .category-item span {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .category-item:hover {
+            color: #2874f0;
+            transform: scale(1.05);
         }
         .section-header {
-            border-left: 5px solid var(--secondary-color);
-            padding-left: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
             margin-bottom: 20px;
+        }
+        .section-header h4 {
+            margin: 0;
             font-weight: 700;
-            color: var(--dark-color);
+        }
+        .view-all {
+            color: #2874f0;
+            text-decoration: none;
+            font-weight: 600;
         }
         .p-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s;
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+            padding: 15px;
+            position: relative;
+            background: white;
+            transition: box-shadow 0.3s;
         }
         .p-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .img-box {
-            height: 160px;
-            background-color: #eaeded;
+        .wishlist-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #ff4343;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+        }
+        .img-container {
+            height: 180px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
-            color: #a6acaf;
-            border-radius: 10px 10px 0 0;
+            margin-bottom: 15px;
+        }
+        .img-container i {
+            font-size: 4rem;
+            color: #eee;
+        }
+        .rating-badge {
+            background-color: #388e3c;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .selling-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .mrp {
+            text-decoration: line-through;
+            color: #878787;
+            font-size: 0.9rem;
+        }
+        .discount-pct {
+            color: #388e3c;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .delivery-text {
+            color: #26a541;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -86,7 +145,8 @@
                     <li class="nav-item"><a class="nav-link text-white" th:href="@{/}">Home</a></li>
                     <li class="nav-item"><a class="nav-link text-white" th:href="@{/address}">Addresses</a></li>
                     <li class="nav-item"><a class="nav-link text-white" th:href="@{/orders}">My Orders</a></li>
-                    <li class="nav-item"><a class="nav-link text-warning" th:href="@{/admin/dashboard}">Admin Panel</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning" th:href="@{/admin/dashboard}">Admin</a></li>
+                    <li class="nav-item"><a class="nav-link text-info" th:href="@{/seller/dashboard}">Seller Panel</a></li>
                 </ul>
                 <form class="d-flex flex-grow-1 mx-4" th:action="@{/products/search}" method="GET">
                     <div class="input-group">
@@ -95,6 +155,9 @@
                     </div>
                 </form>
                 <ul class="navbar-nav gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm text-white border-0" th:href="@{/profile}">👤 My Account</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link btn btn-outline-danger btn-sm text-white border-0" th:href="@{/wishlist}">❤️ Wishlist</a></li>
                     <li class="nav-item"><a class="nav-link btn btn-outline-info btn-sm text-white border-0" th:href="@{/cart}">🛒 Cart</a></li>
                     <li class="nav-item"><a class="btn btn-sm btn-outline-light" th:href="@{/login}">Sign In</a></li>
@@ -107,199 +170,199 @@
 
         <!-- 1. Top Banner / Mega Sale -->
         <div class="mega-hero text-center" th:if="${query == null}">
-            <h1 class="display-3 fw-bold mb-0" th:text="${appName ?: 'SK Bazaar'}">SK Bazaar</h1>
-            <p class="fs-4 opacity-75 italic">🔥 Upto 70% Off • Unlimited Mega Flipkart/Amazon Style Fulfillments 🔥</p>
+            <h1 class="display-3 fw-bold mb-0">MEGA SHOPPING SALE</h1>
+            <p class="fs-4">🔥 Upto 70% Off | [ SHOP NOW ] 🔥</p>
         </div>
 
         <!-- 2. Shop by Category -->
-        <div class="mb-5" th:if="${query == null and !#lists.isEmpty(categories)}">
-            <h4 class="section-header">🛍️ Shop by Category</h4>
-            <div class="d-flex flex-wrap">
-                <a th:each="cat : ${categories}" th:href="@{'/products/search?q=' + ${cat.name}}" class="category-badge" th:text="${cat.name}">Category</a>
+        <div class="bg-white p-3 rounded mb-4" th:if="${query == null}">
+            <div class="row row-cols-3 row-cols-md-7 g-2 text-center">
+                <a th:href="@{/products/search?q=Fashion}" class="col category-item">
+                    <i class="fa-solid fa-shirt"></i>
+                    <span>Fashion</span>
+                </a>
+                <a th:href="@{/products/search?q=Electronics}" class="col category-item">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                    <span>Mobiles</span>
+                </a>
+                <a th:href="@{/products/search?q=Home}" class="col category-item">
+                    <i class="fa-solid fa-house-laptop"></i>
+                    <span>Home</span>
+                </a>
+                <a th:href="@{/products/search?q=Beauty}" class="col category-item">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Beauty</span>
+                </a>
+                <a th:href="@{/products/search?q=Grocery}" class="col category-item">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span>Grocery</span>
+                </a>
+                <a th:href="@{/products/search?q=Sports}" class="col category-item">
+                    <i class="fa-solid fa-volleyball"></i>
+                    <span>Sports</span>
+                </a>
+                <a th:href="@{/products/search?q=Toys}" class="col category-item">
+                    <i class="fa-solid fa-puzzle-piece"></i>
+                    <span>Toys</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Macro for generating product card as per Image -->
+        <div th:fragment="productCard(product)">
+            <div class="p-card h-100">
+                <form th:action="@{/wishlist/add}" method="POST" class="m-0">
+                    <input type="hidden" name="productId" th:value="${product.id}" />
+                    <button type="submit" class="wishlist-btn"><i class="fa-solid fa-heart"></i></button>
+                </form>
+                <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                    <div class="img-container"><i class="fa-solid fa-image"></i></div>
+                    <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product Name</h6>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="rating-badge" th:text="${product.rating ?: '4.0'} + ' ★'">4.4 ★</span>
+                        <small class="text-muted" th:text="'(' + ${product.reviewCount ?: '100'} + ')'">(1,520)</small>
+                    </div>
+                    <div class="price-row">
+                        <span class="selling-price" th:text="'₹' + ${product.price}">₹1,299</span>
+                        <span class="mrp" th:if="${product.mrp != null}" th:text="'₹' + ${product.mrp}">₹2,499</span>
+                        <span class="discount-pct" th:if="${product.discount != null}" th:text="${product.discount} + '% OFF'">48% OFF</span>
+                    </div>
+                    <div class="delivery-text" th:if="${product.isFreeDelivery}">Free Delivery</div>
+                </a>
+                <form th:action="@{/cart/add}" method="POST" class="mt-3 m-0">
+                    <input type="hidden" name="productId" th:value="${product.id}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold">Add to Cart</button>
+                </form>
             </div>
         </div>
 
         <!-- 3. Flash Sale 🔥 -->
         <div class="mb-5" th:if="${query == null and flashSale != null and !#lists.isEmpty(flashSale)}">
-            <h4 class="section-header">🔥 Flash Sale</h4>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
-                <div class="col" th:each="product : ${flashSale}">
-                    <div class="card h-100 p-card">
-                        <div class="img-box"><i class="fa-solid fa-fire text-danger"></i></div>
-                        <div class="card-body d-flex flex-column p-3">
-                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
-                            </a>
-                            <h5 class="text-success fw-bold mb-2" th:text="'₹' + ${product.price}">₹0.00</h5>
-                            <span class="badge bg-danger mb-3 w-50" th:text="${product.discount} + '% OFF'"></span>
-                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="quantity" value="1" />
-                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <div class="section-header">
+                <h4>🔥 Flash Sale</h4>
+                <a th:href="@{/products/search?q=sale}" class="view-all">View All →</a>
             </div>
-        </div>
-
-        <!-- 4. Trending Products ⚡ -->
-        <div class="mb-5" th:if="${query == null and trendingProducts != null and !#lists.isEmpty(trendingProducts)}">
-            <h4 class="section-header">⚡ Trending Products</h4>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
-                <div class="col" th:each="product : ${trendingProducts}">
-                    <div class="card h-100 p-card">
-                        <div class="img-box"><i class="fa-solid fa-bolt text-warning"></i></div>
-                        <div class="card-body d-flex flex-column p-3">
-                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
-                            </a>
-                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
-                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="quantity" value="1" />
-                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
+                <div class="col" th:each="product : ${flashSale}">
+                    <div th:replace="::productCard(${product})"></div>
                 </div>
             </div>
         </div>
 
         <!-- 5. Recommended For You ⭐ -->
         <div class="mb-5" th:if="${query == null and recommendedProducts != null and !#lists.isEmpty(recommendedProducts)}">
-            <h4 class="section-header">⭐ Recommended For You</h4>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="section-header">
+                <h4>⭐ Recommended For You</h4>
+                <a th:href="@{/}" class="view-all">View All →</a>
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
                 <div class="col" th:each="product : ${recommendedProducts}">
-                    <div class="card h-100 p-card">
-                        <div class="img-box"><i class="fa-solid fa-star text-primary"></i></div>
-                        <div class="card-body d-flex flex-column p-3">
-                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
-                            </a>
-                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
-                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="quantity" value="1" />
-                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
+                    <div th:replace="::productCard(${product})"></div>
                 </div>
             </div>
         </div>
 
-        <!-- 6. Best Sellers 🏆 -->
-        <div class="mb-5" th:if="${query == null and bestSellers != null and !#lists.isEmpty(bestSellers)}">
-            <h4 class="section-header">🏆 Best Sellers</h4>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
-                <div class="col" th:each="product : ${bestSellers}">
-                    <div class="card h-100 p-card">
-                        <div class="img-box"><i class="fa-solid fa-trophy text-success"></i></div>
-                        <div class="card-body d-flex flex-column p-3">
-                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
-                            </a>
-                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
-                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="quantity" value="1" />
-                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        <!-- 4. Trending Electronics ⚡ -->
+        <div class="mb-5" th:if="${query == null and trendingProducts != null and !#lists.isEmpty(trendingProducts)}">
+            <div class="section-header">
+                <h4>⚡ Trending Electronics</h4>
+                <a th:href="@{/products/search?q=Electronics}" class="view-all">View All →</a>
             </div>
-        </div>
-
-        <!-- 7. Electronics Deals 💻 -->
-        <div class="mb-5" th:if="${query == null and electronicsDeals != null and !#lists.isEmpty(electronicsDeals)}">
-            <h4 class="section-header">💻 Electronics Deals</h4>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
-                <div class="col" th:each="product : ${electronicsDeals}">
-                    <div class="card h-100 p-card">
-                        <div class="img-box"><i class="fa-solid fa-laptop text-dark"></i></div>
-                        <div class="card-body d-flex flex-column p-3">
-                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
-                            </a>
-                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
-                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="quantity" value="1" />
-                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
+                <div class="col" th:each="product : ${trendingProducts}">
+                    <div th:replace="::productCard(${product})"></div>
                 </div>
             </div>
         </div>
 
         <!-- 8. Fashion Deals 👕 -->
         <div class="mb-5" th:if="${query == null and fashionDeals != null and !#lists.isEmpty(fashionDeals)}">
-            <h4 class="section-header">👕 Fashion Deals</h4>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="section-header">
+                <h4>👕 Fashion Deals</h4>
+                <a th:href="@{/products/search?q=Fashion}" class="view-all">View All →</a>
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
                 <div class="col" th:each="product : ${fashionDeals}">
-                    <div class="card h-100 p-card">
-                        <div class="img-box"><i class="fa-solid fa-shirt text-secondary"></i></div>
-                        <div class="card-body d-flex flex-column p-3">
-                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
-                            </a>
-                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
-                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="quantity" value="1" />
-                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
+                    <div th:replace="::productCard(${product})"></div>
                 </div>
             </div>
         </div>
 
-        <!-- 13. Deals Under ₹499 🏷️ -->
+        <!-- 9. Home & Kitchen 🏠 -->
+        <div class="mb-5" th:if="${query == null and homeKitchenDeals != null and !#lists.isEmpty(homeKitchenDeals)}">
+            <div class="section-header">
+                <h4>🏠 Home & Kitchen</h4>
+                <a th:href="@{/products/search?q=Home}" class="view-all">View All →</a>
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
+                <div class="col" th:each="product : ${homeKitchenDeals}">
+                    <div th:replace="::productCard(${product})"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. Beauty & Personal Care 💄 -->
+        <div class="mb-5" th:if="${query == null and beautyDeals != null and !#lists.isEmpty(beautyDeals)}">
+            <div class="section-header">
+                <h4>💄 Beauty & Personal Care</h4>
+                <a th:href="@{/products/search?q=Beauty}" class="view-all">View All →</a>
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
+                <div class="col" th:each="product : ${beautyDeals}">
+                    <div th:replace="::productCard(${product})"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. Grocery 🍏 -->
+        <div class="mb-5" th:if="${query == null and groceryDeals != null and !#lists.isEmpty(groceryDeals)}">
+            <div class="section-header">
+                <h4>🍏 Grocery Store</h4>
+                <a th:href="@{/products/search?q=Grocery}" class="view-all">View All →</a>
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
+                <div class="col" th:each="product : ${groceryDeals}">
+                    <div th:replace="::productCard(${product})"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. Sports & Fitness ⚽ -->
+        <div class="mb-5" th:if="${query == null and sportsDeals != null and !#lists.isEmpty(sportsDeals)}">
+            <div class="section-header">
+                <h4>⚽ Sports & Fitness</h4>
+                <a th:href="@{/products/search?q=Sports}" class="view-all">View All →</a>
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
+                <div class="col" th:each="product : ${sportsDeals}">
+                    <div th:replace="::productCard(${product})"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Best Sellers 🏆 -->
+        <div class="mb-5" th:if="${query == null and bestSellers != null and !#lists.isEmpty(bestSellers)}">
+            <div class="section-header">
+                <h4>🏆 Best Sellers</h4>
+                <a th:href="@{/}" class="view-all">View All →</a>
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
+                <div class="col" th:each="product : ${bestSellers}">
+                    <div th:replace="::productCard(${product})"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. Deals Under ₹499 💰 -->
         <div class="mb-5" th:if="${query == null and dealsUnder499 != null and !#lists.isEmpty(dealsUnder499)}">
-            <h4 class="section-header">🏷️ Budget Deals Under ₹499</h4>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
-                <div class="col" th:each="product : ${dealsUnder499}">
-                    <div class="card h-100 p-card">
-                        <div class="img-box"><i class="fa-solid fa-tag text-muted"></i></div>
-                        <div class="card-body d-flex flex-column p-3">
-                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
-                            </a>
-                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
-                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="quantity" value="1" />
-                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <div class="section-header">
+                <h4>💰 Deals Under ₹499</h4>
+                <a th:href="@{/}" class="view-all">View All →</a>
             </div>
-        </div>
-
-        <!-- 15. Recently Added 🆕 -->
-        <div class="mb-5" th:if="${query == null and recentlyAdded != null and !#lists.isEmpty(recentlyAdded)}">
-            <h4 class="section-header">🆕 Recently Added</h4>
-            <div class="row row-cols-1 row-cols-md-4 g-4">
-                <div class="col" th:each="product : ${recentlyAdded}">
-                    <div class="card h-100 p-card">
-                        <div class="img-box"><i class="fa-solid fa-clock text-info"></i></div>
-                        <div class="card-body d-flex flex-column p-3">
-                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
-                            </a>
-                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
-                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="quantity" value="1" />
-                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
-                            </form>
-                        </div>
-                    </div>
+            <div class="row row-cols-1 row-cols-md-4 g-3">
+                <div class="col" th:each="product : ${dealsUnder499}">
+                    <div th:replace="::productCard(${product})"></div>
                 </div>
             </div>
         </div>

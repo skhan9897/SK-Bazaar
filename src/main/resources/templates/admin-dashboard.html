@@ -59,7 +59,7 @@
                     <div class="card-body py-4">
                         <div class="fs-1 text-primary mb-2"><i class="fa-solid fa-users"></i></div>
                         <h1 class="display-4 fw-bold text-dark mb-1 th" th:text="${totalCustomers}">0</h1>
-                        <h6 class="text-muted text-uppercase small fw-bold mb-0">Platform Shoppers</h6>
+                        <h6 class="text-muted text-uppercase small fw-bold mb-0">Shoppers</h6>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                     <div class="card-body py-4">
                         <div class="fs-1 text-success mb-2"><i class="fa-solid fa-chalkboard-user"></i></div>
                         <h1 class="display-4 fw-bold text-dark mb-1 th" th:text="${totalSellers}">0</h1>
-                        <h6 class="text-muted text-uppercase small fw-bold mb-0">Verified Merchants</h6>
+                        <h6 class="text-muted text-uppercase small fw-bold mb-0">Merchants</h6>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                     <div class="card-body py-4">
                         <div class="fs-1 text-warning mb-2"><i class="fa-solid fa-boxes-stacked"></i></div>
                         <h1 class="display-4 fw-bold text-dark mb-1 th" th:text="${totalProducts}">0</h1>
-                        <h6 class="text-muted text-uppercase small fw-bold mb-0">Active Products Index</h6>
+                        <h6 class="text-muted text-uppercase small fw-bold mb-0">Products</h6>
                     </div>
                 </div>
             </div>
@@ -92,8 +92,43 @@
                     <div class="card-body py-4">
                         <div class="fs-1 text-danger mb-2"><i class="fa-solid fa-truck-ramp-box"></i></div>
                         <h1 class="display-4 fw-bold text-dark mb-1 th" th:text="${totalOrders}">0</h1>
-                        <h6 class="text-muted text-uppercase small fw-bold mb-0">Consolidated Orders Placed</h6>
+                        <h6 class="text-muted text-uppercase small fw-bold mb-0">Orders</h6>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Approvals Section -->
+        <div class="card mt-5 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h4 class="fw-bold mb-4"><i class="fa-solid fa-clipboard-check text-success me-2"></i>Pending Product Approvals</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Product</th>
+                                <th>Seller</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="p : ${pendingProducts}">
+                                <td th:text="${p.name}">Product</td>
+                                <td th:text="${p.seller?.storeName}">Seller</td>
+                                <td th:text="'₹' + ${p.price}">Price</td>
+                                <td>
+                                    <form th:action="@{'/admin/products/approve/' + ${p.id}}" method="POST" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-success px-3">Approve</button>
+                                    </form>
+                                    <button class="btn btn-sm btn-outline-danger px-3">Reject</button>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(pendingProducts)}">
+                                <td colspan="4" class="text-center py-4 text-muted">No products pending approval.</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

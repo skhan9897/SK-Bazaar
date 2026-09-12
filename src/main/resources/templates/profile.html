@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK Bazaar - My Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f1f3f6; font-family: Roboto, Arial, sans-serif; }
+        .navbar { background-color: #2874f0 !important; }
+        .profile-container { padding-top: 20px; }
+        .sidebar { background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.08); }
+        .sidebar-header { padding: 12px 12px 12px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; }
+        .sidebar-header img { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .menu-section { border-bottom: 1px solid #f0f0f0; padding: 15px 0; }
+        .menu-title { padding-left: 55px; color: #878787; font-size: 14px; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; }
+        .menu-title i { margin-left: -35px; width: 25px; color: #2874f0; }
+        .menu-item { padding: 10px 0 10px 55px; color: #212121; font-size: 14px; cursor: pointer; text-decoration: none; display: block; }
+        .menu-item:hover, .menu-item.active { background: #f5faff; color: #2874f0; font-weight: 500; }
+        .content-area { background: #fff; padding: 25px; box-shadow: 0 2px 4px rgba(0,0,0,.08); min-height: 500px; }
+        .profile-title { font-size: 18px; font-weight: 600; margin-bottom: 25px; }
+        .form-label { font-size: 14px; color: #878787; }
+        .btn-save { background: #2874f0; color: #fff; padding: 12px 50px; border: none; font-weight: 500; }
+        .wallet-card { background: #f5faff; border: 1px solid #e0e0e0; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">SK Bazaar</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/}">Home</a></li>
+                </ul>
+                <ul class="navbar-nav gap-3">
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/cart}">🛒 Cart</a></li>
+                    <li class="nav-item"><a class="btn btn-sm btn-light" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container profile-container">
+        <div class="row">
+            <!-- Flipkart Style Sidebar -->
+            <div class="col-md-3">
+                <div class="sidebar mb-4">
+                    <div class="sidebar-header">
+                        <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/profile-pic-male_4811a3.svg" alt="User">
+                        <div>
+                            <div class="small text-muted">Hello,</div>
+                            <div class="fw-bold" th:text="${user.name}">User Name</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <div class="sidebar-menu">
+                        <div class="menu-section">
+                            <a th:href="@{/orders}" class="menu-item">
+                                <i class="fa-solid fa-folder-open me-2 text-primary"></i> MY ORDERS <i class="fa-solid fa-chevron-right float-end mt-1 small text-muted"></i>
+                            </a>
+                        </div>
+
+                        <div class="menu-section">
+                            <div class="menu-title"><i class="fa-solid fa-user"></i> ACCOUNT SETTINGS</div>
+                            <a th:href="@{/profile}" class="menu-item active">Profile Information</a>
+                            <a th:href="@{/address}" class="menu-item">Manage Addresses</a>
+                            <a href="#" class="menu-item">PAN Card Information</a>
+                        </div>
+
+                        <div class="menu-section">
+                            <div class="menu-title"><i class="fa-solid fa-wallet"></i> PAYMENTS</div>
+                            <a href="#" class="menu-item">Gift Cards</a>
+                            <a href="#" class="menu-item">Saved VPA</a>
+                            <a href="#" class="menu-item">Saved Cards</a>
+                        </div>
+
+                        <div class="menu-section">
+                            <div class="menu-title"><i class="fa-solid fa-box-archive"></i> MY STUFF</div>
+                            <a href="#" class="menu-item">My Coupons</a>
+                            <a href="#" class="menu-item">My Reviews & Ratings</a>
+                            <a href="#" class="menu-item">All Notifications</a>
+                            <a th:href="@{/wishlist}" class="menu-item">My Wishlist</a>
+                        </div>
+
+                        <div class="menu-section">
+                            <form th:action="@{/logout}" method="POST" class="m-0">
+                                <button type="submit" class="menu-item border-0 bg-transparent w-100 text-start">
+                                    <i class="fa-solid fa-power-off me-2 text-primary"></i> Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="col-md-9">
+                <div class="content-area">
+                    <div class="profile-title">Personal Information</div>
+
+                    <div class="wallet-card d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1 fw-bold text-primary"><i class="fa-solid fa-wallet me-2"></i>SK Wallet Balance</h6>
+                            <small class="text-muted">Use this balance for faster checkout</small>
+                        </div>
+                        <h4 class="fw-bold text-success m-0" th:text="'₹' + ${user.walletBalance}">₹0.00</h4>
+                    </div>
+
+                    <form>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" th:value="${user.name}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Your Gender</label>
+                            <div class="mt-2">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="male" checked>
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="female">
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" th:value="${user.email}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Mobile Number</label>
+                                <input type="text" class="form-control" th:value="${user.mobile}" readonly>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-save shadow-sm">EDIT INFO</button>
+                    </form>
+
+                    <div class="mt-5">
+                        <h6 class="fw-bold mb-3">FAQs</h6>
+                        <p class="small text-muted fw-bold mb-1">What happens when I update my email address (or mobile number)?</p>
+                        <p class="small text-muted">Your login email id (or mobile number) changes, too. You'll receive all your account related communication on your updated email address (or mobile number).</p>
+
+                        <p class="small text-muted fw-bold mb-1 mt-3">When will my Flipkart account be updated with the new email address (or mobile number)?</p>
+                        <p class="small text-muted">It happens instantly. You can start using your new email address (or mobile number) to login after you confirm it via the OTP sent to your new email address (or mobile number).</p>
+                    </div>
+
+                    <div class="mt-4 border-top pt-3">
+                        <a href="#" class="text-danger text-decoration-none fw-bold small">Deactivate Account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-5 py-4 text-center text-muted small border-top bg-white">
+        © 2026 SK Bazaar - Flipkart Style Managed Dashboard
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

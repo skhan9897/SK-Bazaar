@@ -41,6 +41,9 @@ public class Product {
     private BigDecimal price;
     private BigDecimal mrp;
     private Double discount;
+    private Double rating;
+    private Integer reviewCount;
+    private Boolean isFreeDelivery;
     private Double gst;
     private Integer stock;
     private Double weight;
@@ -60,6 +63,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private User seller;
+
+    @Enumerated(EnumType.STRING)
+    private com.example.skbazaar.model.enums.ProductStatus status = com.example.skbazaar.model.enums.ProductStatus.PENDING;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductVariant> variants;

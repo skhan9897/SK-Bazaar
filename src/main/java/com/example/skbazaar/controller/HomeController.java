@@ -31,8 +31,10 @@ public class HomeController {
         model.addAttribute("appName", AppConstants.APP_NAME);
         model.addAttribute("tagline", AppConstants.TAGLINE);
         
-        // Amazon/Flipkart Style Marketplace Sections logic
-        var allProducts = productService.getAllProducts();
+        // Amazon/Flipkart Style Marketplace Sections logic - ONLY SHOW APPROVED PRODUCTS
+        var allProducts = productService.getAllProducts().stream()
+                .filter(p -> p.getStatus() == com.example.skbazaar.model.enums.ProductStatus.APPROVED)
+                .toList();
         
         model.addAttribute("flashSale", allProducts.stream().filter(p -> p.getDiscount() != null && p.getDiscount() > 20).limit(4).toList());
         model.addAttribute("trendingProducts", allProducts.stream().limit(8).toList());
@@ -41,8 +43,12 @@ public class HomeController {
         
         model.addAttribute("electronicsDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Electronics".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
         model.addAttribute("fashionDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Fashion".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
-        model.addAttribute("dealsUnder499", allProducts.stream().filter(p -> p.getPrice().doubleValue() < 499).limit(4).toList());
+        model.addAttribute("homeKitchenDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Home & Kitchen".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+        model.addAttribute("beautyDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Beauty & Personal Care".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+        model.addAttribute("groceryDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Grocery".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+        model.addAttribute("sportsDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Sports & Fitness".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
         
+        model.addAttribute("dealsUnder499", allProducts.stream().filter(p -> p.getPrice().doubleValue() < 499).limit(4).toList());
         model.addAttribute("recentlyAdded", allProducts.stream().sorted((p1, p2) -> p2.getId().compareTo(p1.getId())).limit(4).toList());
 
         model.addAttribute("categories", categoryRepository.findAll());
@@ -152,9 +158,28 @@ public class HomeController {
         return "orders";
     }
 
+    @GetMapping("/profile")
+    public String viewProfile(Model model) {
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = authService.getUserByEmail(email);
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
     @GetMapping("/admin/dashboard")
     public String adminDashboard(Model model) {
         model.addAllAttributes(dashboardService.getAdminDashboardStats());
+        // For product approval
+        model.addAttribute("pendingProducts", productService.getAllProducts().stream()
+                .filter(p -> p.getStatus().name().equals("PENDING")).toList());
         return "admin-dashboard";
+    }
+
+    @PostMapping("/admin/products/approve/{id}")
+    public String approveProduct(@PathVariable Long id) {
+        var product = productService.getProductById(id);
+        product.setStatus(com.example.skbazaar.model.enums.ProductStatus.APPROVED);
+        productService.saveProduct(product);
+        return "redirect:/admin/dashboard?approved=true";
     }
 }

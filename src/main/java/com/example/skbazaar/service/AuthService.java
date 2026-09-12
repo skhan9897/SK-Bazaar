@@ -102,4 +102,8 @@ public class AuthService {
         var jwtToken = jwtUtils.generateToken(userDetails);
         return new AuthResponse(jwtToken, username, user.getRole().name());
     }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow();
+    }
 }

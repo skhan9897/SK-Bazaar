@@ -62,6 +62,16 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         order.setItems(orderItems);
+        
+        // Phase 3: Payment Verification Logic
+        if (paymentMethod == PaymentMethod.CASH_ON_DELIVERY) {
+            order.setStatus(OrderStatus.ORDER_PLACED);
+        } else {
+            // Simulate Payment Gateway Success for UPI/Cards
+            order.setStatus(OrderStatus.ORDER_PLACED); 
+            // In real app, we would integrate Razorpay/Stripe here
+        }
+
         orderRepository.save(order);
 
         cartItemRepository.deleteByCustomer(user);

@@ -24,4 +24,8 @@ public class ProductService {
         // Simple search by name for now
         return productRepository.findByNameContainingIgnoreCase(query);
     }
+
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
+    }
 }

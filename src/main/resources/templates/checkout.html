@@ -77,14 +77,59 @@
 
                         <h4 class="fw-bold text-dark mb-3"><i class="fa-solid fa-credit-card text-primary me-2"></i>2. Choose Payment System</h4>
                         <div class="mb-4">
-                            <div class="form-check p-3 border rounded-3 mb-2 bg-light d-flex align-items-center" th:each="method : ${paymentMethods}">
-                                <input class="form-check-input ms-1" type="radio" name="paymentMethod"
-                                       th:id="'pay-' + ${method}" th:value="${method}" required>
-                                <label class="form-check-label ms-3 fw-bold text-dark" th:for="'pay-' + ${method}" th:text="${method}">
-                                    COD
-                                </label>
+                            <!-- Flipkart Style Accordion or List for Payments -->
+                            <div class="list-group">
+                                <!-- UPI -->
+                                <div class="list-group-item p-3 border rounded-3 mb-2 bg-light">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="pay-UPI" value="UPI_GOOGLE_PAY" required>
+                                        <label class="form-check-label fw-bold" for="pay-UPI">
+                                            UPI (Google Pay, PhonePe, Paytm)
+                                        </label>
+                                        <div class="mt-2 payment-details d-none" id="upi-details">
+                                            <input type="text" class="form-control mb-2" placeholder="Enter VPA / UPI ID (e.g. user@okaxis)">
+                                            <button type="button" class="btn btn-primary btn-sm px-4">Verify UPI ID</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Cards -->
+                                <div class="list-group-item p-3 border rounded-3 mb-2 bg-light">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="pay-CARD" value="CREDIT_CARD">
+                                        <label class="form-check-label fw-bold" for="pay-CARD">
+                                            Credit / Debit / ATM Card
+                                        </label>
+                                        <div class="mt-2 payment-details d-none" id="card-details">
+                                            <input type="text" class="form-control mb-2" placeholder="Card Number">
+                                            <div class="row">
+                                                <div class="col-6"><input type="text" class="form-control" placeholder="MM/YY"></div>
+                                                <div class="col-6"><input type="password" class="form-control" placeholder="CVV"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- COD -->
+                                <div class="list-group-item p-3 border rounded-3 mb-2 bg-light">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="pay-COD" value="CASH_ON_DELIVERY">
+                                        <label class="form-check-label fw-bold" for="pay-COD">
+                                            Cash on Delivery
+                                        </label>
+                                        <small class="d-block text-muted">Pay with cash or QR code during delivery</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <script>
+                            document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
+                                input.addEventListener('change', function() {
+                                    document.querySelectorAll('.payment-details').forEach(d => d.classList.add('d-none'));
+                                    if (this.id === 'pay-UPI') document.getElementById('upi-details').classList.remove('d-none');
+                                    if (this.id === 'pay-CARD') document.getElementById('card-details').classList.remove('d-none');
+                                });
+                            });
+                        </script>
 
                         <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-bold rounded-3 shadow"><i class="fa-solid fa-circle-check me-2"></i>Authorize Order Settlement</button>
                     </form>
