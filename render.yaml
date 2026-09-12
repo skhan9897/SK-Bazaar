@@ -1,5 +1,5 @@
 services:
-  # Backend Spring Boot Service
+  # Backend Spring Boot WebApp Service (with Frontend Built-in)
   - type: web
     name: sk-bazaar-backend
     env: docker
@@ -15,24 +15,8 @@ services:
         value: ujcoipqkp3ovweit
       - key: SPRING_DATASOURCE_PASSWORD
         value: ZpWdaK1qLTASMzMCuuIG
-      - key: SPRING_AI_GOOGLE_GENAI_API_KEY
-        sync: false
-      - key: SPRING_AI_GOOGLE_PROJECT_ID
-        value: "sk-bazaar-project"
-      - key: SPRING_AI_GOOGLE_LOCATION
-        value: "us-central1"
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
 
-  # Frontend React Service
-  - type: web
-    name: sk-bazaar-frontend
-    env: static
-    plan: free
-    publishPath: frontend/build
-    buildCommand: cd frontend && npm install && npm run build
-    envVars:
-      - key: REACT_APP_API_URL
-        value: https://sk-bazaar-1.onrender.com/api
-
 # External MySQL from Clever Cloud is being used.
+

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SK Bazaar - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #212529;
+        }
+        .hero-tagline {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">SK Bazaar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/categories}">Categories</a>
+                    </li>
+                </ul>
+                <form class="d-flex me-3" action="/products/search" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search products..." required />
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/cart}">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Hero Banner -->
+        <div class="hero-section">
+            <h1 class="hero-title" th:text="${appName}">SK Bazaar</h1>
+            <p class="hero-tagline" th:text="${tagline}">Har Zaroorat, Ek Bazaar</p>
+        </div>
+
+        <!-- Featured Products -->
+        <h2 class="mb-4">Featured Products</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Loop through products dynamically -->
+            <div class="col" th:each="product : ${products}">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold" th:text="${product.name}">Product Name</h5>
+                        <p class="card-text text-muted mb-1" th:text="${product.brand}">Brand</p>
+                        <h6 class="card-subtitle mb-3 text-primary fs-5 fw-semibold" th:text="'₹' + ${product.price}">₹0.00</h6>
+                        <form action="/cart/add" method="POST" class="mt-auto">
+                            <input type="hidden" name="productId" th:value="${product.id}" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="btn btn-primary w-100">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Empty state when no products found -->
+            <div class="col-12 text-center py-4" th:if="${#lists.isEmpty(products)}">
+                <p class="text-muted fs-5">No products available at the moment. Please check back later!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

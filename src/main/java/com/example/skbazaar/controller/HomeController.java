@@ -1,19 +1,23 @@
 package com.example.skbazaar.controller;
 
+import com.example.skbazaar.constants.AppConstants;
+import com.example.skbazaar.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@RestController
+@Controller
+@RequiredArgsConstructor
 public class HomeController {
 
+    private final ProductService productService;
+
     @GetMapping("/")
-    public Map<String, String> home() {
-        Map<String, String> response = new HashMap<>();
-        response.put("status", "UP");
-        response.put("message", "Welcome to SK Bazaar Backend API");
-        return response;
+    public String home(Model model) {
+        model.addAttribute("appName", AppConstants.APP_NAME);
+        model.addAttribute("tagline", AppConstants.TAGLINE);
+        model.addAttribute("products", productService.getAllProducts());
+        return "home";
     }
 }
