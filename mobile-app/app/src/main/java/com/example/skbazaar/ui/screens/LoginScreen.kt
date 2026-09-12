@@ -10,6 +10,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.compose.ui.platform.LocalContext
+import com.example.skbazaar.data.SessionManager
 import com.example.skbazaar.data.api.RetrofitClient
 import kotlinx.coroutines.launch
 
@@ -21,6 +23,8 @@ fun LoginScreen(navController: NavController) {
     var isOtpSent by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     var message by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager(context) }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(24.dp),
@@ -67,10 +71,8 @@ fun LoginScreen(navController: NavController) {
                             message = "OTP sent to your mobile"
                         } else {
                             val response = RetrofitClient.apiService.verifyOtp(mobile, otp)
-                            // Save token (simplified)
-                            navController.navigate("home") {
-                                popUpTo("login") { inclusive = true }
-                            }
+                            sessionManager.saveAuthToken(response.token)
+                            navController.popBackStack()
                         }
                     } catch (e: Exception) {
                         message = "Error: ${e.message}"

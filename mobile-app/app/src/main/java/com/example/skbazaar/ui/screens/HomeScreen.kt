@@ -11,7 +11,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,11 +22,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.compose.ui.platform.LocalContext
+import com.example.skbazaar.data.SessionManager
 import com.example.skbazaar.data.model.Product
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager(context) }
+
     // Dummy data for Flipkart-style UI
     val products = listOf(
         Product(1, "Nike Running Shoes", 2999.0, 4999.0, 40.0, "", "Comfortable running shoes", "Nike", "Shoes"),
@@ -74,7 +79,13 @@ fun HomeScreen(navController: NavController) {
                     icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Cart") },
                     label = { Text("Cart") },
                     selected = false,
-                    onClick = { navController.navigate("cart") }
+                    onClick = {
+                        if (sessionManager.isLoggedIn()) {
+                            navController.navigate("cart")
+                        } else {
+                            navController.navigate("login")
+                        }
+                    }
                 )
             }
         }
@@ -103,7 +114,13 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(products) { product ->
-                    ProductCard(product)
+                    ProductCard(product, onAddToCart = {
+                        if (sessionManager.isLoggedIn()) {
+                            // Add to cart logic
+                        } else {
+                            navController.navigate("login")
+                        }
+                    })
                 }
             }
         }
@@ -111,7 +128,7 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(product: Product, onAddToCart: () -> Unit) {
     Card(
         modifier = Modifier.padding(8.dp).fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -148,7 +165,7 @@ fun ProductCard(product: Product) {
             Spacer(modifier = Modifier.height(8.dp))
             
             Button(
-                onClick = { },
+                onClick = onAddToCart,
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(0.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)) // Yellow Flipkart button
