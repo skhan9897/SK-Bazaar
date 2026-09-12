@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Bazaar - Har Zaroorat, Ek Bazaar</title>
+    <title>SK Bazaar - Amazon/Flipkart Mega Marketplace</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -15,247 +15,299 @@
             --accent-color: #def2f1;
         }
         body {
-            background-color: #f4f7f6;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fa;
+            font-family: 'Segoe UI', sans-serif;
         }
         .navbar {
             background-color: var(--dark-color) !important;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .navbar-brand {
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-            color: var(--secondary-color) !important;
-        }
-        .nav-link-custom {
-            color: #bdc3c7 !important;
-            transition: color 0.3s ease;
-        }
-        .nav-link-custom:hover {
-            color: var(--secondary-color) !important;
-        }
-        .hero-banner {
-            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
-            color: var(--light-color);
-            padding: 80px 0;
-            border-radius: 16px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-banner::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -30%;
-            width: 100%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.05);
-            transform: rotate(30deg);
+        .mega-hero {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 50px 0;
+            border-radius: 12px;
+            margin-bottom: 30px;
         }
         .category-badge {
-            background-color: var(--accent-color);
-            color: var(--primary-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
+            background-color: #ffffff;
+            color: var(--dark-color);
+            padding: 10px 20px;
+            border-radius: 8px;
             font-weight: 600;
-            margin-right: 10px;
-            margin-bottom: 10px;
+            margin-right: 12px;
+            margin-bottom: 12px;
             display: inline-block;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-decoration: none;
+            transition: all 0.2s;
         }
         .category-badge:hover {
-            background-color: var(--primary-color);
-            color: var(--light-color);
+            background-color: var(--secondary-color);
+            color: white;
             transform: translateY(-2px);
         }
-        .product-card {
+        .section-header {
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 12px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        .p-card {
             border: none;
-            border-radius: 12px;
-            overflow: hidden;
-            background-color: var(--light-color);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
         }
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+        .p-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
-        .product-image-placeholder {
-            height: 200px;
-            background: linear-gradient(45deg, #e0e0e0, #f5f5f5);
+        .img-box {
+            height: 160px;
+            background-color: #eaeded;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            color: #b0b0b0;
-        }
-        .btn-primary-custom {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: var(--light-color);
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .btn-primary-custom:hover {
-            background-color: var(--dark-color);
-            border-color: var(--dark-color);
-        }
-        .btn-wishlist-custom {
-            background-color: transparent;
-            color: #e74c3c;
-            border: 1px solid #e74c3c;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .btn-wishlist-custom:hover {
-            background-color: #e74c3c;
-            color: white;
-        }
-        footer {
-            background-color: var(--dark-color);
-            color: #95a5a6;
-            padding: 30px 0;
-            margin-top: 60px;
+            font-size: 2.5rem;
+            color: #a6acaf;
+            border-radius: 10px 10px 0 0;
         }
     </style>
 </head>
 <body>
 
-    <!-- Professional Navbar -->
+    <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" th:href="@{/}">
-                <i class="fa-solid fa-shop me-2"></i>SK Bazaar
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <a class="navbar-brand fw-bold text-success" th:href="@{/}"><i class="fa-solid fa-bolt me-2"></i>SK Bazaar</a>
+            <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active fw-semibold" th:href="@{/}"><i class="fa-solid fa-house me-1"></i> Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom fw-semibold" th:href="@{/address}"><i class="fa-solid fa-location-dot me-1"></i> Addresses</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom fw-semibold" th:href="@{/orders}"><i class="fa-solid fa-box me-1"></i> My Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom fw-semibold text-warning" th:href="@{/admin/dashboard}"><i class="fa-solid fa-user-shield me-1"></i> Admin Panel</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/address}">Addresses</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/orders}">My Orders</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning" th:href="@{/admin/dashboard}">Admin Panel</a></li>
                 </ul>
-                <form class="d-flex mb-2 mb-lg-0 me-3 flex-grow-1 mx-lg-4" th:action="@{/products/search}" method="GET">
+                <form class="d-flex flex-grow-1 mx-4" th:action="@{/products/search}" method="GET">
                     <div class="input-group">
-                        <input class="form-control rounded-start" type="search" name="q" th:value="${query}" placeholder="Search brands, products, electronics..." required />
-                        <button class="btn btn-success px-4" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <input class="form-control" type="search" name="q" placeholder="Search brands, products..." required />
+                        <button class="btn btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
                 </form>
-                <ul class="navbar-nav align-items-center gap-2">
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-outline-danger btn-sm text-white px-3 py-2 border-0 position-relative" th:href="@{/wishlist}">
-                            <i class="fa-solid fa-heart me-1"></i> Wishlist
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-outline-info btn-sm text-white px-3 py-2 border-0 position-relative" th:href="@{/cart}">
-                            <i class="fa-solid fa-cart-shopping me-1"></i> Cart
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-2">
-                        <a class="btn btn-sm btn-outline-light px-3" th:href="@{/login}"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <form th:action="@{/logout}" method="POST" class="m-0 p-0">
-                            <button type="submit" class="btn btn-sm btn-link text-secondary nav-link-custom p-0 text-decoration-none border-0 bg-transparent"><i class="fa-solid fa-power-off me-1"></i> Logout</button>
-                        </form>
-                    </li>
+                <ul class="navbar-nav gap-2">
+                    <li class="nav-item"><a class="nav-link btn btn-outline-danger btn-sm text-white border-0" th:href="@{/wishlist}">❤️ Wishlist</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-outline-info btn-sm text-white border-0" th:href="@{/cart}">🛒 Cart</a></li>
+                    <li class="nav-item"><a class="btn btn-sm btn-outline-light" th:href="@{/login}">Sign In</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Section Container -->
     <div class="container mt-4">
-        <!-- Elegant Hero Banner -->
-        <div class="hero-banner text-center" th:if="${query == null}">
-            <div class="container py-3">
-                <h1 class="display-4 fw-bold mb-2" th:text="${appName ?: 'SK Bazaar'}">SK Bazaar</h1>
-                <p class="lead text-light opacity-75 fs-4" th:text="${tagline ?: 'Har Zaroorat, Ek Bazaar'}">Har Zaroorat, Ek Bazaar</p>
-                <div class="mt-4">
-                    <a href="#products-view" class="btn btn-light text-success btn-lg fw-bold px-4 rounded-pill shadow-sm">Shop Now <i class="fa-solid fa-arrow-down ms-1"></i></a>
-                </div>
-            </div>
+
+        <!-- 1. Top Banner / Mega Sale -->
+        <div class="mega-hero text-center" th:if="${query == null}">
+            <h1 class="display-3 fw-bold mb-0" th:text="${appName ?: 'SK Bazaar'}">SK Bazaar</h1>
+            <p class="fs-4 opacity-75 italic">🔥 Upto 70% Off • Unlimited Mega Flipkart/Amazon Style Fulfillments 🔥</p>
         </div>
 
-        <!-- Dynamic Category Exploration Section -->
+        <!-- 2. Shop by Category -->
         <div class="mb-5" th:if="${query == null and !#lists.isEmpty(categories)}">
-            <h4 class="fw-bold text-dark mb-3"><i class="fa-solid fa-shapes text-success me-2"></i>Explore Categories</h4>
+            <h4 class="section-header">🛍️ Shop by Category</h4>
             <div class="d-flex flex-wrap">
-                <a th:href="@{/}" class="category-badge">All Products</a>
                 <a th:each="cat : ${categories}" th:href="@{'/products/search?q=' + ${cat.name}}" class="category-badge" th:text="${cat.name}">Category</a>
             </div>
         </div>
 
-        <!-- Product Listing Grid View Section -->
-        <div id="products-view">
-            <h3 class="mb-4 fw-bold text-dark" th:text="${query != null} ? '🔍 Search Results for: \'' + ${query} + '\'' : '🔥 Featured Products'">Featured Products</h3>
-
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                <!-- Loop through products dynamically linked to details, cart and wishlist repositories -->
-                <div class="col" th:each="product : ${products}">
-                    <div class="card h-100 product-card">
-                        <div class="product-image-placeholder">
-                            <i class="fa-solid fa-box-open"></i>
-                        </div>
+        <!-- 3. Flash Sale 🔥 -->
+        <div class="mb-5" th:if="${query == null and flashSale != null and !#lists.isEmpty(flashSale)}">
+            <h4 class="section-header">🔥 Flash Sale</h4>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="product : ${flashSale}">
+                    <div class="card h-100 p-card">
+                        <div class="img-box"><i class="fa-solid fa-fire text-danger"></i></div>
                         <div class="card-body d-flex flex-column p-3">
-                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none">
-                                <h5 class="card-title fw-bold text-dark mb-1 text-truncate" th:text="${product.name}">Product Name</h5>
+                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
                             </a>
-                            <p class="card-text text-muted small mb-2" th:text="${product.brand ?: 'SK Premium Brand'}">Brand</p>
-
-                            <div class="d-flex align-items-center gap-2 mb-3">
-                                <h4 class="text-success fw-bold m-0" th:text="'₹' + ${product.price}">₹0.00</h4>
-                                <small class="text-decoration-line-through text-muted" th:if="${product.mrp != null}" th:text="'₹' + ${product.mrp}">₹0.00</small>
-                            </div>
-
-                            <div class="mt-auto d-grid gap-2">
-                                <form th:action="@{/cart/add}" method="POST" class="m-0">
-                                    <input type="hidden" name="productId" th:value="${product.id}" />
-                                    <input type="hidden" name="quantity" value="1" />
-                                    <button type="submit" class="btn btn-primary-custom btn-sm w-100 py-2"><i class="fa-solid fa-cart-plus me-1"></i> Add to Cart</button>
-                                </form>
-                                <form th:action="@{/wishlist/add}" method="POST" class="m-0">
-                                    <input type="hidden" name="productId" th:value="${product.id}" />
-                                    <button type="submit" class="btn btn-wishlist-custom btn-sm w-100 py-2"><i class="fa-solid fa-heart me-1"></i> Save to Wishlist</button>
-                                </form>
-                            </div>
+                            <h5 class="text-success fw-bold mb-2" th:text="'₹' + ${product.price}">₹0.00</h5>
+                            <span class="badge bg-danger mb-3 w-50" th:text="${product.discount} + '% OFF'"></span>
+                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Enhanced Empty state when no products found -->
-            <div class="col-12 text-center py-5" th:if="${#lists.isEmpty(products)}">
-                <i class="fa-solid fa-face-frown display-1 text-muted mb-3"></i>
-                <h4 class="text-secondary fw-bold">No products found matching your search.</h4>
-                <p class="text-muted">Try using different keywords or explore other categories.</p>
-                <a th:href="@{/}" class="btn btn-primary-custom px-4 rounded-pill mt-2">Clear & Show All Products</a>
+        <!-- 4. Trending Products ⚡ -->
+        <div class="mb-5" th:if="${query == null and trendingProducts != null and !#lists.isEmpty(trendingProducts)}">
+            <h4 class="section-header">⚡ Trending Products</h4>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="product : ${trendingProducts}">
+                    <div class="card h-100 p-card">
+                        <div class="img-box"><i class="fa-solid fa-bolt text-warning"></i></div>
+                        <div class="card-body d-flex flex-column p-3">
+                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
+                            </a>
+                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
+                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- 5. Recommended For You ⭐ -->
+        <div class="mb-5" th:if="${query == null and recommendedProducts != null and !#lists.isEmpty(recommendedProducts)}">
+            <h4 class="section-header">⭐ Recommended For You</h4>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="product : ${recommendedProducts}">
+                    <div class="card h-100 p-card">
+                        <div class="img-box"><i class="fa-solid fa-star text-primary"></i></div>
+                        <div class="card-body d-flex flex-column p-3">
+                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
+                            </a>
+                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
+                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Best Sellers 🏆 -->
+        <div class="mb-5" th:if="${query == null and bestSellers != null and !#lists.isEmpty(bestSellers)}">
+            <h4 class="section-header">🏆 Best Sellers</h4>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="product : ${bestSellers}">
+                    <div class="card h-100 p-card">
+                        <div class="img-box"><i class="fa-solid fa-trophy text-success"></i></div>
+                        <div class="card-body d-flex flex-column p-3">
+                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
+                            </a>
+                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
+                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Electronics Deals 💻 -->
+        <div class="mb-5" th:if="${query == null and electronicsDeals != null and !#lists.isEmpty(electronicsDeals)}">
+            <h4 class="section-header">💻 Electronics Deals</h4>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="product : ${electronicsDeals}">
+                    <div class="card h-100 p-card">
+                        <div class="img-box"><i class="fa-solid fa-laptop text-dark"></i></div>
+                        <div class="card-body d-flex flex-column p-3">
+                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
+                            </a>
+                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
+                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. Fashion Deals 👕 -->
+        <div class="mb-5" th:if="${query == null and fashionDeals != null and !#lists.isEmpty(fashionDeals)}">
+            <h4 class="section-header">👕 Fashion Deals</h4>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="product : ${fashionDeals}">
+                    <div class="card h-100 p-card">
+                        <div class="img-box"><i class="fa-solid fa-shirt text-secondary"></i></div>
+                        <div class="card-body d-flex flex-column p-3">
+                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
+                            </a>
+                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
+                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. Deals Under ₹499 🏷️ -->
+        <div class="mb-5" th:if="${query == null and dealsUnder499 != null and !#lists.isEmpty(dealsUnder499)}">
+            <h4 class="section-header">🏷️ Budget Deals Under ₹499</h4>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="product : ${dealsUnder499}">
+                    <div class="card h-100 p-card">
+                        <div class="img-box"><i class="fa-solid fa-tag text-muted"></i></div>
+                        <div class="card-body d-flex flex-column p-3">
+                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
+                            </a>
+                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
+                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 15. Recently Added 🆕 -->
+        <div class="mb-5" th:if="${query == null and recentlyAdded != null and !#lists.isEmpty(recentlyAdded)}">
+            <h4 class="section-header">🆕 Recently Added</h4>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="product : ${recentlyAdded}">
+                    <div class="card h-100 p-card">
+                        <div class="img-box"><i class="fa-solid fa-clock text-info"></i></div>
+                        <div class="card-body d-flex flex-column p-3">
+                            <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                                <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product</h6>
+                            </a>
+                            <h5 class="text-success fw-bold mb-3" th:text="'₹' + ${product.price}">₹0.00</h5>
+                            <form th:action="@{/cart/add}" method="POST" class="mt-auto m-0">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Professional Footer -->
-    <footer class="text-center text-lg-start">
-        <div class="container text-center">
-            <p class="mb-1 text-light fw-bold">SK Bazaar Platform - Har Zaroorat, Ek Bazaar</p>
-            <p class="small text-muted mb-0">© 2026 SK Bazaar. Securely connected with standard Spring Boot & Thymeleaf Monolith Architecture.</p>
-        </div>
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <p class="mb-0 small text-muted">© 2026 SK Bazaar. Engineered with highly scaled modern Monolith Dashboard Structures.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

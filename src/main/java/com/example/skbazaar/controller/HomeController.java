@@ -30,7 +30,21 @@ public class HomeController {
     public String home(Model model) {
         model.addAttribute("appName", AppConstants.APP_NAME);
         model.addAttribute("tagline", AppConstants.TAGLINE);
-        model.addAttribute("products", productService.getAllProducts());
+        
+        // Amazon/Flipkart Style Marketplace Sections logic
+        var allProducts = productService.getAllProducts();
+        
+        model.addAttribute("flashSale", allProducts.stream().filter(p -> p.getDiscount() != null && p.getDiscount() > 20).limit(4).toList());
+        model.addAttribute("trendingProducts", allProducts.stream().limit(8).toList());
+        model.addAttribute("recommendedProducts", allProducts.stream().skip(2).limit(4).toList());
+        model.addAttribute("bestSellers", allProducts.stream().limit(4).toList());
+        
+        model.addAttribute("electronicsDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Electronics".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+        model.addAttribute("fashionDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Fashion".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+        model.addAttribute("dealsUnder499", allProducts.stream().filter(p -> p.getPrice().doubleValue() < 499).limit(4).toList());
+        
+        model.addAttribute("recentlyAdded", allProducts.stream().sorted((p1, p2) -> p2.getId().compareTo(p1.getId())).limit(4).toList());
+
         model.addAttribute("categories", categoryRepository.findAll());
         return "home";
     }
