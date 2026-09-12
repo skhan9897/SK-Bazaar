@@ -10,7 +10,7 @@ services:
       - key: DB_HOST
         fromDatabase:
           name: sk-bazaar-db
-          property: host
+          property: internalHost
       - key: DB_PORT
         fromDatabase:
           name: sk-bazaar-db
@@ -28,7 +28,7 @@ services:
           name: sk-bazaar-db
           property: password
       - key: SPRING_AI_GOOGLE_GENAI_API_KEY
-        value: "your-api-key-here" # Replace with actual key in Render dashboard
+        value: "your-api-key-here"
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
 
