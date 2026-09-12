@@ -24,6 +24,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+    private final OtpCodeRepository otpCodeRepository;
     private final UserDetailsService userDetailsService;
 
     public AuthResponse register(RegisterRequest request) {
@@ -53,5 +54,50 @@ public class AuthService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
         var jwtToken = jwtUtils.generateToken(userDetails);
         return new AuthResponse(jwtToken, user.getEmail(), user.getRole().name());
+    }
+
+    public void sendOtp(String mobile) {
+        String otp = String.valueOf((int) (Math.random() * 900000) + 100000); // 6 digit OTP
+        otpCodeRepository.deleteByMobile(mobile);
+        var otpCode = OtpCode.builder()
+                .mobile(mobile)
+                .code(otp)
+                .expiryTime(java.time.LocalDateTime.now().plusMinutes(5))
+                .build();
+        otpCodeRepository.save(otpCode);
+        System.out.println("OTP for " + mobile + " is: " + otp); // Simulating SMS
+    }
+
+    public AuthResponse verifyOtp(String mobile, String code) {
+        var otpCode = otpCodeRepository.findByMobileAndCode(mobile, code)
+                .orElseThrow(() -> new RuntimeException("Invalid OTP"));
+
+        if (otpCode.getExpiryTime().isBefore(java.time.LocalDateTime.now())) {
+            throw new RuntimeException("OTP Expired");
+        }
+
+        var user = userRepository.findByMobile(mobile)
+                .orElseGet(() -> {
+                    // Create new user if not exists for mobile login
+                    var newUser = User.builder()
+                            .mobile(mobile)
+                            .role(com.example.skbazaar.model.enums.UserRole.CUSTOMER)
+                            .walletBalance(BigDecimal.ZERO)
+                            .build();
+                    return userRepository.save(newUser);
+                });
+
+        otpCodeRepository.deleteByMobile(mobile);
+        
+        // Handling dummy user details for JWT
+        String username = user.getEmail() != null ? user.getEmail() : user.getMobile();
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+                .username(username)
+                .password("") // No password for OTP login
+                .authorities("ROLE_" + user.getRole().name())
+                .build();
+                
+        var jwtToken = jwtUtils.generateToken(userDetails);
+        return new AuthResponse(jwtToken, username, user.getRole().name());
     }
 }
