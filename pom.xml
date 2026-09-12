@@ -37,11 +37,12 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- Spring AI -->
+        <!-- Spring AI (Commented out until used to prevent startup crash due to missing credentials)
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-model-google-genai</artifactId>
         </dependency>
+        -->
 
         <dependency>
             <groupId>org.springframework.retry</groupId>
