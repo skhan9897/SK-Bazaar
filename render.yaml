@@ -7,10 +7,26 @@ services:
     region: ohio
     dockerFilePath: ./Dockerfile
     envVars:
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_HOST
         fromDatabase:
           name: sk-bazaar-db
-          property: jdbcConnectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: sk-bazaar-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: sk-bazaar-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: sk-bazaar-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: sk-bazaar-db
+          property: password
       - key: SPRING_AI_GOOGLE_GENAI_API_KEY
         value: "your-api-key-here" # Replace with actual key in Render dashboard
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
