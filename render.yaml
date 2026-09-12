@@ -17,6 +17,8 @@ services:
         value: ZpWdaK1qLTASMzMCuuIG
       - key: SPRING_AI_GOOGLE_GENAI_API_KEY
         sync: false
+      - key: SPRING_AI_GOOGLE_PROJECT_ID
+        value: "sk-bazaar-project" # Placeholder to satisfy Spring AI 1.1.0 validation
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
 

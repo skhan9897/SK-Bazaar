@@ -25,7 +25,19 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### Gradle & Android ###
+.gradle/
 build/
+bin/
+gen/
+local.properties
+.externalNativeBuild
+.cxx
+*.apk
+*.ap_
+*.dex
+*.class
 !**/src/main/**/build/
 !**/src/test/**/build/
 
