@@ -7,20 +7,16 @@ services:
     region: ohio
     dockerFilePath: ./Dockerfile
     envVars:
+      - key: PORT
+        value: "8080"
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: sk-bazaar-db
-          property: connectionString
+        value: jdbc:mysql://bkdidir94vhidbpch7ox-mysql.services.clever-cloud.com:3306/bkdidir94vhidbpch7ox?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: sk-bazaar-db
-          property: user
+        value: ujcoipqkp3ovweit
       - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: sk-bazaar-db
-          property: password
+        value: ZpWdaK1qLTASMzMCuuIG
       - key: SPRING_AI_GOOGLE_GENAI_API_KEY
-        sync: false # Set this in Render Dashboard
+        sync: false
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
 
@@ -35,7 +31,4 @@ services:
       - key: REACT_APP_API_URL
         value: https://sk-bazaar-backend.onrender.com/api
 
-# Database Service (PostgreSQL recommended for Render production)
-databases:
-  - name: sk-bazaar-db
-    plan: free
+# External MySQL from Clever Cloud is being used.

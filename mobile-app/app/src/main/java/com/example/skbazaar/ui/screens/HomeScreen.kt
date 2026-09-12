@@ -53,7 +53,7 @@ fun HomeScreen(navController: NavController) {
                         shape = MaterialTheme.shapes.small
                     )
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF2874F0)) // Flipkart Blue
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color(0xFF2874F0)) // Flipkart Blue
             )
         },
         bottomBar = {
