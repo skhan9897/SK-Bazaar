@@ -1,0 +1,31 @@
+services:
+  # Backend Spring Boot Service
+  - type: web
+    name: sk-bazaar-backend
+    env: docker
+    plan: free
+    region: ohio
+    dockerFilePath: ./Dockerfile
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: sk-bazaar-db
+          property: connectionString
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+
+  # Frontend React Service
+  - type: web
+    name: sk-bazaar-frontend
+    env: static
+    plan: free
+    publishPath: frontend/build
+    buildCommand: cd frontend && npm install && npm run build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://sk-bazaar-backend.onrender.com/api
+
+# Database Service (PostgreSQL recommended for Render production)
+databases:
+  - name: sk-bazaar-db
+    plan: free

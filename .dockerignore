@@ -1,0 +1,11 @@
+target/
+.mvn/
+mvnw
+mvnw.cmd
+.git/
+.idea/
+frontend/
+mobile-app/
+Dockerfile
+render.yaml
+HELP.md
