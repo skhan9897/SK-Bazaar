@@ -33,6 +33,6 @@ services:
     buildCommand: cd frontend && npm install && npm run build
     envVars:
       - key: REACT_APP_API_URL
-        value: https://sk-bazaar-backend.onrender.com/api
+        value: https://sk-bazaar-1.onrender.com/api
 
 # External MySQL from Clever Cloud is being used.
