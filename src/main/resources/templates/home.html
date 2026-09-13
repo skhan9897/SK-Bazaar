@@ -269,8 +269,8 @@
                     <div class="img-container"><i class="fa-solid fa-image"></i></div>
                     <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product Name</h6>
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <span class="rating-badge" th:text="(${product.rating != null} ? ${product.rating} : '4.4') + ' ★'">4.4 ★</span>
-                        <small class="text-muted" th:text="'(' + (${product.reviewCount != null} ? ${product.reviewCount} : '100') + ')'">(1,520)</small>
+                        <span class="rating-badge" th:text="${product.rating != null ? product.rating : '4.4'} + ' ★'">4.4 ★</span>
+                        <small class="text-muted" th:text="'(' + ${product.reviewCount != null ? product.reviewCount : '100'} + ')'">(1,520)</small>
                     </div>
                     <div class="price-row">
                         <span class="selling-price" th:text="'₹' + ${product.price}">₹1,299</span>

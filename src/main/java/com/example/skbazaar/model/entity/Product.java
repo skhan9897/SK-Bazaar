@@ -51,6 +51,19 @@ public class Product {
     private String size;
     private String color;
 
+    // New Fields as per the Product Details Structure Diagram
+    private String shortDescription;
+    private BigDecimal offerPrice;
+    private Integer lowStockAlert;
+    private String warehouse;
+    private String material;
+    private String countryOfOrigin;
+    private String manufacturer;
+    private Boolean deliveryAvailable;
+    private BigDecimal deliveryCharge;
+    private String estimatedDelivery;
+    private Boolean returnAvailable;
+
     @Column(columnDefinition = "TEXT")
     private String returnPolicy;
 

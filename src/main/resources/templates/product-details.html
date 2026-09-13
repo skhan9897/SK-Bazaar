@@ -111,11 +111,20 @@
                             <strong>Size / Dimension:</strong> <span class="text-muted" th:text="${product.size ?: 'Standard'}"></span>
                         </div>
                         <div class="col-6">
-                            <strong>Weight Index:</strong> <span class="text-muted" th:text="${product.weight != null ? product.weight + ' kg' : 'Standard'}"></span>
+                            <strong>Material:</strong> <span class="text-muted" th:text="${product.material != null ? product.material : 'Premium Quality Material'}"></span>
                         </div>
                         <div class="col-6">
-                            <strong>Inventory Status:</strong>
-                            <span class="badge bg-success" th:if="${product.stock != null and product.stock > 0}" th:text="${product.stock} + ' available'"></span>
+                            <strong>Country of Origin:</strong> <span class="text-muted" th:text="${product.countryOfOrigin != null ? product.countryOfOrigin : 'India'}"></span>
+                        </div>
+                        <div class="col-6">
+                            <strong>Manufacturer:</strong> <span class="text-muted" th:text="${product.manufacturer != null ? product.manufacturer : 'SK Industries'}"></span>
+                        </div>
+                        <div class="col-6">
+                            <strong>Estimated Delivery:</strong> <span class="text-muted text-success fw-bold" th:text="${product.estimatedDelivery != null ? product.estimatedDelivery : 'Fast 2-4 Days Delivery'}"></span>
+                        </div>
+                        <div class="col-6">
+                            <strong>Warehouse Stock Status:</strong>
+                            <span class="badge bg-success" th:if="${product.stock != null and product.stock > 0}" th:text="${product.stock} + ' items live in ' + (${product.warehouse != null} ? ${product.warehouse} : 'Main WH')"></span>
                             <span class="badge bg-danger" th:if="${product.stock == null or product.stock <= 0}">Out of Stock</span>
                         </div>
                     </div>
