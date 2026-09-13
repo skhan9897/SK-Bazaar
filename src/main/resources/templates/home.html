@@ -266,7 +266,15 @@
                     <button type="submit" class="wishlist-btn"><i class="fa-solid fa-heart"></i></button>
                 </form>
                 <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                    <div class="img-container"><i class="fa-solid fa-image"></i></div>
+                    <div class="img-container">
+                        <img th:if="${product.images != null and !#lists.isEmpty(product.images)}"
+                             th:src="${product.images[0]}"
+                             class="img-fluid rounded"
+                             style="max-height: 100%; object-fit: contain;"
+                             alt="Product Image">
+                        <i th:unless="${product.images != null and !#lists.isEmpty(product.images)}"
+                           class="fa-solid fa-image"></i>
+                    </div>
                     <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name != null ? product.name : 'Unknown Product'}">Product Name</h6>
                     <div class="d-flex align-items-center gap-2 mb-2">
                         <span class="rating-badge">

@@ -2,12 +2,10 @@ package com.example.skbazaar.service;
 
 import com.example.skbazaar.model.entity.Category;
 import com.example.skbazaar.model.entity.Product;
-import com.example.skbazaar.model.entity.ProductVariant;
 import com.example.skbazaar.model.enums.UserRole;
 import com.example.skbazaar.model.entity.User;
 import com.example.skbazaar.repository.CategoryRepository;
 import com.example.skbazaar.repository.ProductRepository;
-import com.example.skbazaar.repository.ProductVariantRepository;
 import com.example.skbazaar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -25,42 +23,41 @@ public class DataInitializer implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-    private final ProductVariantRepository variantRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
         if (categoryRepository.count() > 0) {
-            return; // Data already exists
+            return;
         }
 
-        // 1. Create Admin & Seller
-        User admin = User.builder()
-                .name("SK Admin")
-                .email("admin@skbazaar.com")
-                .password(passwordEncoder.encode("admin123"))
-                .role(UserRole.ADMIN)
-                .build();
-        userRepository.save(admin);
+        // 1. Users
+        User admin = userRepository.save(User.builder().name("SK Admin").email("admin@skbazaar.com").password(passwordEncoder.encode("admin123")).role(UserRole.ADMIN).build());
+        User seller = userRepository.save(User.builder().name("SK Mega Merchant").email("seller@skbazaar.com").password(passwordEncoder.encode("seller123")).role(UserRole.SELLER).storeName("SK Official Store").walletBalance(new BigDecimal("10000.00")).build());
 
-        User seller = User.builder()
-                .name("SK Mega Merchant")
-                .email("seller@skbazaar.com")
-                .password(passwordEncoder.encode("seller123"))
-                .role(UserRole.SELLER)
-                .storeName("SK Official Store")
-                .walletBalance(new BigDecimal("5000.00"))
-                .build();
-        userRepository.save(seller);
-
-        // 2. Create Categories Hierarchy (Root Level)
+        // 2. Exact Category Hierarchy from Screenshots
+        Category homeCat = categoryRepository.save(Category.builder().name("Home").build());
+        
         Category fashion = categoryRepository.save(Category.builder().name("Fashion").build());
+        Category men = categoryRepository.save(Category.builder().name("Men").parentCategory(fashion).build());
+        Category women = categoryRepository.save(Category.builder().name("Women").parentCategory(fashion).build());
+        Category kids = categoryRepository.save(Category.builder().name("Kids").parentCategory(fashion).build());
+        Category footwear = categoryRepository.save(Category.builder().name("Footwear").parentCategory(fashion).build());
+        Category fashionAcc = categoryRepository.save(Category.builder().name("Fashion Accessories").parentCategory(fashion).build());
+
         Category electronics = categoryRepository.save(Category.builder().name("Electronics").build());
+        Category mobiles = categoryRepository.save(Category.builder().name("Mobiles").parentCategory(electronics).build());
+        Category laptops = categoryRepository.save(Category.builder().name("Laptops").parentCategory(electronics).build());
+        Category audio = categoryRepository.save(Category.builder().name("Audio").parentCategory(electronics).build());
+        Category gaming = categoryRepository.save(Category.builder().name("Gaming").parentCategory(electronics).build());
+
         Category homeKitchen = categoryRepository.save(Category.builder().name("Home & Kitchen").build());
+        Category kitchen = categoryRepository.save(Category.builder().name("Kitchen").parentCategory(homeKitchen).build());
+        Category furniture = categoryRepository.save(Category.builder().name("Furniture & Office").build());
+
         Category beauty = categoryRepository.save(Category.builder().name("Beauty & Personal Care").build());
         Category grocery = categoryRepository.save(Category.builder().name("Grocery & Food").build());
-        Category furniture = categoryRepository.save(Category.builder().name("Furniture & Office").build());
         Category books = categoryRepository.save(Category.builder().name("Books & Education").build());
         Category sports = categoryRepository.save(Category.builder().name("Sports & Fitness").build());
         Category toys = categoryRepository.save(Category.builder().name("Toys & Baby").build());
@@ -69,98 +66,58 @@ public class DataInitializer implements CommandLineRunner {
         Category tools = categoryRepository.save(Category.builder().name("Tools & Hardware").build());
         Category gifts = categoryRepository.save(Category.builder().name("Gifts & Others").build());
 
-        // Sub-categories for mapping
-        Category men = categoryRepository.save(Category.builder().name("Men").parentCategory(fashion).build());
-        Category mobiles = categoryRepository.save(Category.builder().name("Mobiles").parentCategory(electronics).build());
-        Category kitchen = categoryRepository.save(Category.builder().name("Kitchen").parentCategory(homeKitchen).build());
+        // 3. Populate Products (Minimum 20 Varied Items)
+        List<Product> products = new ArrayList<>();
 
-        // 3. Create 20 Premium Products across categories
-        List<Product> sampleProducts = new ArrayList<>();
+        // ELECTRONICS
+        products.add(createProduct("iPhone 15 Pro Max", "Apple", mobiles, seller, "145000", "159900", "Titanium Black, 256GB.", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=600"));
+        products.add(createProduct("Samsung Galaxy S24 Ultra", "Samsung", mobiles, seller, "129999", "144000", "Titanium Gray, 512GB.", "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=600"));
+        products.add(createProduct("MacBook Air M3", "Apple", laptops, seller, "114900", "124900", "13.6-inch, 8GB RAM, 256GB SSD.", "https://images.unsplash.com/photo-1517336712468-152619371461?q=80&w=600"));
+        products.add(createProduct("Sony WH-1000XM5", "Sony", audio, seller, "26990", "34990", "Wireless Noise Cancelling Headphones.", "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600"));
+        products.add(createProduct("PlayStation 5 Console", "Sony", gaming, seller, "44990", "54990", "825GB SSD, Digital Edition.", "https://images.unsplash.com/photo-1606813907291-d86ebb9b740e?q=80&w=600"));
 
-        // Electronics - Mobiles
-        sampleProducts.add(createProduct("iPhone 15 Pro", "Apple", mobiles, seller, "119900", "134900", "Titanium body, A17 Pro chip.", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=500"));
-        sampleProducts.add(createProduct("Samsung S24 Ultra", "Samsung", mobiles, seller, "124999", "139999", "Galaxy AI, 200MP Camera.", "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=500"));
+        // FASHION
+        products.add(createProduct("Men's Regular Fit Shirt", "Louis Philippe", men, seller, "1899", "2999", "Premium cotton formal white shirt.", "https://images.unsplash.com/photo-1598033129183-c4f50c717658?q=80&w=600"));
+        products.add(createProduct("Women Silk Saree", "FabIndia", women, seller, "4999", "8500", "Handwoven Banarasi Silk Saree.", "https://images.unsplash.com/photo-1610030469668-93510ec67735?q=80&w=600"));
+        products.add(createProduct("Kids Cotton Dungaree", "FirstCry", kids, seller, "899", "1499", "Soft breathable cotton for toddlers.", "https://images.unsplash.com/photo-1519234221713-101791f7ac9e?q=80&w=600"));
+        products.add(createProduct("Nike Air Jordan 1", "Nike", footwear, seller, "12995", "16000", "Classic basketball high-top sneakers.", "https://images.unsplash.com/photo-1584735175315-9d5df23860e6?q=80&w=600"));
+        products.add(createProduct("Fossil Gen 6 Smartwatch", "Fossil", fashionAcc, seller, "18495", "24995", "Black silicone strap, AMOLED display.", "https://images.unsplash.com/photo-1544006659-f0b21f04cb1d?q=80&w=600"));
 
-        // Fashion - Men
-        Category tshirts = categoryRepository.save(Category.builder().name("T-Shirts").parentCategory(men).build());
-        sampleProducts.add(createProduct("Premium Polo T-Shirt", "U.S. Polo Assn.", tshirts, seller, "1299", "2499", "100% Pure Pique Cotton.", "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=500"));
-        sampleProducts.add(createProduct("Slim Fit Denim Jeans", "Levi's", men, seller, "2999", "4599", "Classic blue wash stretchable denim.", "https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=500"));
+        // HOME & KITCHEN
+        products.add(createProduct("Air Fryer 4L", "Philips", kitchen, seller, "7499", "9999", "Rapid Air Technology, 90% less fat.", "https://images.unsplash.com/photo-1626078436894-399580665675?q=80&w=600"));
+        products.add(createProduct("Non-Stick Cookware Set", "Prestige", kitchen, seller, "2299", "3500", "3-piece induction base set.", "https://images.unsplash.com/photo-1584990344321-27682ad0f144?q=80&w=600"));
+        products.add(createProduct("Ergonomic Study Table", "Wakefit", furniture, seller, "3999", "6500", "Engineered wood with storage.", "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?q=80&w=600"));
 
-        // Home & Kitchen
-        Category cookware = categoryRepository.save(Category.builder().name("Cookware").parentCategory(kitchen).build());
-        sampleProducts.add(createProduct("7-Piece Non-Stick Set", "Prestige", cookware, seller, "3499", "5999", "Hard anodized induction base.", "https://images.unsplash.com/photo-1584990344321-27682ad0f144?q=80&w=500"));
-        sampleProducts.add(createProduct("Modern Coffee Table", "Wakefit", homeKitchen, seller, "4999", "8999", "Sheesham wood finish table.", "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?q=80&w=500"));
+        // BEAUTY
+        products.add(createProduct("Charcoal Face Wash", "Mamaearth", beauty, seller, "249", "399", "Activated charcoal for skin detox.", "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=600"));
+        products.add(createProduct("Matte Finish Foundation", "Maybelline", beauty, seller, "599", "850", "Full coverage long-lasting liquid.", "https://images.unsplash.com/photo-1596462502278-27bfdc4033c8?q=80&w=600"));
 
-        // Beauty
-        Category skincare = categoryRepository.save(Category.builder().name("Skincare").parentCategory(beauty).build());
-        sampleProducts.add(createProduct("Vitamin C Face Serum", "Mamaearth", skincare, seller, "599", "899", "Brightens skin & reduces spots.", "https://images.unsplash.com/photo-1620916566398-39f1143af7be?q=80&w=500"));
-        sampleProducts.add(createProduct("Matte Red Lipstick", "Lakme", beauty, seller, "450", "750", "Long-lasting 12hr stay.", "https://images.unsplash.com/photo-1586495777744-4413f21062fa?q=80&w=500"));
+        // GROCERY
+        products.add(createProduct("Premium Cashews 500g", "Happilo", grocery, seller, "649", "899", "Whole crunchy jumbo cashews.", "https://images.unsplash.com/photo-1509911595633-7228497f13c5?q=80&w=600"));
 
-        // Grocery
-        sampleProducts.add(createProduct("Organic Basmati Rice 5kg", "India Gate", grocery, seller, "749", "999", "Aged long grain aromatic rice.", "https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=500"));
-        sampleProducts.add(createProduct("Cold Pressed Mustard Oil", "Fortune", grocery, seller, "199", "250", "100% pure Kachi Ghani oil.", "https://images.unsplash.com/photo-1474979266404-7eaacccbc7c5?q=80&w=500"));
+        // OTHERS
+        products.add(createProduct("Atomic Habits Book", "Penguin", books, seller, "450", "799", "Easy & proven way to build habits.", "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600"));
+        products.add(createProduct("Yoga Mat with Strap", "Boldfit", sports, seller, "799", "1200", "6mm extra thick TPE material.", "https://images.unsplash.com/photo-1592432678016-e910b452f9a2?q=80&w=600"));
+        products.add(createProduct("Remote Control Helicopter", "ToyCloud", toys, seller, "1299", "2500", "3-channel with altitude hold.", "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=600"));
+        products.add(createProduct("Heavy Duty Drill Machine", "Bosch", tools, seller, "3299", "5500", "500W professional impact drill.", "https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=600"));
 
-        // Furniture
-        sampleProducts.add(createProduct("Ergonomic Office Chair", "Green Soul", furniture, seller, "8999", "14999", "High back mesh with lumbar support.", "https://images.unsplash.com/photo-1505797149-43b0069ec26b?q=80&w=500"));
-
-        // Books
-        sampleProducts.add(createProduct("Atomic Habits", "James Clear", books, seller, "499", "799", "Self-help bestseller on habits.", "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=500"));
-
-        // Sports
-        sampleProducts.add(createProduct("Cricket Bat (Kashmir Willow)", "MRF", sports, seller, "2499", "3999", "Professional grade power willow.", "https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=500"));
-        sampleProducts.add(createProduct("Yoga Mat (6mm)", "Boldfit", sports, seller, "799", "1499", "Anti-skid double layered mat.", "https://images.unsplash.com/photo-1592432678016-e910b452f9a2?q=80&w=500"));
-
-        // Toys
-        sampleProducts.add(createProduct("Remote Control Monster Truck", "Hot Wheels", toys, seller, "1599", "2999", "4WD off-road climbing car.", "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=500"));
-
-        // Automotive
-        sampleProducts.add(createProduct("Digital Tyre Inflator", "GoMechanic", automotive, seller, "1899", "3499", "Fast inflation with auto cut-off.", "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=500"));
-
-        // Pets
-        sampleProducts.add(createProduct("Adult Dog Food 3kg", "Pedigree", pets, seller, "650", "850", "Chicken & Vegetables flavor.", "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=500"));
-
-        // Tools
-        sampleProducts.add(createProduct("21V Cordless Drill Machine", "Bosch", tools, seller, "4599", "7999", "Variable speed with 2 batteries.", "https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=500"));
-
-        // Gifts
-        sampleProducts.add(createProduct("Personalized Photo Frame", "GiftingEra", gifts, seller, "399", "699", "A4 size wooden floating frame.", "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=500"));
-
-        // One more Electronics item to make it 20
-        sampleProducts.add(createProduct("Wireless Noise Cancelling Headphones", "Sony", electronics, seller, "19990", "29990", "XM5 Series with industry leading ANC.", "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=500"));
-
-        productRepository.saveAll(sampleProducts);
-
-        System.out.println("SK Bazaar: 20 Premium Products across all categories seeded successfully!");
+        productRepository.saveAll(products);
+        System.out.println("SK Bazaar: Comprehensive Category Structure & 20+ Detailed Products Live!");
     }
 
     private Product createProduct(String name, String brand, Category category, User seller, String price, String mrp, String shortDesc, String imageUrl) {
         BigDecimal p = new BigDecimal(price);
         BigDecimal m = new BigDecimal(mrp);
         double disc = ((m.doubleValue() - p.doubleValue()) / m.doubleValue()) * 100;
-
         return Product.builder()
-                .name(name)
-                .brand(brand)
-                .category(category)
-                .seller(seller)
-                .price(p)
-                .mrp(m)
-                .discount(Math.round(disc * 100.0) / 100.0)
-                .rating(4.0 + (Math.random() * 1.0))
-                .reviewCount(50 + (int)(Math.random() * 5000))
-                .isFreeDelivery(Math.random() > 0.5)
-                .stock(10 + (int)(Math.random() * 200))
-                .shortDescription(shortDesc)
-                .description("Professional grade " + name + " from " + brand + ". High quality product with manufacturer warranty.")
+                .name(name).brand(brand).category(category).seller(seller)
+                .price(p).mrp(m).discount(Math.round(disc * 100.0) / 100.0)
+                .rating(4.0 + (Math.random() * 1.0)).reviewCount(50 + (int)(Math.random() * 2000))
+                .isFreeDelivery(p.intValue() > 499).stock(15 + (int)(Math.random() * 100))
+                .shortDescription(shortDesc).description(shortDesc + " High quality " + name + " by " + brand + ". Full manufacturer warranty included.")
                 .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
                 .images(Arrays.asList(imageUrl))
-                .estimatedDelivery("3-5 Business Days")
-                .countryOfOrigin("India")
-                .manufacturer(brand + " Industries")
-                .material("Premium Quality")
-                .returnAvailable(true)
-                .deliveryAvailable(true)
-                .warehouse("Central SK Warehouse")
+                .estimatedDelivery("3-4 Days").countryOfOrigin("India").manufacturer(brand + " Ltd.").material("Premium Material").returnAvailable(true).deliveryAvailable(true).warehouse("SK Delhi Hub")
                 .build();
     }
 }
