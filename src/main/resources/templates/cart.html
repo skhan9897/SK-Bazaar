@@ -3,105 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Bazaar - Managed Shopping Cart</title>
+    <title>Shopping Cart | SK Bazaar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2b7a78;
-            --dark-color: #17252a;
-            --secondary-color: #3aafa9;
+            --fk-blue: #2874f0;
+            --fk-yellow: #ff9f00;
+            --fk-orange: #fb641b;
+            --bg-light: #f1f3f6;
         }
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        .navbar {
-            background-color: var(--dark-color) !important;
-        }
-        .cart-card {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            background-color: #ffffff;
-        }
-        .summary-card {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.08);
-            background-color: #ffffff;
-        }
+        body { background-color: var(--bg-light); font-family: Roboto, Arial, sans-serif; }
+
+        /* Header */
+        .fk-navbar { background-color: var(--fk-blue); height: 56px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .fk-nav-content { display: flex; align-items: center; width: 100%; max-width: 1248px; margin: 0 auto; padding: 0 10px; }
+        .fk-logo-box { margin-right: 12px; cursor: pointer; text-decoration: none; }
+        .fk-logo-text { color: #fff; font-size: 20px; font-weight: 700; font-style: italic; line-height: 1; }
+        .fk-nav-links { display: flex; align-items: center; margin-left: 20px; gap: 40px; }
+        .fk-nav-item { color: #fff; font-weight: 600; text-decoration: none; font-size: 16px; }
+
+        .main-container { max-width: 1248px; margin: 20px auto; display: flex; gap: 16px; align-items: flex-start; }
+        .cart-items-col { flex: 1; }
+        .price-details-col { width: 380px; position: sticky; top: 76px; }
+
+        .white-box { background: #fff; box-shadow: 0 1px 2px 0 rgba(0,0,0,.1); }
+        .cart-header { padding: 15px 24px; border-bottom: 1px solid #f0f0f0; font-size: 18px; font-weight: 600; }
+
+        .cart-item { padding: 24px; display: flex; border-bottom: 1px solid #f0f0f0; }
+        .item-img-box { width: 112px; height: 112px; margin-right: 24px; text-align: center; }
+        .item-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        .item-info { flex: 1; }
+        .item-name { font-size: 16px; color: #212121; margin-bottom: 5px; }
+        .item-seller { color: #878787; font-size: 14px; margin-bottom: 15px; }
+        .item-pricing { display: flex; align-items: center; gap: 10px; }
+        .selling-price { font-size: 18px; font-weight: 600; }
+        .mrp { color: #878787; text-decoration: line-through; font-size: 14px; }
+        .discount { color: #388e3c; font-size: 14px; font-weight: 600; }
+
+        .remove-btn { color: #212121; font-weight: 600; font-size: 14px; text-transform: uppercase; margin-top: 15px; border: none; background: none; padding: 0; cursor: pointer; }
+        .remove-btn:hover { color: var(--fk-blue); }
+
+        .place-order-row { padding: 16px 22px; display: flex; justify-content: flex-end; box-shadow: 0 -2px 10px 0 rgba(0,0,0,.1); }
+        .btn-place { background: var(--fk-orange); color: #fff; padding: 12px 60px; font-weight: 700; border-radius: 2px; border: none; font-size: 16px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.2); }
+
+        /* Price Details sidebar */
+        .price-details-header { color: #878787; padding: 13px 24px; border-bottom: 1px solid #f0f0f0; font-weight: 600; text-transform: uppercase; font-size: 16px; }
+        .price-row { display: flex; justify-content: space-between; padding: 20px 24px; font-size: 16px; }
+        .total-amount-row { border-top: 1px dashed #e0e0e0; font-weight: 700; font-size: 18px; padding: 24px; display: flex; justify-content: space-between; }
+        .savings-row { color: #388e3c; font-weight: 600; padding: 12px 24px; font-size: 16px; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-success" th:href="@{/}"><i class="fa-solid fa-shop me-2"></i>SK Bazaar</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" th:href="@{/}"><i class="fa-solid fa-house me-1"></i> Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" th:href="@{/profile}"><i class="fa-solid fa-user me-1"></i> My Account</a></li>
-                </ul>
+    <!-- Header -->
+    <header class="fk-navbar">
+        <div class="fk-nav-content">
+            <a th:href="@{/home-dashboard}" class="fk-logo-box">
+                <div class="fk-logo-text">Flipkart</div>
+            </a>
+            <div class="fk-nav-links">
+                <a th:href="@{/profile}" class="fk-nav-item">My Account</a>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <div class="container mt-5">
-        <h2 class="mb-4 fw-bold text-dark"><i class="fa-solid fa-cart-shopping text-success me-2"></i>Your Shopping Cart</h2>
+    <div class="main-container">
+        <!-- Left Side: Cart Items -->
+        <div class="cart-items-col">
+            <div class="white-box">
+                <div class="cart-header">Flipkart (<span th:text="${#lists.size(cartItems)}">0</span>)</div>
 
-        <div class="row g-4">
-            <div class="col-lg-8">
-                <div class="card cart-card mb-4" th:if="${!#lists.isEmpty(cartItems)}">
-                    <ul class="list-group list-group-flush rounded-3">
-                        <li class="list-group-item p-4" th:each="item : ${cartItems}">
-                            <div class="row align-items-center g-3">
-                                <div class="col-2 col-md-1 text-center">
-                                    <h2 class="text-muted"><i class="fa-solid fa-box text-secondary"></i></h2>
-                                </div>
-                                <div class="col-10 col-md-5">
-                                    <h5 class="mb-1 fw-bold text-dark" th:text="${item.product.name}">Product Name</h5>
-                                    <p class="mb-0 text-muted small" th:text="'Merchant/Brand: ' + ${item.product.brand ?: 'SK Premium'}"></p>
-                                </div>
-                                <div class="col-4 col-md-2 text-md-center">
-                                    <span class="badge bg-secondary p-2 fs-6" th:text="'Qty: ' + ${item.quantity}">1</span>
-                                </div>
-                                <div class="col-5 col-md-2 text-end">
-                                    <span class="fw-bold fs-5 text-success" th:text="'₹' + (${item.product.price} * ${item.quantity})">₹0.00</span>
-                                </div>
-                                <div class="col-3 col-md-2 text-end">
-                                    <form th:action="@{'/cart/remove/' + ${item.id}}" method="POST" class="m-0">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger px-3 py-2"><i class="fa-solid fa-trash-can"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                <div th:if="${#lists.isEmpty(cartItems)}" class="text-center py-5">
+                    <img src="https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d405a711-2ed0-4a3b-83a5-fc966ac2514e.png?q=90" width="200" alt="Empty">
+                    <h5 class="mt-3">Your cart is empty!</h5>
+                    <p class="text-muted">Add items to it now.</p>
+                    <a th:href="@{/home-dashboard}" class="btn btn-primary px-5 mt-2">Shop Now</a>
                 </div>
 
-                <div class="alert alert-light text-center py-5 border rounded-3 shadow-sm" th:if="${#lists.isEmpty(cartItems)}">
-                    <i class="fa-solid fa-cart-arrow-down display-1 text-muted mb-3"></i>
-                    <h4 class="fw-bold text-secondary">Your shopping cart is completely empty!</h4>
-                    <p class="text-muted">Browse our custom active marketplace products to add inventory items.</p>
-                    <a th:href="@{/}" class="btn btn-success px-4 rounded-pill mt-2"><i class="fa-solid fa-arrow-left me-2"></i>Go to Storefront</a>
+                <div th:each="item : ${cartItems}" class="cart-item">
+                    <div class="item-img-box">
+                        <img th:src="${item.product.images[0]}" alt="">
+                    </div>
+                    <div class="item-info">
+                        <div class="item-name" th:text="${item.product.name}">Product Name</div>
+                        <div class="item-seller" th:text="'Seller: ' + ${item.product.seller.storeName}">Seller Name</div>
+                        <div class="item-pricing">
+                            <span class="mrp" th:text="'₹' + ${item.product.mrp}"></span>
+                            <span class="selling-price" th:text="'₹' + ${item.product.price}"></span>
+                            <span class="discount" th:text="${item.product.discount} + '% Off'"></span>
+                        </div>
+                        <form th:action="@{'/cart/remove/' + ${item.id}}" method="POST">
+                            <button type="submit" class="remove-btn">Remove</button>
+                        </form>
+                    </div>
+                    <div class="item-delivery">
+                        <span style="font-size: 14px;">Delivery by Wed Sep 18 | <span style="color:#388e3c">Free</span></span>
+                    </div>
+                </div>
+
+                <div class="place-order-row" th:if="${!#lists.isEmpty(cartItems)}">
+                    <a th:href="@{/checkout}" class="btn-place">PLACE ORDER</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Price Details -->
+        <div class="price-details-col" th:if="${!#lists.isEmpty(cartItems)}">
+            <div class="white-box">
+                <div class="price-details-header">Price Details</div>
+                <div class="price-row">
+                    <span>Price (<span th:text="${#lists.size(cartItems)}"></span> items)</span>
+                    <span th:text="'₹' + ${totalAmount}"></span>
+                </div>
+                <div class="price-row">
+                    <span>Discount</span>
+                    <span style="color:#388e3c">- ₹500</span> <!-- Mock discount -->
+                </div>
+                <div class="price-row">
+                    <span>Delivery Charges</span>
+                    <span style="color:#388e3c">FREE</span>
+                </div>
+                <div class="total-amount-row">
+                    <span>Total Amount</span>
+                    <span th:text="'₹' + ${totalAmount}"></span>
+                </div>
+                <div class="savings-row">
+                    You will save ₹500 on this order
                 </div>
             </div>
 
-            <div class="col-lg-4" th:if="${!#lists.isEmpty(cartItems)}">
-                <div class="card summary-card p-3">
-                    <div class="card-body">
-                        <h4 class="card-title fw-bold mb-3 text-dark"><i class="fa-solid fa-receipt me-2 text-muted"></i>Order Breakdown</h4>
-                        <hr>
-                        <div class="d-flex justify-content-between mb-4 fs-5">
-                            <span class="text-secondary">Unique Items Count:</span>
-                            <span class="fw-bold text-dark th" th:text="${#lists.size(cartItems)}">0</span>
-                        </div>
-                        <div class="alert alert-secondary py-2 mb-4 small text-center text-muted">
-                            <i class="fa-solid fa-truck-fast me-1"></i> Eligible for Standard Delivery System
-                        </div>
-                        <a th:href="@{/checkout}" class="btn btn-success btn-lg w-100 py-3 fw-bold rounded-3 shadow-sm">Proceed to Checkout Gateway <i class="fa-solid fa-chevron-right ms-1"></i></a>
-                    </div>
-                </div>
+            <div class="mt-3 text-muted d-flex gap-2 align-items-center" style="font-size: 14px; font-weight: 600; padding: 0 10px;">
+                <i class="fa-solid fa-shield-halved" style="font-size: 24px;"></i>
+                Safe and Secure Payments. Easy returns. 100% Authentic products.
             </div>
         </div>
     </div>

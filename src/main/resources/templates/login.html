@@ -3,114 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Bazaar - Access Login Portal</title>
+    <title>Login | SK Bazaar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2b7a78;
-            --dark-color: #17252a;
-            --secondary-color: #3aafa9;
+            --fk-blue: #2874f0;
+            --fk-yellow: #ff9f00;
+            --fk-orange: #fb641b;
         }
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            font-family: 'Segoe UI', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .login-card {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            background-color: #ffffff;
-            overflow: hidden;
-        }
-        .login-header {
-            background-color: var(--dark-color);
-            color: #ffffff;
-            padding: 25px;
-            text-align: center;
-        }
-        .btn-auth {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .btn-auth:hover {
-            background-color: var(--dark-color);
-            color: white;
-        }
-        .form-control {
-            padding: 12px;
-            border-radius: 8px;
-        }
+        body { background-color: #f1f3f6; font-family: Roboto, Arial, sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; }
+
+        .login-modal { width: 650px; height: 500px; background: #fff; display: flex; box-shadow: 0 4px 20px 0 rgba(0,0,0,.15); border-radius: 4px; overflow: hidden; }
+
+        .login-left { width: 40%; background-color: var(--fk-blue); padding: 40px 33px; color: #fff; display: flex; flex-direction: column; justify-content: space-between; }
+        .login-left h2 { font-size: 28px; font-weight: 500; }
+        .login-left p { font-size: 18px; color: #dbdbdb; line-height: 1.5; margin-top: 15px; }
+        .login-left img { width: 100%; margin-top: auto; }
+
+        .login-right { width: 60%; padding: 40px 35px 16px; display: flex; flex-direction: column; }
+        .fk-input-group { margin-bottom: 30px; position: relative; }
+        .fk-input { width: 100%; border: none; border-bottom: 1px solid #e0e0e0; padding: 5px 0; outline: none; font-size: 14px; }
+        .fk-input:focus { border-bottom: 1px solid var(--fk-blue); }
+        .fk-label { position: absolute; top: 5px; left: 0; color: #878787; font-size: 14px; pointer-events: none; transition: 0.2s ease all; }
+        .fk-input:focus ~ .fk-label, .fk-input:not(:placeholder-shown) ~ .fk-label { top: -15px; font-size: 12px; color: var(--fk-blue); }
+
+        .terms-text { color: #878787; font-size: 12px; margin-bottom: 20px; line-height: 1.4; }
+        .terms-text a { color: var(--fk-blue); text-decoration: none; }
+
+        .btn-login { background: var(--fk-orange); color: #fff; width: 100%; border: none; padding: 12px; font-weight: 500; font-size: 14px; border-radius: 2px; box-shadow: 0 1px 2px 0 rgba(0,0,0,.2); }
+        .signup-link { margin-top: auto; text-align: center; color: var(--fk-blue); font-weight: 600; font-size: 14px; text-decoration: none; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-success" th:href="@{/home-dashboard}"><i class="fa-solid fa-shop me-2"></i>SK Bazaar</a>
-        </div>
-    </nav>
-
-    <div class="container my-auto py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-5 col-lg-4">
-                <div class="card login-card">
-                    <div class="login-header">
-                        <h4 class="m-0 fw-bold"><i class="fa-solid fa-user-lock me-2"></i>Sign In Portal</h4>
-                        <small class="text-muted text-light opacity-75">Access your marketplace account</small>
-                    </div>
-                    <div class="card-body p-4">
-                        <!-- Redirect/Info for Buy Now Action Requirement -->
-                        <div class="alert alert-warning d-flex align-items-center gap-2 small mb-3">
-                            <i class="fa-solid fa-circle-exclamation fs-5"></i> Please Login or Register to proceed with <strong>Buy Now / Order Checkout</strong>.
-                        </div>
-
-                        <div th:if="${param.error}" class="alert alert-danger d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-triangle-exclamation"></i> Invalid email address or secure password.
-                        </div>
-                        <div th:if="${param.logout}" class="alert alert-info d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-circle-info"></i> Session closed. You have logged out successfully.
-                        </div>
-                        <div th:if="${param.registered}" class="alert alert-success d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-circle-check"></i> Account created successfully! Please sign in.
-                        </div>
-
-                        <form th:action="@{/login}" method="POST">
-                            <div class="mb-3">
-                                <label for="email" class="form-label fw-semibold text-secondary">Registered Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="fa-solid fa-envelope text-muted"></i></span>
-                                    <input type="email" class="form-control" id="email" name="email" required placeholder="name@example.com">
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="password" class="form-label fw-semibold text-secondary">Secure Password</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="fa-solid fa-key text-muted"></i></span>
-                                    <input type="password" class="form-control" id="password" name="password" required placeholder="••••••••">
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-auth w-100 mb-3 shadow-sm"><i class="fa-solid fa-right-to-bracket me-2"></i>Authenticate Credentials</button>
-                        </form>
-
-                        <hr class="text-muted my-4">
-                        <div class="text-center">
-                            <p class="mb-0 text-muted small">New to SK Bazaar? <a th:href="@{/register}" class="fw-bold text-success text-decoration-none">Create a profile</a></p>
-                        </div>
-                    </div>
-                </div>
+    <div class="login-modal">
+        <!-- Left Sidebar -->
+        <div class="login-left">
+            <div>
+                <h2>Login</h2>
+                <p>Get access to your Orders, Wishlist and Recommendations</p>
             </div>
+            <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/login_img_c4a81e.png" alt="">
+        </div>
+
+        <!-- Right Form -->
+        <div class="login-right">
+            <form th:action="@{/login}" method="POST">
+                <div th:if="${param.error}" class="alert alert-danger p-2 mb-3" style="font-size: 12px;">
+                    Invalid email or password.
+                </div>
+
+                <div class="fk-input-group">
+                    <input type="email" name="email" class="fk-input" placeholder=" " required>
+                    <label class="fk-label">Enter Email</label>
+                </div>
+
+                <div class="fk-input-group">
+                    <input type="password" name="password" class="fk-input" placeholder=" " required>
+                    <label class="fk-label">Enter Password</label>
+                </div>
+
+                <div class="terms-text">
+                    By continuing, you agree to SK Bazaar's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+                </div>
+
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+
+            <a th:href="@{/register}" class="signup-link">New to SK Bazaar? Create an account</a>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

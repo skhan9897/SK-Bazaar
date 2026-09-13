@@ -3,172 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Bazaar - Premium Product Information</title>
+    <title>Buy Product Online - SK Bazaar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2b7a78;
-            --dark-color: #17252a;
-            --secondary-color: #3aafa9;
+            --fk-blue: #2874f0;
+            --fk-yellow: #ff9f00;
+            --fk-orange: #fb641b;
+            --bg-light: #f1f3f6;
         }
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', sans-serif;
-        }
-        .navbar {
-            background-color: var(--dark-color) !important;
-        }
-        .details-card {
-            background-color: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: none;
-        }
-        .product-gallery {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4ede9 100%);
-            border-radius: 12px;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 6rem;
-            color: var(--primary-color);
-        }
-        .btn-buy {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-        }
-        .btn-buy:hover {
-            background-color: var(--dark-color);
-            color: white;
-        }
+        body { background-color: #fff; font-family: Roboto, Arial, sans-serif; }
+
+        /* Flipkart Header */
+        .fk-navbar { background-color: var(--fk-blue); height: 56px; display: flex; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .fk-nav-content { display: flex; align-items: center; width: 100%; max-width: 1248px; margin: 0 auto; padding: 0 10px; }
+        .fk-logo-box { margin-right: 12px; cursor: pointer; text-decoration: none; }
+        .fk-logo-text { color: #fff; font-size: 20px; font-weight: 700; font-style: italic; line-height: 1; }
+        .fk-logo-plus { color: var(--fk-yellow); font-size: 11px; font-weight: 500; font-style: italic; }
+        .fk-search-container { flex-grow: 1; max-width: 564px; position: relative; }
+        .fk-search-input { width: 100%; height: 36px; border: none; border-radius: 2px; padding: 0 16px; font-size: 14px; box-shadow: 0 2px 4px 0 rgba(0,0,0,.23); outline: none; }
+        .fk-nav-links { display: flex; align-items: center; margin-left: 20px; gap: 40px; }
+        .fk-nav-item { color: #fff; font-weight: 600; text-decoration: none; font-size: 16px; display: flex; align-items: center; cursor: pointer; }
+
+        /* Layout */
+        .main-container { max-width: 1248px; margin: 20px auto; display: flex; gap: 20px; }
+        .left-col { width: 40%; position: sticky; top: 80px; height: fit-content; }
+        .right-col { width: 60%; }
+
+        /* Image Section */
+        .img-gallery-box { border: 1px solid #f0f0f0; padding: 10px; text-align: center; }
+        .main-img { max-width: 100%; height: 450px; object-fit: contain; }
+
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .btn-cart { background: var(--fk-yellow); color: #fff; border: none; flex: 1; padding: 18px; font-weight: 700; font-size: 16px; border-radius: 2px; }
+        .btn-buy { background: var(--fk-orange); color: #fff; border: none; flex: 1; padding: 18px; font-weight: 700; font-size: 16px; border-radius: 2px; }
+
+        /* Details Section */
+        .p-title { font-size: 18px; font-weight: 400; color: #212121; margin-bottom: 10px; }
+        .rating-badge { background-color: #388e3c; color: #fff; font-size: 14px; padding: 2px 8px; border-radius: 3px; font-weight: 600; }
+        .price-box { display: flex; align-items: center; gap: 12px; margin-top: 15px; }
+        .selling-price { font-size: 28px; font-weight: 700; }
+        .mrp { color: #878787; text-decoration: line-through; font-size: 16px; }
+        .discount { color: #388e3c; font-size: 16px; font-weight: 700; }
+
+        .offers-section { margin-top: 25px; }
+        .offer-item { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; margin-bottom: 10px; }
+        .offer-item i { color: #388e3c; margin-top: 4px; }
+
+        .spec-table { width: 100%; margin-top: 30px; border-collapse: collapse; }
+        .spec-table td { padding: 12px 0; font-size: 14px; vertical-align: top; }
+        .spec-label { color: #878787; width: 25%; }
+        .spec-value { color: #212121; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-success" th:href="@{/home-dashboard}"><i class="fa-solid fa-shop me-2"></i>SK Bazaar</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" th:href="@{/home-dashboard}"><i class="fa-solid fa-house me-1"></i> Home</a></li>
-                </ul>
-                <ul class="navbar-nav gap-2">
-                    <li class="nav-item"><a class="btn btn-sm btn-outline-light text-white border-0" th:href="@{/profile}">👤 My Account</a></li>
-                    <li class="nav-item"><a class="btn btn-sm btn-outline-danger text-white border-0" th:href="@{/wishlist}"><i class="fa-solid fa-heart"></i></a></li>
-                    <li class="nav-item"><a class="btn btn-sm btn-outline-info text-white border-0" th:href="@{/cart}"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                </ul>
+    <!-- Header -->
+    <header class="fk-navbar">
+        <div class="fk-nav-content">
+            <a th:href="@{/home-dashboard}" class="fk-logo-box">
+                <div class="fk-logo-text">Flipkart</div>
+                <div class="fk-logo-plus">Explore <span style="color: var(--fk-yellow);">Plus</span></div>
+            </a>
+            <div class="fk-search-container">
+                <input type="text" class="fk-search-input" placeholder="Search for products, brands and more">
+            </div>
+            <div class="fk-nav-links">
+                <a th:href="@{/profile}" class="fk-nav-item">My Account</a>
+                <a th:href="@{/cart}" class="fk-nav-item"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <div class="container mt-5">
-        <div class="card details-card p-4 mb-5" th:if="${product != null}">
-            <div class="row g-5">
-                <div class="col-md-6">
-                    <div class="product-gallery shadow-sm p-2 bg-white overflow-hidden">
-                        <img th:if="${product.images != null and !#lists.isEmpty(product.images)}"
-                             th:src="${product.images[0]}"
-                             class="img-fluid"
-                             style="width: 100%; height: 100%; object-fit: contain;"
-                             alt="Main Product Image">
-                        <i th:unless="${product.images != null and !#lists.isEmpty(product.images)}"
-                           class="fa-solid fa-box-open"></i>
-                    </div>
-                    <!-- Additional Images Row -->
-                    <div class="row mt-3 g-2" th:if="${product.images != null and #lists.size(product.images) > 1}">
-                        <div class="col-3" th:each="imgUrl : ${product.images}">
-                            <img th:src="${imgUrl}" class="img-thumbnail" style="cursor:pointer; height: 80px; width: 100%; object-fit: cover;">
-                        </div>
-                    </div>
+    <div class="main-container">
+        <!-- Left Side: Image & Buttons -->
+        <div class="left-col">
+            <div class="img-gallery-box">
+                <img th:src="${product.images[0]}" class="main-img" alt="">
+            </div>
+            <div class="action-buttons">
+                <form th:action="@{/cart/add}" method="POST" style="flex: 1;">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="btn-cart"><i class="fa-solid fa-cart-plus me-2"></i>ADD TO CART</button>
+                </form>
+                <form th:action="@{/checkout}" method="GET" style="flex: 1;">
+                    <button type="submit" class="btn-buy"><i class="fa-solid fa-bolt me-2"></i>BUY NOW</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Side: Details -->
+        <div class="right-col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" style="font-size: 12px; color: #878787;">
+                    <li class="breadcrumb-item"><a href="#" style="text-decoration:none; color:inherit;">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#" style="text-decoration:none; color:inherit;" th:text="${product.category.name}">Category</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}">Product</li>
+                </ol>
+            </nav>
+
+            <h1 class="p-title" th:text="${product.brand + ' ' + product.name}">Product Title</h1>
+
+            <div class="d-flex align-items-center gap-2">
+                <span class="rating-badge" th:text="${#numbers.formatDecimal(product.rating, 1, 1)}">4.4 <i class="fa-solid fa-star"></i></span>
+                <span style="color: #878787; font-size: 14px; font-weight: 500;" th:text="${product.reviewCount + ' Ratings & Reviews'}"></span>
+            </div>
+
+            <div class="price-box">
+                <div class="selling-price" th:text="'₹' + ${product.price}">₹0</div>
+                <div class="mrp" th:text="'₹' + ${product.mrp}">₹0</div>
+                <div class="discount" th:text="${product.discount + '% off'}">0% off</div>
+            </div>
+
+            <!-- Available Offers -->
+            <div class="offers-section">
+                <h6 class="fw-bold" style="font-size: 16px;">Available offers</h6>
+                <div class="offer-item">
+                    <i class="fa-solid fa-tag"></i>
+                    <span><b>Bank Offer</b> 10% instant discount on SK Bank Credit Cards, up to ₹1000. T&C</span>
                 </div>
-                <div class="col-md-6">
-                    <span class="badge bg-success mb-2 px-3 py-2 rounded-pill" th:text="${product.category != null ? product.category.name : 'General Category'}">Category</span>
-                    <h1 class="fw-bold text-dark mb-2" th:text="${product.name}">Product Name</h1>
-                    <p class="text-muted mb-3 fs-5">Brand: <span class="fw-bold text-dark" th:text="${product.brand ?: 'SK Premium'}">Brand</span> | Identification SKU: <span th:text="${product.sku ?: 'SKB-998'}">SKU</span></p>
-
-                    <div class="d-flex align-items-center gap-3 my-4">
-                        <h2 class="text-success fw-bold display-5 m-0" th:text="'₹' + ${product.price}">₹0.00</h2>
-                        <span class="text-decoration-line-through text-muted fs-4" th:if="${product.mrp != null}" th:text="'₹' + ${product.mrp}"></span>
-                    </div>
-
-                    <hr class="text-muted">
-
-                    <h5 class="fw-bold text-secondary mb-2"><i class="fa-solid fa-align-left me-2"></i>Product Description</h5>
-                    <p class="text-dark leading-relaxed mb-4" th:text="${product.description ?: 'No dynamic product specifications documentation provided by marketplace merchant.'}">Detailed specifications info.</p>
-
-                    <!-- Dynamic Product Variants Selection Section -->
-                    <div th:if="${product.variants != null and !#lists.isEmpty(product.variants)}" class="mb-4">
-                        <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-tags me-2 text-secondary"></i>Available Sizes & Colors (Product Variants Hierarchy):</h6>
-                        <div class="row row-cols-1 g-2">
-                            <div class="col" th:each="variant : ${product.variants}">
-                                <div class="p-3 border rounded bg-light d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="fw-bold text-dark" th:text="'Color: ' + ${variant.color} + ' | Size Variant: ' + ${variant.size}"></span>
-                                        <small class="text-muted d-block" th:text="'Live Stock: ' + ${variant.stock}"></small>
-                                    </div>
-                                    <span class="fw-bold text-success fs-5" th:text="'₹' + ${variant.price}"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row bg-light rounded p-3 mb-4 g-2">
-                        <div class="col-6">
-                            <strong>Color Palette:</strong> <span class="text-muted" th:text="${product.color ?: 'Universal'}"></span>
-                        </div>
-                        <div class="col-6">
-                            <strong>Size / Dimension:</strong> <span class="text-muted" th:text="${product.size ?: 'Standard'}"></span>
-                        </div>
-                        <div class="col-6">
-                            <strong>Material:</strong> <span class="text-muted" th:text="${product.material != null ? product.material : 'Premium Quality Material'}"></span>
-                        </div>
-                        <div class="col-6">
-                            <strong>Country of Origin:</strong> <span class="text-muted" th:text="${product.countryOfOrigin != null ? product.countryOfOrigin : 'India'}"></span>
-                        </div>
-                        <div class="col-6">
-                            <strong>Manufacturer:</strong> <span class="text-muted" th:text="${product.manufacturer != null ? product.manufacturer : 'SK Industries'}"></span>
-                        </div>
-                        <div class="col-6">
-                            <strong>Estimated Delivery:</strong> <span class="text-muted text-success fw-bold" th:text="${product.estimatedDelivery != null ? product.estimatedDelivery : 'Fast 2-4 Days Delivery'}"></span>
-                        </div>
-                        <div class="col-6">
-                            <strong>Warehouse Stock Status:</strong>
-                            <span class="badge bg-success" th:if="${product.stock != null and product.stock > 0}" th:text="${product.stock} + ' items live in ' + (${product.warehouse != null} ? ${product.warehouse} : 'Main WH')"></span>
-                            <span class="badge bg-danger" th:if="${product.stock == null or product.stock <= 0}">Out of Stock</span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex gap-3">
-                        <form th:action="@{/cart/add}" method="POST" class="flex-grow-1">
-                            <input type="hidden" name="productId" th:value="${product.id}" />
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fa-solid fa-layer-group text-muted"></i></span>
-                                <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" required style="max-width: 90px;" aria-label="Quantity">
-                                <button type="submit" class="btn btn-warning px-4 fw-bold text-dark" th:disabled="${product.stock != null and product.stock <= 0}"><i class="fa-solid fa-cart-plus me-2"></i>Add to Cart</button>
-                            </div>
-                        </form>
-
-                        <form th:action="@{/checkout}" method="GET" class="m-0 flex-grow-1">
-                            <button type="submit" class="btn btn-danger btn-buy w-100 fw-bold py-2"><i class="fa-solid fa-bolt me-2"></i>BUY NOW</button>
-                        </form>
-
-                        <form th:action="@{/wishlist/add}" method="POST" class="m-0">
-                            <input type="hidden" name="productId" th:value="${product.id}" />
-                            <button type="submit" class="btn btn-outline-danger px-4 py-2"><i class="fa-solid fa-heart me-2"></i>Wishlist</button>
-                        </form>
-                    </div>
-
-                    <div class="mt-4 card bg-light border-0">
-                        <div class="card-body py-3 px-4">
-                            <div class="d-flex align-items-center mb-2 small text-dark"><i class="fa-solid fa-truck text-success me-2"></i><strong>Return Protection:</strong> <span class="ms-1 text-muted" th:text="${product.returnPolicy ?: '7 Days Marketplace Return Window'}"></span></div>
-                            <div class="d-flex align-items-center small text-dark"><i class="fa-solid fa-shield-halved text-primary me-2"></i><strong>Warranty Index:</strong> <span class="ms-1 text-muted" th:text="${product.warranty ?: '1 Year Merchant Warranty Coverage'}"></span></div>
-                        </div>
-                    </div>
-
+                <div class="offer-item">
+                    <i class="fa-solid fa-tag"></i>
+                    <span><b>Partner Offer</b> Sign up for SK Pay Later and get ₹500 Gift Card. T&C</span>
                 </div>
+            </div>
+
+            <!-- Specifications -->
+            <div style="margin-top: 40px;">
+                <h4 class="fw-bold" style="font-size: 24px; border-bottom: 1px solid #f0f0f0; padding-bottom: 15px;">Specifications</h4>
+                <table class="spec-table">
+                    <tr>
+                        <td class="spec-label">Brand</td>
+                        <td class="spec-value" th:text="${product.brand}">Brand</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-label">Category</td>
+                        <td class="spec-value" th:text="${product.category.name}">Category</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-label">Material</td>
+                        <td class="spec-value" th:text="${product.material}">Material</td>
+                    </tr>
+                    <tr>
+                        <td class="spec-label">Manufacturer</td>
+                        <td class="spec-value" th:text="${product.manufacturer}">Manufacturer</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h6 class="fw-bold">Product Description</h6>
+                <p style="font-size: 14px; color: #212121; line-height: 1.5;" th:text="${product.description}"></p>
             </div>
         </div>
     </div>

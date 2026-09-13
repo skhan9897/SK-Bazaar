@@ -3,432 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SK Bazaar - Amazon/Flipkart Mega Marketplace</title>
+    <title>SK Bazaar | India's Mega Marketplace</title>
+    <!-- Flipkart uses React/Next.js for performance, but we will use optimized Vanilla CSS/JS
+         and standard Google Fonts to match their exact typography (Roboto). -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2b7a78;
-            --secondary-color: #3aafa9;
-            --dark-color: #17252a;
-            --light-color: #feffff;
-            --accent-color: #def2f1;
+            --fk-blue: #2874f0;
+            --fk-yellow: #ff9f00;
+            --fk-orange: #fb641b;
+            --bg-light: #f1f3f6;
+            --text-dark: #212121;
+            --text-grey: #878787;
         }
         body {
-            background-color: #f7f9fa;
-            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-light);
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0; padding: 0;
+            color: var(--text-dark);
         }
-        .navbar {
-            background-color: var(--dark-color) !important;
+
+        /* --- FLIPKART FRONTEND MODULE: GLOBAL HEADER --- */
+        .header {
+            background-color: var(--fk-blue);
+            height: 56px;
+            color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
         }
-        .mega-hero {
-            background: linear-gradient(135deg, #2874f0 0%, #00d2ff 100%);
-            color: white;
-            padding: 40px 0;
-            border-radius: 4px;
-            margin-bottom: 20px;
+        .header-content {
+            width: 100%;
+            max-width: 1248px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
         }
-        .category-item {
-            text-align: center;
-            padding: 10px;
-            transition: all 0.2s;
-            cursor: pointer;
+        .brand-box {
+            margin-right: 12px;
             text-decoration: none;
-            color: var(--dark-color);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
         }
-        .category-item i {
-            font-size: 2.5rem;
-            display: block;
-            margin-bottom: 8px;
-            color: #2874f0;
+        .brand-text {
+            font-size: 20px;
+            font-weight: 700;
+            font-style: italic;
+            color: #fff;
         }
-        .category-item span {
+        .brand-plus {
+            font-size: 11px;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--fk-yellow);
+        }
+        .search-module {
+            flex: 1;
+            max-width: 564px;
+            position: relative;
+            margin: 0 20px;
+        }
+        .search-input {
+            width: 100%;
+            height: 36px;
+            border: none;
+            border-radius: 2px;
+            padding: 0 16px;
+            font-size: 14px;
+            outline: none;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,.23);
+        }
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--fk-blue);
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .login-btn {
+            background-color: #fff;
+            color: var(--fk-blue);
+            padding: 4px 40px;
+            font-weight: 700;
+            border-radius: 2px;
+            text-decoration: none;
+            font-size: 16px;
+            border: 1px solid #dbdbdb;
+        }
+        .nav-item {
+            color: #fff;
             font-weight: 600;
-            font-size: 0.9rem;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
         }
-        .category-item:hover {
-            color: #2874f0;
-            transform: scale(1.05);
+        .nav-item i { margin-right: 8px; }
+
+        /* --- FLIPKART FRONTEND MODULE: CATEGORY BAR --- */
+        .category-bar {
+            background-color: #fff;
+            box-shadow: 0 1px 1px 0 rgba(0,0,0,.16);
+            margin-bottom: 10px;
+            overflow-x: auto;
         }
-        .section-header {
+        .category-container {
+            max-width: 1248px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 10px;
+        }
+        .cat-card {
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            min-width: 80px;
+            transition: 0.1s;
+        }
+        .cat-card img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 8px;
+        }
+        .cat-card span {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .cat-card:hover span { color: var(--fk-blue); }
+
+        /* --- FLIPKART FRONTEND MODULE: MULTI-WIDGET PRODUCT GRID --- */
+        .widget-section {
+            max-width: 1248px;
+            margin: 10px auto;
+            background-color: #fff;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
+            padding: 15px;
+        }
+        .widget-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
             margin-bottom: 20px;
         }
-        .section-header h4 {
-            margin: 0;
-            font-weight: 700;
+        .widget-title {
+            font-size: 22px;
+            font-weight: 600;
         }
-        .view-all {
-            color: #2874f0;
+        .btn-view-all {
+            background-color: var(--fk-blue);
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 2px;
             text-decoration: none;
-            font-weight: 600;
         }
-        .p-card {
-            border: 1px solid #f0f0f0;
-            border-radius: 4px;
+
+        .product-tile {
+            text-decoration: none;
+            color: var(--text-dark);
+            text-align: center;
             padding: 15px;
-            position: relative;
-            background: white;
-            transition: box-shadow 0.3s;
-        }
-        .p-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .wishlist-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #ff4343;
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-        }
-        .img-container {
-            height: 180px;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            height: 100%;
+            transition: transform 0.2s;
+        }
+        .product-tile:hover { transform: scale(1.03); }
+        .tile-img-box {
+            height: 150px;
             margin-bottom: 15px;
-        }
-        .img-container i {
-            font-size: 4rem;
-            color: #eee;
-        }
-        .rating-badge {
-            background-color: #388e3c;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        .price-row {
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
-            margin-top: 8px;
         }
-        .selling-price {
-            font-size: 1.1rem;
-            font-weight: 700;
+        .tile-img-box img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
         }
-        .mrp {
-            text-decoration: line-through;
-            color: #878787;
-            font-size: 0.9rem;
+        .tile-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            height: 18px;
+            overflow: hidden;
         }
-        .discount-pct {
+        .tile-offer {
             color: #388e3c;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 14px;
+            font-weight: 500;
         }
-        .delivery-text {
-            color: #26a541;
-            font-weight: 600;
-            font-size: 0.85rem;
+        .tile-brand {
+            color: var(--text-grey);
+            font-size: 12px;
             margin-top: 5px;
         }
-        .category-icon-wrapper i {
-            font-size: 2.2rem;
-            color: #2874f0;
-            transition: transform 0.3s ease;
+
+        /* --- FLIPKART FRONTEND MODULE: FOOTER --- */
+        .footer-module {
+            background-color: #172337;
+            color: #fff;
+            padding: 60px 0 20px;
+            margin-top: 50px;
+            font-size: 12px;
         }
-        .category-item:hover .category-icon-wrapper i {
-            transform: scale(1.1);
+        .footer-content {
+            max-width: 1248px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-bottom: 1px solid #454d5e;
+            padding-bottom: 40px;
         }
+        .footer-col h6 {
+            color: var(--text-grey);
+            font-size: 12px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .footer-col ul { list-style: none; padding: 0; margin: 0; }
+        .footer-col ul li { margin-bottom: 8px; }
+        .footer-col ul li a { color: #fff; text-decoration: none; }
+        .footer-col ul li a:hover { text-decoration: underline; }
+
     </style>
 </head>
 <body>
 
-    <!-- Top Modern Mega Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(90deg, #17252a 0%, #2b7a78 100%); box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 0;">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-success fs-3 d-flex align-items-center" th:href="@{/home-dashboard}">
-                <i class="fa-solid fa-bolt me-2 text-warning"></i>
-                <span style="color: #feffff; letter-spacing: 1px;">SK <span style="color: #3aafa9;">BAZAAR</span></span>
+    <!-- Header Module -->
+    <header class="header">
+        <div class="header-content">
+            <a th:href="@{/home-dashboard}" class="brand-box">
+                <span class="brand-text">SK Bazaar</span>
+                <span class="brand-plus">Explore <span style="color:#fff">Plus</span> <i class="fa-solid fa-plus" style="font-size: 8px;"></i></span>
             </a>
 
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#megaNavbar">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="megaNavbar">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center gap-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-white px-3 fw-semibold active rounded" th:href="@{/home-dashboard}">
-                            <i class="fa-solid fa-house me-1 text-info"></i> Home
-                        </a>
-                    </li>
-
-                    <li class="nav-item" sec:authorize="hasRole('CUSTOMER')">
-                        <a class="nav-link text-white px-3 fw-semibold rounded" th:href="@{/address}">
-                            <i class="fa-solid fa-map-location-dot me-1 text-info"></i> Addresses
-                        </a>
-                    </li>
-                    <li class="nav-item" sec:authorize="hasRole('CUSTOMER')">
-                        <a class="nav-link text-white px-3 fw-semibold rounded" th:href="@{/orders}">
-                            <i class="fa-solid fa-box-open me-1 text-info"></i> My Orders
-                        </a>
-                    </li>
-
-                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-                        <a class="nav-link text-warning px-2 fw-bold" th:href="@{/admin/dashboard}"><i class="fa-solid fa-user-shield me-1"></i> Admin</a>
-                    </li>
-                    <li class="nav-item" sec:authorize="hasRole('SELLER')">
-                        <a class="nav-link text-info px-2 fw-bold" th:href="@{/seller/dashboard}"><i class="fa-solid fa-store me-1"></i> Merchant Portal</a>
-                    </li>
-                    <li class="nav-item" sec:authorize="isAnonymous()">
-                        <a class="nav-link text-info px-2 fw-bold" th:href="@{/register?role=SELLER}"><i class="fa-solid fa-briefcase me-1"></i> Become a Seller</a>
-                    </li>
-                </ul>
-
-                <!-- Elastic Search Input Core Box -->
-                <form class="d-flex flex-grow-1 mx-4" th:action="@{/products/search}" method="GET">
-                    <div class="input-group shadow-sm rounded bg-white p-1" style="max-width: 500px; width: 100%;">
-                        <input class="form-control border-0 ps-3" type="search" name="q" placeholder="Search brands, products..." required style="box-shadow: none;" />
-                        <button class="btn btn-success px-4 fw-bold" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </div>
+            <div class="search-module">
+                <form th:action="@{/products/search}" method="GET">
+                    <input type="text" name="q" class="search-input" placeholder="Search for products, brands and more" required>
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
                 </form>
+            </div>
 
-                <ul class="navbar-nav gap-2 align-items-center">
-                    <li class="nav-item">
-                        <a class="btn btn-sm btn-outline-light text-white border-0 px-3 fw-semibold" th:href="@{/profile}">
-                            <i class="fa-regular fa-circle-user me-1 text-info fs-5 align-middle"></i> My Account
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-sm btn-outline-danger border-0 px-2" th:href="@{/wishlist}">
-                            <i class="fa-solid fa-heart text-danger fs-4"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-sm btn-info text-white rounded-pill px-3 fw-bold shadow-sm d-flex align-items-center" th:href="@{/cart}">
-                            <i class="fa-solid fa-cart-shopping me-2"></i> Cart
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-sm btn-light border-0 fw-bold px-3 text-dark rounded-pill shadow-sm" th:href="@{/login}"><i class="fa-solid fa-right-to-bracket me-1 text-primary"></i> Sign In</a>
-                    </li>
-                </ul>
+            <div class="nav-links">
+                <!-- Auth Logic -->
+                <a th:href="@{/login}" sec:authorize="isAnonymous()" class="login-btn">Login</a>
+
+                <div class="dropdown" sec:authorize="isAuthenticated()">
+                    <a href="#" class="nav-item dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa-regular fa-circle-user"></i> My Account
+                    </a>
+                    <ul class="dropdown-menu shadow border-0">
+                        <li><a class="dropdown-item" th:href="@{/profile}">My Profile</a></li>
+                        <li><a class="dropdown-item" th:href="@{/orders}">Orders</a></li>
+                        <li><a class="dropdown-item" th:href="@{/wishlist}">Wishlist</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form th:action="@{/logout}" method="POST" class="m-0">
+                                <button type="submit" class="dropdown-item text-primary fw-bold">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
+                <a th:href="@{/seller/dashboard}" sec:authorize="hasRole('SELLER')" class="nav-item">Seller Hub</a>
+                <a th:href="@{/register?role=SELLER}" sec:authorize="isAnonymous()" class="nav-item">Become a Seller</a>
+
+                <a th:href="@{/cart}" class="nav-item">
+                    <i class="fa-solid fa-cart-shopping"></i> Cart
+                </a>
             </div>
         </div>
-    </nav>
+    </header>
 
-    <div class="container mt-4">
-
-        <!-- 1. Top Banner / Mega Sale -->
-        <div class="mega-hero text-center">
-            <h1 class="display-3 fw-bold mb-0">MEGA SHOPPING SALE</h1>
-            <p class="fs-4">🔥 Upto 70% Off | [ SHOP NOW ] 🔥</p>
+    <!-- Category Module -->
+    <div class="category-bar">
+        <div class="category-container">
+            <!-- Root categories fetched dynamically from DB -->
+            <a th:each="cat : ${rootCategories}" th:href="@{'/products/search?q=' + ${cat.name}}" class="cat-card">
+                <img th:if="${cat.name == 'Fashion'}" src="https://rukminim2.flixcart.com/fk-p-flap/128/128/image/0d7583a015c77127.jpg?q=100" alt="Fashion">
+                <img th:if="${cat.name == 'Electronics'}" src="https://rukminim2.flixcart.com/flap/128/128/image/69cffc0234f6ad09.jpg?q=100" alt="Electronics">
+                <img th:if="${cat.name == 'Home & Kitchen'}" src="https://rukminim2.flixcart.com/flap/128/128/image/ab7e2c021f9b0c05.jpg?q=100" alt="Home">
+                <img th:if="${cat.name == 'Beauty & Personal Care'}" src="https://rukminim2.flixcart.com/flap/128/128/image/0ff83c0d5696fbf2.jpg?q=100" alt="Beauty">
+                <img th:if="${cat.name == 'Grocery'}" src="https://rukminim2.flixcart.com/flap/128/128/image/29327f40e9c4d26b.png?q=100" alt="Grocery">
+                <img th:if="${cat.name == 'Sports & Fitness'}" src="https://rukminim2.flixcart.com/flap/128/128/image/dff3f7adcf3a90c6.png?q=100" alt="Sports">
+                <img th:if="${cat.name == 'Toys & Baby'}" src="https://rukminim2.flixcart.com/flap/128/128/image/dff3f7adcf3a90c6.png?q=100" alt="Toys">
+                <img th:unless="${cat.name == 'Fashion' or cat.name == 'Electronics' or cat.name == 'Home & Kitchen' or cat.name == 'Beauty & Personal Care' or cat.name == 'Grocery' or cat.name == 'Sports & Fitness' or cat.name == 'Toys & Baby'}" src="https://rukminim2.flixcart.com/flap/128/128/image/71050627a56b4693.png?q=100" alt="General">
+                <span th:text="${cat.name}">Category</span>
+            </a>
         </div>
+    </div>
 
-        <!-- 2. Shop by Category (Dynamic Mega Menu Bar like Flipkart) -->
-        <div class="bg-white p-3 rounded mb-4 shadow-sm overflow-auto" th:if="${query == null}">
-            <div class="d-flex justify-content-between text-center" style="gap: 20px; min-width: max-content; padding-bottom: 5px;">
-                <div th:each="cat : ${rootCategories}" class="category-item flex-shrink-0" style="min-width: 100px;">
-                    <a th:href="@{'/products/search?q=' + ${cat.name}}" class="text-decoration-none text-dark">
-                        <div class="category-icon-wrapper mb-2">
-                             <i class="fa-solid fa-layer-group"></i>
-                        </div>
-                        <span class="d-block small fw-bold" th:text="${cat.name}">Category</span>
+    <!-- Multi-Widget Product Display Module -->
+    <main class="container-fluid" style="padding: 0 10px;">
+
+        <!-- Search Results Grid -->
+        <div class="widget-section" th:if="${query != null}">
+            <div class="widget-header">
+                <div class="widget-title" th:text="'Search results for \'' + ${query} + '\''">Results</div>
+                <a th:href="@{/home-dashboard}" class="btn-view-all">BACK TO HOME</a>
+            </div>
+            <div class="row row-cols-2 row-cols-md-5 g-3">
+                <div class="col" th:each="p : ${products}">
+                    <a th:href="@{'/products/' + ${p.id}}" class="product-tile card border-0">
+                        <div class="tile-img-box"><img th:src="${p.images[0]}" alt=""></div>
+                        <div class="tile-name text-truncate" th:text="${p.name}">Product</div>
+                        <div class="tile-offer" th:text="${p.discount} + '% Off'">Offer</div>
+                        <div class="tile-brand" th:text="${p.brand}">Brand</div>
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- Macro for generating product card as per Image -->
-        <div th:fragment="productCard(product)">
-            <div class="p-card h-100" th:if="${product != null}">
-                <form th:action="@{/wishlist/add}" method="POST" class="m-0">
-                    <input type="hidden" name="productId" th:value="${product.id}" />
-                    <button type="submit" class="wishlist-btn"><i class="fa-solid fa-heart"></i></button>
-                </form>
-                <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
-                    <div class="img-container">
-                        <img th:if="${product.images != null and !#lists.isEmpty(product.images)}"
-                             th:src="${product.images[0]}"
-                             style="max-height: 100%; max-width: 100%; object-fit: contain;">
-                        <i th:if="${product.images == null or #lists.isEmpty(product.images)}" class="fa-solid fa-image"></i>
+        <!-- Home Page Widgets -->
+        <div th:if="${query == null}">
+            <!-- Deals of the Day Widget -->
+            <div class="widget-section" th:if="${!#lists.isEmpty(flashSale)}">
+                <div class="widget-header">
+                    <div class="widget-title">Deals of the Day</div>
+                    <a href="#" class="btn-view-all">VIEW ALL</a>
+                </div>
+                <div class="row row-cols-2 row-cols-md-6 g-3">
+                    <div class="col" th:each="p : ${flashSale}">
+                        <a th:href="@{'/products/' + ${p.id}}" class="product-tile card border-0">
+                            <div class="tile-img-box"><img th:src="${p.images[0]}" alt=""></div>
+                            <div class="tile-name text-truncate" th:text="${p.name}">Product</div>
+                            <div class="tile-offer" th:text="'Min. ' + ${p.discount} + '% Off'">Offer</div>
+                            <div class="tile-brand" th:text="${p.brand}">Brand</div>
+                        </a>
                     </div>
-                    <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product Name</h6>
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <span class="rating-badge" th:text="${product.rating != null ? product.rating : '4.4'} + ' ★'">4.4 ★</span>
-                        <small class="text-muted" th:text="'(' + ${product.reviewCount != null ? product.reviewCount : '100'} + ')'">(1,520)</small>
+                </div>
+            </div>
+
+            <!-- Category Specific Widget (Electronics) -->
+            <div class="widget-section" th:if="${!#lists.isEmpty(electronicsDeals)}">
+                <div class="widget-header">
+                    <div class="widget-title">Best of Electronics</div>
+                    <a href="#" class="btn-view-all">VIEW ALL</a>
+                </div>
+                <div class="row row-cols-2 row-cols-md-6 g-3">
+                    <div class="col" th:each="p : ${electronicsDeals}">
+                        <a th:href="@{'/products/' + ${p.id}}" class="product-tile card border-0">
+                            <div class="tile-img-box"><img th:src="${p.images[0]}" alt=""></div>
+                            <div class="tile-name text-truncate" th:text="${p.name}">Product</div>
+                            <div class="tile-offer" th:text="'From ₹' + ${p.price}">Offer</div>
+                            <div class="tile-brand" th:text="${p.brand}">Brand</div>
+                        </a>
                     </div>
-                    <div class="price-row">
-                        <span class="selling-price" th:text="${product.price != null ? '₹' + product.price : '₹0'}">₹0</span>
-                        <span class="mrp" th:if="${product.mrp != null}" th:text="'₹' + ${product.mrp}">₹0</span>
-                        <span class="discount-pct" th:if="${product.discount != null}" th:text="${product.discount} + '% OFF'">0% OFF</span>
-                    </div>
-                    <div class="delivery-text" th:if="${product.isFreeDelivery == true}">Free Delivery</div>
-                </a>
-                <form th:action="@{/cart/add}" method="POST" class="mt-3 m-0">
-                    <input type="hidden" name="productId" th:value="${product.id}" />
-                    <input type="hidden" name="quantity" value="1" />
-                    <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold">Add to Cart</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Search / Category Results Section -->
-        <div class="mb-5" th:if="${query != null}">
-            <div class="section-header">
-                <h4 th:text="'Showing results for: ' + ${query}">Search Results</h4>
-                <a th:href="@{/home-dashboard}" class="view-all">← Back to Dashboard</a>
-            </div>
-
-            <div class="row row-cols-1 row-cols-md-4 g-3" th:if="${!#lists.isEmpty(products)}">
-                <div class="col" th:each="product : ${products}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
-            </div>
-
-            <div class="text-center py-5" th:if="${#lists.isEmpty(products)}">
-                <i class="fa-solid fa-box-open fa-5x text-muted mb-3"></i>
-                <h4 class="text-muted">No products found in this category yet.</h4>
-                <p class="text-muted">Try searching for something else or check other categories.</p>
-                <a th:href="@{/home-dashboard}" class="btn btn-primary mt-3">Go back Home</a>
-            </div>
-        </div>
-
-        <!-- 3. Flash Sale 🔥 -->
-        <div class="mb-5" th:if="${query == null and flashSale != null and !#lists.isEmpty(flashSale)}">
-            <div class="section-header">
-                <h4>🔥 Flash Sale</h4>
-                <a th:href="@{/products/search?q=sale}" class="view-all">View All →</a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${flashSale}">
-                    <div th:replace="::productCard(${product})"></div>
                 </div>
             </div>
         </div>
 
-        <!-- 5. Recommended For You ⭐ -->
-        <div class="mb-5" th:if="${query == null and recommendedProducts != null and !#lists.isEmpty(recommendedProducts)}">
-            <div class="section-header">
-                <h4>⭐ Recommended For You</h4>
-                <a th:href="@{/}" class="view-all">View All →</a>
+    </main>
+
+    <!-- Footer Module -->
+    <footer class="footer-module">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h6>ABOUT</h6>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
             </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${recommendedProducts}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
+            <div class="footer-col">
+                <h6>HELP</h6>
+                <ul>
+                    <li><a href="#">Payments</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Cancellation & Returns</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h6>POLICY</h6>
+                <ul>
+                    <li><a href="#">Return Policy</a></li>
+                    <li><a href="#">Terms Of Use</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Privacy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h6>SOCIAL</h6>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
             </div>
         </div>
-
-        <!-- 4. Trending Electronics ⚡ -->
-        <div class="mb-5" th:if="${query == null and trendingProducts != null and !#lists.isEmpty(trendingProducts)}">
-            <div class="section-header">
-                <h4>⚡ Trending Electronics</h4>
-                <a th:href="@{/products/search?q=Electronics}" class="view-all">View All →</a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${trendingProducts}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
-            </div>
+        <div class="container text-center mt-4">
+            <p>© 2026 SK Bazaar. Engineered with High-Scale React-Standard CSS Modules.</p>
         </div>
-
-        <!-- 8. Fashion Deals 👕 -->
-        <div class="mb-5" th:if="${query == null and fashionDeals != null and !#lists.isEmpty(fashionDeals)}">
-            <div class="section-header">
-                <h4>👕 Fashion Deals</h4>
-                <a th:href="@{/products/search?q=Fashion}" class="view-all">View All →</a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${fashionDeals}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 9. Home & Kitchen 🏠 -->
-        <div class="mb-5" th:if="${query == null and homeKitchenDeals != null and !#lists.isEmpty(homeKitchenDeals)}">
-            <div class="section-header">
-                <h4>🏠 Home & Kitchen</h4>
-                <a th:href="@{/products/search?q=Home}" class="view-all">View All →</a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${homeKitchenDeals}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 10. Beauty & Personal Care 💄 -->
-        <div class="mb-5" th:if="${query == null and beautyDeals != null and !#lists.isEmpty(beautyDeals)}">
-            <div class="section-header">
-                <h4>💄 Beauty & Personal Care</h4>
-                <a th:href="@{/products/search?q=Beauty}" class="view-all">View All →</a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${beautyDeals}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 11. Grocery 🍏 -->
-        <div class="mb-5" th:if="${query == null and groceryDeals != null and !#lists.isEmpty(groceryDeals)}">
-            <div class="section-header">
-                <h4>🍏 Grocery Store</h4>
-                <a th:href="@{/products/search?q=Grocery}" class="view-all">View All →</a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${groceryDeals}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 12. Sports & Fitness ⚽ -->
-        <div class="mb-5" th:if="${query == null and sportsDeals != null and !#lists.isEmpty(sportsDeals)}">
-            <div class="section-header">
-                <h4>⚽ Sports & Fitness</h4>
-                <a th:href="@{/products/search?q=Sports}" class="view-all">View All →</a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${sportsDeals}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 6. Best Sellers 🏆 -->
-        <div class="mb-5" th:if="${query == null and bestSellers != null and !#lists.isEmpty(bestSellers)}">
-            <div class="section-header">
-                <h4>🏆 Best Sellers</h4>
-                <a th:href="@{/}" class="view-all">View All →</a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${bestSellers}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 13. Deals Under ₹499 💰 -->
-        <div class="mb-5" th:if="${query == null and dealsUnder499 != null and !#lists.isEmpty(dealsUnder499)}">
-            <div class="section-header">
-                <h4>💰 Deals Under ₹499</h4>
-                <a th:href="@{/}" class="view-all">View All →</a>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-3">
-                <div class="col" th:each="product : ${dealsUnder499}">
-                    <div th:replace="::productCard(${product})"></div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <footer class="bg-dark text-white text-center py-4 mt-5">
-        <p class="mb-0 small text-muted">© 2026 SK Bazaar. Engineered with highly scaled modern Monolith Dashboard Structures.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
