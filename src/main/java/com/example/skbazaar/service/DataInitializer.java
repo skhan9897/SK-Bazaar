@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -43,291 +45,122 @@ public class DataInitializer implements CommandLineRunner {
         userRepository.save(admin);
 
         User seller = User.builder()
-                .name("Global Electronics")
+                .name("SK Mega Merchant")
                 .email("seller@skbazaar.com")
                 .password(passwordEncoder.encode("seller123"))
                 .role(UserRole.SELLER)
-                .storeName("SK Mega Store")
+                .storeName("SK Official Store")
+                .walletBalance(new BigDecimal("5000.00"))
                 .build();
         userRepository.save(seller);
 
-        // 2. Create Categories Hierarchy as per Images
-        // 1. Fashion
+        // 2. Create Categories Hierarchy (Root Level)
         Category fashion = categoryRepository.save(Category.builder().name("Fashion").build());
-        Category men = categoryRepository.save(Category.builder().name("Men").parentCategory(fashion).build());
-        String[] menSub = {"T-Shirts", "Shirts", "Jeans", "Trousers", "Jackets", "Kurta & Ethnic Wear", "Innerwear", "Accessories"};
-        for (String s : menSub) categoryRepository.save(Category.builder().name(s).parentCategory(men).build());
-        
-        Category women = categoryRepository.save(Category.builder().name("Women").parentCategory(fashion).build());
-        String[] womenSub = {"Sarees", "Kurtis", "Suits", "Dresses", "Tops", "Jeans", "Leggings", "Handbags"};
-        for (String s : womenSub) categoryRepository.save(Category.builder().name(s).parentCategory(women).build());
-        
-        Category kids = categoryRepository.save(Category.builder().name("Kids").parentCategory(fashion).build());
-        String[] kidsSub = {"Boys Clothing", "Girls Clothing", "Baby Clothing", "Kids Footwear"};
-        for (String s : kidsSub) categoryRepository.save(Category.builder().name(s).parentCategory(kids).build());
-
-        // 2. Electronics
         Category electronics = categoryRepository.save(Category.builder().name("Electronics").build());
-        String[] elecSub = {"Mobiles", "Tablets", "Laptops", "Computers", "Headphones & Earphones", "Smart Watches", "Speakers", "Cameras", "Printers", "Mobile Accessories"};
-        for (String s : elecSub) categoryRepository.save(Category.builder().name(s).parentCategory(electronics).build());
-
-        // 3. Home & Kitchen
         Category homeKitchen = categoryRepository.save(Category.builder().name("Home & Kitchen").build());
-        Category kitchen = categoryRepository.save(Category.builder().name("Kitchen").parentCategory(homeKitchen).build());
-        String[] kitchSub = {"Cookware", "Dinner Sets", "Storage", "Kitchen Tools"};
-        for (String s : kitchSub) categoryRepository.save(Category.builder().name(s).parentCategory(kitchen).build());
-        String[] hkSub = {"Home Decor", "Furniture", "Bedsheets", "Curtains", "Lighting", "Cleaning Supplies"};
-        for (String s : hkSub) categoryRepository.save(Category.builder().name(s).parentCategory(homeKitchen).build());
-
-        // 4. Beauty & Personal Care
         Category beauty = categoryRepository.save(Category.builder().name("Beauty & Personal Care").build());
-        String[] beautySub = {"Makeup", "Skincare", "Haircare", "Perfumes", "Men's Grooming", "Bath & Body"};
-        for (String s : beautySub) categoryRepository.save(Category.builder().name(s).parentCategory(beauty).build());
-
-        // 5. Grocery
-        Category grocery = categoryRepository.save(Category.builder().name("Grocery").build());
-        String[] grocSub = {"Atta & Flour", "Rice", "Dal & Pulses", "Edible Oil", "Spices", "Dry Fruits", "Snacks", "Beverages", "Tea & Coffee"};
-        for (String s : grocSub) categoryRepository.save(Category.builder().name(s).parentCategory(grocery).build());
-
-        // 6. Sports & Fitness
+        Category grocery = categoryRepository.save(Category.builder().name("Grocery & Food").build());
+        Category furniture = categoryRepository.save(Category.builder().name("Furniture & Office").build());
+        Category books = categoryRepository.save(Category.builder().name("Books & Education").build());
         Category sports = categoryRepository.save(Category.builder().name("Sports & Fitness").build());
-        String[] sportsSub = {"Gym Equipment", "Yoga", "Cricket", "Football", "Badminton", "Sports Shoes", "Fitness Accessories"};
-        for (String s : sportsSub) categoryRepository.save(Category.builder().name(s).parentCategory(sports).build());
-
-        // 7. Books & Stationery
-        Category books = categoryRepository.save(Category.builder().name("Books & Stationery").build());
-        String[] booksSub = {"Books", "School Supplies", "Office Supplies", "Notebooks", "Pens", "Art & Craft"};
-        for (String s : booksSub) categoryRepository.save(Category.builder().name(s).parentCategory(books).build());
-
-        // 8. Toys & Baby
         Category toys = categoryRepository.save(Category.builder().name("Toys & Baby").build());
-        String[] toysSub = {"Toys", "Baby Care", "Diapers", "Feeding", "Baby Toys", "Baby Accessories"};
-        for (String s : toysSub) categoryRepository.save(Category.builder().name(s).parentCategory(toys).build());
-
-        // 9. Automotive
         Category automotive = categoryRepository.save(Category.builder().name("Automotive").build());
-        String[] autoSub = {"Car Accessories", "Bike Accessories", "Helmets", "Car Care", "Bike Care", "Tools"};
-        for (String s : autoSub) categoryRepository.save(Category.builder().name(s).parentCategory(automotive).build());
-
-        // 10. Health & Wellness
-        Category health = categoryRepository.save(Category.builder().name("Health & Wellness").build());
-        String[] healthSub = {"Vitamins & Supplements", "Fitness Nutrition", "Personal Care", "Wellness Products", "Healthcare Devices"};
-        for (String s : healthSub) categoryRepository.save(Category.builder().name(s).parentCategory(health).build());
-
-        // 11. Shoes & Footwear
-        Category shoes = categoryRepository.save(Category.builder().name("Shoes & Footwear").build());
-        String[] shoesSub = {"Men's Shoes", "Women's Shoes", "Kids Shoes", "Sports Shoes", "Sandals", "Slippers"};
-        for (String s : shoesSub) categoryRepository.save(Category.builder().name(s).parentCategory(shoes).build());
-
-        // 12. Jewellery & Accessories
-        Category jewellery = categoryRepository.save(Category.builder().name("Jewellery & Accessories").build());
-        String[] jewSub = {"Gold Jewellery", "Silver Jewellery", "Fashion Jewellery", "Watches", "Sunglasses", "Bags & Wallets"};
-        for (String s : jewSub) categoryRepository.save(Category.builder().name(s).parentCategory(jewellery).build());
-
-        // 13. Pet Supplies
         Category pets = categoryRepository.save(Category.builder().name("Pet Supplies").build());
-        String[] petsSub = {"Dog", "Cat", "Pet Food", "Pet Toys", "Pet Grooming"};
-        for (String s : petsSub) categoryRepository.save(Category.builder().name(s).parentCategory(pets).build());
-
-        // 14. Tools & Hardware
         Category tools = categoryRepository.save(Category.builder().name("Tools & Hardware").build());
-        String[] toolsSub = {"Hand Tools", "Power Tools", "Electrical", "Plumbing", "Hardware", "Safety Equipment"};
-        for (String s : toolsSub) categoryRepository.save(Category.builder().name(s).parentCategory(tools).build());
+        Category gifts = categoryRepository.save(Category.builder().name("Gifts & Others").build());
 
+        // Sub-categories for mapping
+        Category men = categoryRepository.save(Category.builder().name("Men").parentCategory(fashion).build());
+        Category mobiles = categoryRepository.save(Category.builder().name("Mobiles").parentCategory(electronics).build());
+        Category kitchen = categoryRepository.save(Category.builder().name("Kitchen").parentCategory(homeKitchen).build());
 
-        // 3. Create Sample Products for different sections as per Front Dashboard requirement (APPROVED status)
-        
-        // Product 1: Samsung Earbuds (Electronics -> Earbuds)
-        Category earbuds = categoryRepository.findByNameAndParentCategory("Earbuds", electronics).orElse(electronics);
-        Product p1 = productRepository.save(Product.builder()
-                .name("Samsung Galaxy Buds2 Pro")
-                .brand("Samsung")
-                .price(new BigDecimal("1299"))
-                .mrp(new BigDecimal("2499"))
-                .discount(48.0)
-                .rating(4.4)
-                .reviewCount(1520)
-                .isFreeDelivery(true)
-                .stock(50)
-                .shortDescription("High fidelity wireless noise cancelling earbuds.")
-                .description("High fidelity wireless noise cancelling earbuds with fast pairing.")
-                .category(earbuds)
+        // 3. Create 20 Premium Products across categories
+        List<Product> sampleProducts = new ArrayList<>();
+
+        // Electronics - Mobiles
+        sampleProducts.add(createProduct("iPhone 15 Pro", "Apple", mobiles, seller, "119900", "134900", "Titanium body, A17 Pro chip.", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=500"));
+        sampleProducts.add(createProduct("Samsung S24 Ultra", "Samsung", mobiles, seller, "124999", "139999", "Galaxy AI, 200MP Camera.", "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?q=80&w=500"));
+
+        // Fashion - Men
+        Category tshirts = categoryRepository.save(Category.builder().name("T-Shirts").parentCategory(men).build());
+        sampleProducts.add(createProduct("Premium Polo T-Shirt", "U.S. Polo Assn.", tshirts, seller, "1299", "2499", "100% Pure Pique Cotton.", "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=500"));
+        sampleProducts.add(createProduct("Slim Fit Denim Jeans", "Levi's", men, seller, "2999", "4599", "Classic blue wash stretchable denim.", "https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=500"));
+
+        // Home & Kitchen
+        Category cookware = categoryRepository.save(Category.builder().name("Cookware").parentCategory(kitchen).build());
+        sampleProducts.add(createProduct("7-Piece Non-Stick Set", "Prestige", cookware, seller, "3499", "5999", "Hard anodized induction base.", "https://images.unsplash.com/photo-1584990344321-27682ad0f144?q=80&w=500"));
+        sampleProducts.add(createProduct("Modern Coffee Table", "Wakefit", homeKitchen, seller, "4999", "8999", "Sheesham wood finish table.", "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?q=80&w=500"));
+
+        // Beauty
+        Category skincare = categoryRepository.save(Category.builder().name("Skincare").parentCategory(beauty).build());
+        sampleProducts.add(createProduct("Vitamin C Face Serum", "Mamaearth", skincare, seller, "599", "899", "Brightens skin & reduces spots.", "https://images.unsplash.com/photo-1620916566398-39f1143af7be?q=80&w=500"));
+        sampleProducts.add(createProduct("Matte Red Lipstick", "Lakme", beauty, seller, "450", "750", "Long-lasting 12hr stay.", "https://images.unsplash.com/photo-1586495777744-4413f21062fa?q=80&w=500"));
+
+        // Grocery
+        sampleProducts.add(createProduct("Organic Basmati Rice 5kg", "India Gate", grocery, seller, "749", "999", "Aged long grain aromatic rice.", "https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=500"));
+        sampleProducts.add(createProduct("Cold Pressed Mustard Oil", "Fortune", grocery, seller, "199", "250", "100% pure Kachi Ghani oil.", "https://images.unsplash.com/photo-1474979266404-7eaacccbc7c5?q=80&w=500"));
+
+        // Furniture
+        sampleProducts.add(createProduct("Ergonomic Office Chair", "Green Soul", furniture, seller, "8999", "14999", "High back mesh with lumbar support.", "https://images.unsplash.com/photo-1505797149-43b0069ec26b?q=80&w=500"));
+
+        // Books
+        sampleProducts.add(createProduct("Atomic Habits", "James Clear", books, seller, "499", "799", "Self-help bestseller on habits.", "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=500"));
+
+        // Sports
+        sampleProducts.add(createProduct("Cricket Bat (Kashmir Willow)", "MRF", sports, seller, "2499", "3999", "Professional grade power willow.", "https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=500"));
+        sampleProducts.add(createProduct("Yoga Mat (6mm)", "Boldfit", sports, seller, "799", "1499", "Anti-skid double layered mat.", "https://images.unsplash.com/photo-1592432678016-e910b452f9a2?q=80&w=500"));
+
+        // Toys
+        sampleProducts.add(createProduct("Remote Control Monster Truck", "Hot Wheels", toys, seller, "1599", "2999", "4WD off-road climbing car.", "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?q=80&w=500"));
+
+        // Automotive
+        sampleProducts.add(createProduct("Digital Tyre Inflator", "GoMechanic", automotive, seller, "1899", "3499", "Fast inflation with auto cut-off.", "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=500"));
+
+        // Pets
+        sampleProducts.add(createProduct("Adult Dog Food 3kg", "Pedigree", pets, seller, "650", "850", "Chicken & Vegetables flavor.", "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=500"));
+
+        // Tools
+        sampleProducts.add(createProduct("21V Cordless Drill Machine", "Bosch", tools, seller, "4599", "7999", "Variable speed with 2 batteries.", "https://images.unsplash.com/photo-1504148455328-c376907d081c?q=80&w=500"));
+
+        // Gifts
+        sampleProducts.add(createProduct("Personalized Photo Frame", "GiftingEra", gifts, seller, "399", "699", "A4 size wooden floating frame.", "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?q=80&w=500"));
+
+        // One more Electronics item to make it 20
+        sampleProducts.add(createProduct("Wireless Noise Cancelling Headphones", "Sony", electronics, seller, "19990", "29990", "XM5 Series with industry leading ANC.", "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=500"));
+
+        productRepository.saveAll(sampleProducts);
+
+        System.out.println("SK Bazaar: 20 Premium Products across all categories seeded successfully!");
+    }
+
+    private Product createProduct(String name, String brand, Category category, User seller, String price, String mrp, String shortDesc, String imageUrl) {
+        BigDecimal p = new BigDecimal(price);
+        BigDecimal m = new BigDecimal(mrp);
+        double disc = ((m.doubleValue() - p.doubleValue()) / m.doubleValue()) * 100;
+
+        return Product.builder()
+                .name(name)
+                .brand(brand)
+                .category(category)
                 .seller(seller)
+                .price(p)
+                .mrp(m)
+                .discount(Math.round(disc * 100.0) / 100.0)
+                .rating(4.0 + (Math.random() * 1.0))
+                .reviewCount(50 + (int)(Math.random() * 5000))
+                .isFreeDelivery(Math.random() > 0.5)
+                .stock(10 + (int)(Math.random() * 200))
+                .shortDescription(shortDesc)
+                .description("Professional grade " + name + " from " + brand + ". High quality product with manufacturer warranty.")
                 .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .offerPrice(new BigDecimal("1199"))
-                .lowStockAlert(5)
-                .warehouse("Mumbai Central WH")
-                .material("Premium Polycarbonate")
+                .images(Arrays.asList(imageUrl))
+                .estimatedDelivery("3-5 Business Days")
                 .countryOfOrigin("India")
-                .manufacturer("Samsung Electronics India Pvt Ltd")
-                .deliveryAvailable(true)
-                .deliveryCharge(BigDecimal.ZERO)
-                .estimatedDelivery("2-3 Days")
+                .manufacturer(brand + " Industries")
+                .material("Premium Quality")
                 .returnAvailable(true)
-                .build());
-
-        // Product 2: Nike Cotton T-Shirt (Fashion -> Men -> T-Shirts)
-        Category tshirts = categoryRepository.findByNameAndParentCategory("T-Shirts", men).orElse(men);
-        Product p2 = productRepository.save(Product.builder()
-                .name("Nike Cotton T-Shirt")
-                .brand("Nike")
-                .price(new BigDecimal("799"))
-                .mrp(new BigDecimal("1499"))
-                .discount(46.0)
-                .rating(4.5)
-                .reviewCount(840)
-                .isFreeDelivery(true)
-                .stock(100)
-                .shortDescription("100% pure organic breathable cotton material.")
-                .description("100% pure organic breathable cotton material suitable for summer wear.")
-                .category(tshirts)
-                .seller(seller)
-                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .offerPrice(new BigDecimal("749"))
-                .lowStockAlert(10)
-                .warehouse("Delhi NCR WH")
-                .material("Organic Cotton")
-                .countryOfOrigin("India")
-                .manufacturer("Nike India Retail Pvt Ltd")
                 .deliveryAvailable(true)
-                .deliveryCharge(BigDecimal.ZERO)
-                .estimatedDelivery("3-5 Days")
-                .returnAvailable(true)
-                .build());
-
-        // Product 3: Non-Stick Cookware (Home & Kitchen -> Kitchen -> Cookware)
-        Category cookware = categoryRepository.findByNameAndParentCategory("Cookware", kitchen).orElse(kitchen);
-        productRepository.save(Product.builder()
-                .name("Non-Stick Cookware Set")
-                .brand("Prestige")
-                .price(new BigDecimal("2499"))
-                .mrp(new BigDecimal("3999"))
-                .discount(37.0)
-                .rating(4.3)
-                .reviewCount(530)
-                .isFreeDelivery(true)
-                .stock(60)
-                .category(cookware)
-                .seller(seller)
-                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .build());
-
-        // Product 4: Basmati Rice (Grocery -> Rice & Grains)
-        Category rice = categoryRepository.findByNameAndParentCategory("Rice & Grains", grocery).orElse(grocery);
-        productRepository.save(Product.builder()
-                .name("Organic Basmati Rice 5kg")
-                .brand("India Gate")
-                .price(new BigDecimal("499"))
-                .mrp(new BigDecimal("749"))
-                .discount(33.0)
-                .rating(4.6)
-                .category(rice)
-                .seller(seller)
-                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .build());
-
-        // Product 5: Laptop (Electronics -> Laptops)
-        Category laptops = categoryRepository.findByNameAndParentCategory("Laptops", electronics).orElse(electronics);
-        productRepository.save(Product.builder()
-                .name("MacBook Air M2")
-                .brand("Apple")
-                .price(new BigDecimal("95000"))
-                .mrp(new BigDecimal("115000"))
-                .discount(17.0)
-                .rating(4.9)
-                .category(laptops)
-                .seller(seller)
-                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .build());
-
-        // Product 3: Cookware Set (Home & Kitchen)
-        productRepository.save(Product.builder()
-                .name("Non-Stick Cookware Set")
-                .brand("Prestige")
-                .price(new BigDecimal("2499"))
-                .mrp(new BigDecimal("3999"))
-                .discount(37.0)
-                .rating(4.3)
-                .reviewCount(530)
-                .isFreeDelivery(true)
-                .stock(60)
-                .category(homeKitchen)
-                .seller(seller)
-                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .build());
-
-        // Product 4: Deals under 499 (Mug)
-        productRepository.save(Product.builder()
-                .name("Handmade Coffee Mug")
-                .brand("HomeDeco")
-                .price(new BigDecimal("299"))
-                .mrp(new BigDecimal("599"))
-                .discount(50.0)
-                .rating(4.2)
-                .reviewCount(110)
-                .isFreeDelivery(false)
-                .stock(500)
-                .category(homeKitchen)
-                .seller(seller)
-                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .build());
-
-        // Product 5: Charcoal Face Wash (Beauty)
-        productRepository.save(Product.builder()
-                .name("Charcoal Face Wash")
-                .brand("Garnier")
-                .price(new BigDecimal("199"))
-                .mrp(new BigDecimal("299"))
-                .discount(33.0)
-                .rating(4.1)
-                .reviewCount(1200)
-                .isFreeDelivery(true)
-                .stock(300)
-                .category(beauty)
-                .seller(seller)
-                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .build());
-
-        // Product 6: Organic Basmati Rice (Grocery)
-        productRepository.save(Product.builder()
-                .name("Organic Basmati Rice 5kg")
-                .brand("India Gate")
-                .price(new BigDecimal("499"))
-                .mrp(new BigDecimal("749"))
-                .discount(33.0)
-                .rating(4.6)
-                .reviewCount(2400)
-                .isFreeDelivery(true)
-                .stock(150)
-                .category(grocery)
-                .seller(seller)
-                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .build());
-
-        // Product 7: Premium Yoga Mat (Sports & Fitness)
-        productRepository.save(Product.builder()
-                .name("Premium Yoga Mat")
-                .brand("Boldfit")
-                .price(new BigDecimal("399"))
-                .mrp(new BigDecimal("999"))
-                .discount(60.0)
-                .rating(4.4)
-                .reviewCount(950)
-                .isFreeDelivery(false)
-                .stock(400)
-                .category(sports)
-                .seller(seller)
-                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .build());
-
-        // 4. Add Product Variants as per Example
-        variantRepository.save(ProductVariant.builder()
-                .product(p2).color("Black").size("M").stock(30).price(new BigDecimal("799")).build());
-        variantRepository.save(ProductVariant.builder()
-                .product(p2).color("Black").size("L").stock(40).price(new BigDecimal("799")).build());
-        variantRepository.save(ProductVariant.builder()
-                .product(p2).color("Blue").size("M").stock(30).price(new BigDecimal("799")).build());
-
-        System.out.println("SK Bazaar highly structured Category Hierarchy and Products seeded successfully!");
+                .warehouse("Central SK Warehouse")
+                .build();
     }
 }
