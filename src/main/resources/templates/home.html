@@ -132,6 +132,14 @@
             font-size: 0.85rem;
             margin-top: 5px;
         }
+        .category-icon-wrapper i {
+            font-size: 2.2rem;
+            color: #2874f0;
+            transition: transform 0.3s ease;
+        }
+        .category-item:hover .category-icon-wrapper i {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -195,7 +203,7 @@
                 <ul class="navbar-nav gap-2 align-items-center">
                     <li class="nav-item">
                         <a class="btn btn-sm btn-outline-light text-white border-0 px-3 fw-semibold" th:href="@{/profile}">
-                            👤 Profile Dashboard
+                            👤 My Account
                         </a>
                     </li>
                     <li class="nav-item">
@@ -224,60 +232,55 @@
             <p class="fs-4">🔥 Upto 70% Off | [ SHOP NOW ] 🔥</p>
         </div>
 
-        <!-- 2. Shop by Category -->
-        <div class="bg-white p-3 rounded mb-4">
-            <div class="row row-cols-3 row-cols-md-7 g-2 text-center">
-                <a th:href="@{/products/search?q=Fashion}" class="col category-item">
-                    <i class="fa-solid fa-shirt"></i>
-                    <span>Fashion</span>
-                </a>
-                <a th:href="@{/products/search?q=Electronics}" class="col category-item">
-                    <i class="fa-solid fa-mobile-screen"></i>
-                    <span>Mobiles</span>
-                </a>
-                <a th:href="@{/products/search?q=Home}" class="col category-item">
-                    <i class="fa-solid fa-house-laptop"></i>
-                    <span>Home</span>
-                </a>
-                <a th:href="@{/products/search?q=Beauty}" class="col category-item">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>Beauty</span>
-                </a>
-                <a th:href="@{/products/search?q=Grocery}" class="col category-item">
-                    <i class="fa-solid fa-basket-shopping"></i>
-                    <span>Grocery</span>
-                </a>
-                <a th:href="@{/products/search?q=Sports}" class="col category-item">
-                    <i class="fa-solid fa-volleyball"></i>
-                    <span>Sports</span>
-                </a>
-                <a th:href="@{/products/search?q=Toys}" class="col category-item">
-                    <i class="fa-solid fa-puzzle-piece"></i>
-                    <span>Toys</span>
-                </a>
+        <!-- 2. Shop by Category (Dynamic Mega Menu Bar like Flipkart) -->
+        <div class="bg-white p-3 rounded mb-4 shadow-sm overflow-auto" th:if="${query == null}">
+            <div class="d-flex justify-content-between text-center" style="gap: 20px; min-width: max-content; padding-bottom: 5px;">
+                <div th:each="cat : ${rootCategories}" class="category-item flex-shrink-0" style="min-width: 100px;">
+                    <a th:href="@{'/products/search?q=' + ${cat.name}}" class="text-decoration-none text-dark">
+                        <!-- Icon Grid Logic -->
+                        <div class="category-icon-wrapper mb-2">
+                             <i th:class="${cat.name == 'Fashion'} ? 'fa-solid fa-shirt' :
+                                         (${cat.name == 'Electronics'} ? 'fa-solid fa-mobile-screen' :
+                                         (${cat.name == 'Home & Kitchen'} ? 'fa-solid fa-house-laptop' :
+                                         (${cat.name == 'Beauty & Personal Care'} ? 'fa-solid fa-wand-magic-sparkles' :
+                                         (${cat.name == 'Grocery & Food'} ? 'fa-solid fa-basket-shopping' :
+                                         (${cat.name == 'Furniture & Office'} ? 'fa-solid fa-couch' :
+                                         (${cat.name == 'Books & Education'} ? 'fa-solid fa-book' :
+                                         (${cat.name == 'Sports & Fitness'} ? 'fa-solid fa-volleyball' :
+                                         (${cat.name == 'Toys & Baby'} ? 'fa-solid fa-puzzle-piece' :
+                                         (${cat.name == 'Automotive'} ? 'fa-solid fa-car' :
+                                         (${cat.name == 'Pet Supplies'} ? 'fa-solid fa-dog' :
+                                         (${cat.name == 'Tools & Hardware'} ? 'fa-solid fa-screwdriver-wrench' :
+                                         (${cat.name == 'Gifts & Others'} ? 'fa-solid fa-gift' : 'fa-solid fa-layer-group'))))))))))))"></i>
+                        </div>
+                        <span class="d-block small fw-bold" th:text="${cat.name}">Category</span>
+                    </a>
+                </div>
             </div>
         </div>
 
         <!-- Macro for generating product card as per Image -->
         <div th:fragment="productCard(product)">
-            <div class="p-card h-100">
+            <div class="p-card h-100" th:if="${product != null}">
                 <form th:action="@{/wishlist/add}" method="POST" class="m-0">
                     <input type="hidden" name="productId" th:value="${product.id}" />
                     <button type="submit" class="wishlist-btn"><i class="fa-solid fa-heart"></i></button>
                 </form>
                 <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
                     <div class="img-container"><i class="fa-solid fa-image"></i></div>
-                    <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name}">Product Name</h6>
+                    <h6 class="fw-bold mb-1 text-truncate" th:text="${product.name != null ? product.name : 'Unknown Product'}">Product Name</h6>
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <span class="rating-badge" th:text="${product.rating != null ? product.rating : '4.4'} + ' ★'">4.4 ★</span>
-                        <small class="text-muted" th:text="'(' + ${product.reviewCount != null ? product.reviewCount : '100'} + ')'">(1,520)</small>
+                        <span class="rating-badge">
+                            <span th:text="${product.rating != null ? product.rating : '4.4'}">4.4</span> ★
+                        </span>
+                        <small class="text-muted" th:text="'(' + (${product.reviewCount != null ? product.reviewCount : '100'}) + ')'">(1,520)</small>
                     </div>
                     <div class="price-row">
-                        <span class="selling-price" th:text="'₹' + ${product.price}">₹1,299</span>
-                        <span class="mrp" th:if="${product.mrp != null}" th:text="'₹' + ${product.mrp}">₹2,499</span>
-                        <span class="discount-pct" th:if="${product.discount != null}" th:text="${product.discount} + '% OFF'">48% OFF</span>
+                        <span class="selling-price" th:text="${product.price != null ? '₹' + product.price : '₹0'}">₹0</span>
+                        <span class="mrp" th:if="${product.mrp != null}" th:text="'₹' + ${product.mrp}">₹0</span>
+                        <span class="discount-pct" th:if="${product.discount != null}" th:text="${product.discount} + '% OFF'">0% OFF</span>
                     </div>
-                    <div class="delivery-text" th:if="${product.isFreeDelivery}">Free Delivery</div>
+                    <div class="delivery-text" th:if="${product.isFreeDelivery == true}">Free Delivery</div>
                 </a>
                 <form th:action="@{/cart/add}" method="POST" class="mt-3 m-0">
                     <input type="hidden" name="productId" th:value="${product.id}" />

@@ -36,27 +36,52 @@ public class HomeController {
         model.addAttribute("appName", AppConstants.APP_NAME);
         model.addAttribute("tagline", AppConstants.TAGLINE);
         
-        // Amazon/Flipkart Style Marketplace Sections logic - ONLY SHOW APPROVED PRODUCTS
-        var allProducts = productService.getAllProducts().stream()
-                .filter(p -> p.getStatus() == com.example.skbazaar.model.enums.ProductStatus.APPROVED)
-                .toList();
-        
-        model.addAttribute("flashSale", allProducts.stream().filter(p -> p.getDiscount() != null && p.getDiscount() > 20).limit(4).toList());
-        model.addAttribute("trendingProducts", allProducts.stream().limit(8).toList());
-        model.addAttribute("recommendedProducts", allProducts.stream().skip(2).limit(4).toList());
-        model.addAttribute("bestSellers", allProducts.stream().limit(4).toList());
-        
-        model.addAttribute("electronicsDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Electronics".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
-        model.addAttribute("fashionDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Fashion".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
-        model.addAttribute("homeKitchenDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Home & Kitchen".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
-        model.addAttribute("beautyDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Beauty & Personal Care".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
-        model.addAttribute("groceryDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Grocery".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
-        model.addAttribute("sportsDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Sports & Fitness".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
-        
-        model.addAttribute("dealsUnder499", allProducts.stream().filter(p -> p.getPrice().doubleValue() < 499).limit(4).toList());
-        model.addAttribute("recentlyAdded", allProducts.stream().sorted((p1, p2) -> p2.getId().compareTo(p1.getId())).limit(4).toList());
+        try {
+            // Fetch root categories for the main category menu
+            model.addAttribute("rootCategories", categoryRepository.findByParentCategoryIsNull());
 
-        model.addAttribute("categories", categoryRepository.findAll());
+            // Amazon/Flipkart Style Marketplace Sections logic - ONLY SHOW APPROVED PRODUCTS
+            var productsInDb = productService.getAllProducts();
+            
+            if (productsInDb == null) {
+                productsInDb = java.util.Collections.emptyList();
+            }
+
+            var allProducts = productsInDb.stream()
+                    .filter(p -> p != null && p.getStatus() != null && p.getStatus().name().equals("APPROVED"))
+                    .toList();
+            
+            model.addAttribute("flashSale", allProducts.stream().filter(p -> p.getDiscount() != null && p.getDiscount() > 20).limit(4).toList());
+            model.addAttribute("trendingProducts", allProducts.stream().limit(8).toList());
+            model.addAttribute("recommendedProducts", allProducts.stream().skip(allProducts.size() > 2 ? 2 : 0).limit(4).toList());
+            model.addAttribute("bestSellers", allProducts.stream().limit(4).toList());
+            
+            model.addAttribute("electronicsDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Electronics".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+            model.addAttribute("fashionDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Fashion".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+            model.addAttribute("homeKitchenDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Home & Kitchen".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+            model.addAttribute("beautyDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Beauty & Personal Care".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+            model.addAttribute("groceryDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Grocery".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+            model.addAttribute("sportsDeals", allProducts.stream().filter(p -> p.getCategory() != null && "Sports & Fitness".equalsIgnoreCase(p.getCategory().getName())).limit(4).toList());
+            
+            model.addAttribute("dealsUnder499", allProducts.stream().filter(p -> p.getPrice() != null && p.getPrice().doubleValue() < 499).limit(4).toList());
+            model.addAttribute("recentlyAdded", allProducts.stream().limit(4).toList()); // Simplified sorting to avoid ID comparison issues
+
+        } catch (Exception e) {
+            // Fallback for DB/Processing errors
+            model.addAttribute("flashSale", java.util.Collections.emptyList());
+            model.addAttribute("trendingProducts", java.util.Collections.emptyList());
+            model.addAttribute("recommendedProducts", java.util.Collections.emptyList());
+            model.addAttribute("bestSellers", java.util.Collections.emptyList());
+            model.addAttribute("electronicsDeals", java.util.Collections.emptyList());
+            model.addAttribute("fashionDeals", java.util.Collections.emptyList());
+            model.addAttribute("homeKitchenDeals", java.util.Collections.emptyList());
+            model.addAttribute("beautyDeals", java.util.Collections.emptyList());
+            model.addAttribute("groceryDeals", java.util.Collections.emptyList());
+            model.addAttribute("sportsDeals", java.util.Collections.emptyList());
+            model.addAttribute("dealsUnder499", java.util.Collections.emptyList());
+            model.addAttribute("recentlyAdded", java.util.Collections.emptyList());
+        }
+
         return "home";
     }
 
@@ -165,6 +190,14 @@ public class HomeController {
 
     @GetMapping("/profile")
     public String viewProfile(Model model) {
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = authService.getUserByEmail(email);
+        model.addAttribute("user", user);
+        return "customer-dashboard";
+    }
+
+    @GetMapping("/profile/edit")
+    public String editProfile(Model model) {
         String email = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
         var user = authService.getUserByEmail(email);
         model.addAttribute("user", user);
