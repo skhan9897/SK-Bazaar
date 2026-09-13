@@ -21,8 +21,7 @@ public class ProductService {
     }
 
     public List<Product> searchProducts(String query) {
-        // Simple search by name for now
-        return productRepository.findByNameContainingIgnoreCase(query);
+        return productRepository.findByNameContainingIgnoreCaseOrCategory_NameContainingIgnoreCaseOrBrandContainingIgnoreCase(query, query, query);
     }
 
     public Product saveProduct(Product product) {
