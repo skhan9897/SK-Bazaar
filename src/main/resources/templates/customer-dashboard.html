@@ -152,7 +152,23 @@
 
         <div class="mt-5 pt-4 border-top">
             <h5 class="fw-bold mb-4">Recommended for you</h5>
-            <div class="alert alert-light border text-center py-5">
+            <div class="row g-4" th:if="${!#lists.isEmpty(recommendedProducts)}">
+                <div class="col-md-3" th:each="product : ${recommendedProducts}">
+                    <a th:href="@{'/products/' + ${product.id}}" class="text-decoration-none text-dark">
+                        <div class="card h-100 border shadow-sm">
+                            <div class="card-body p-2 text-center" style="height: 150px; background: #f8f9fa;">
+                                <i class="fa-solid fa-image fa-3x mt-4 text-muted"></i>
+                            </div>
+                            <div class="card-body p-3">
+                                <h6 class="fw-bold text-truncate mb-1" th:text="${product.name}">Product Name</h6>
+                                <div class="text-success fw-bold mb-2" th:text="'₹' + ${product.price}">₹0</div>
+                                <button class="btn btn-sm btn-outline-primary w-100">View Details</button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="alert alert-light border text-center py-5" th:if="${#lists.isEmpty(recommendedProducts)}">
                 <p class="text-muted">Start shopping to see personalized recommendations!</p>
                 <a th:href="@{/home-dashboard}" class="btn btn-warning px-4 fw-bold">Continue Shopping</a>
             </div>

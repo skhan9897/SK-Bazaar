@@ -193,6 +193,14 @@ public class HomeController {
         String email = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
         var user = authService.getUserByEmail(email);
         model.addAttribute("user", user);
+        
+        // Add recommended products to the dashboard
+        var allProducts = productService.getAllProducts().stream()
+                .filter(p -> p != null && p.getStatus() != null && p.getStatus().name().equals("APPROVED"))
+                .limit(4)
+                .toList();
+        model.addAttribute("recommendedProducts", allProducts);
+
         return "customer-dashboard";
     }
 
@@ -207,9 +215,16 @@ public class HomeController {
     @GetMapping("/admin/dashboard")
     public String adminDashboard(Model model) {
         model.addAllAttributes(dashboardService.getAdminDashboardStats());
+        
+        var allProducts = productService.getAllProducts();
+        
         // For product approval
-        model.addAttribute("pendingProducts", productService.getAllProducts().stream()
-                .filter(p -> p.getStatus().name().equals("PENDING")).toList());
+        model.addAttribute("pendingProducts", allProducts.stream()
+                .filter(p -> p != null && p.getStatus() != null && p.getStatus().name().equals("PENDING")).toList());
+        
+        // For inventory management
+        model.addAttribute("allProducts", allProducts);
+
         return "admin-dashboard";
     }
 

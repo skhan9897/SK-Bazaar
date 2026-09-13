@@ -133,6 +133,41 @@
             </div>
         </div>
 
+        <!-- Master Product Inventory Section -->
+        <div class="card mt-5 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h4 class="fw-bold mb-4"><i class="fa-solid fa-boxes-stacked text-warning me-2"></i>Master Product Inventory</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Seller</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="p : ${allProducts}">
+                                <td th:text="${p.name}">Product</td>
+                                <td th:text="${p.category?.name}">Cat</td>
+                                <td th:text="${p.seller?.storeName}">Seller</td>
+                                <td th:text="'₹' + ${p.price}">Price</td>
+                                <td th:text="${p.stock}">Stock</td>
+                                <td>
+                                    <span class="badge bg-success" th:if="${p.status.name() == 'APPROVED'}">LIVE</span>
+                                    <span class="badge bg-warning text-dark" th:if="${p.status.name() == 'PENDING'}">PENDING</span>
+                                    <span class="badge bg-danger" th:if="${p.status.name() == 'REJECTED'}">REJECTED</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <div class="card mt-5 border-0 shadow-sm rounded-4 p-3 bg-white">
             <div class="card-body">
                 <h4 class="fw-bold text-secondary mb-3"><i class="fa-solid fa-circle-info me-2 text-muted"></i>Operational Command Protocol</h4>
