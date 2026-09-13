@@ -27,6 +27,11 @@ public class HomeController {
     private final AuthService authService;
 
     @GetMapping("/")
+    public String splashPage() {
+        return "splash";
+    }
+
+    @GetMapping("/home-dashboard")
     public String home(Model model) {
         model.addAttribute("appName", AppConstants.APP_NAME);
         model.addAttribute("tagline", AppConstants.TAGLINE);

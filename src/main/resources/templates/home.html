@@ -136,31 +136,81 @@
 </head>
 <body>
 
-    <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <!-- Top Modern Mega Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(90deg, #17252a 0%, #2b7a78 100%); box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 0;">
         <div class="container">
-            <a class="navbar-brand fw-bold text-success" th:href="@{/}"><i class="fa-solid fa-bolt me-2"></i>SK Bazaar</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/address}">Addresses</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" th:href="@{/orders}">My Orders</a></li>
-                    <li class="nav-item"><a class="nav-link text-warning" th:href="@{/admin/dashboard}">Admin</a></li>
-                    <li class="nav-item"><a class="nav-link text-info" th:href="@{/seller/dashboard}">Seller Panel</a></li>
+            <a class="navbar-brand fw-bold text-success fs-3 d-flex align-items-center" th:href="@{/home-dashboard}">
+                <i class="fa-solid fa-bolt me-2 text-warning"></i>
+                <span style="color: #feffff; letter-spacing: 1px;">SK <span style="color: #3aafa9;">BAZAAR</span></span>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#megaNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="megaNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-white px-3 fw-semibold active rounded" th:href="@{/home-dashboard}">
+                            <i class="fa-solid fa-house me-1 text-info"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white px-3 fw-semibold rounded" th:href="@{/address}">
+                            <i class="fa-solid fa-map-location-dot me-1 text-info"></i> Addresses
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white px-3 fw-semibold rounded" th:href="@{/orders}">
+                            <i class="fa-solid fa-box-open me-1 text-info"></i> My Orders
+                        </a>
+                    </li>
+
+                    <!-- Advanced Dropdown Categories Grid Inside Navbar -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white px-3 fw-semibold" href="#" id="catDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-bars-staggered me-1 text-info"></i> Categories
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-0 p-2 mt-2">
+                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Fashion}"><i class="fa-solid fa-shirt text-warning me-2"></i> Fashion Hub</a></li>
+                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Electronics}"><i class="fa-solid fa-mobile-button text-warning me-2"></i> Electronics</a></li>
+                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Home}"><i class="fa-solid fa-couch text-warning me-2"></i> Home & Kitchen</a></li>
+                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Beauty}"><i class="fa-solid fa-sparkles text-warning me-2"></i> Beauty & Care</a></li>
+                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Grocery}"><i class="fa-solid fa-carrot text-warning me-2"></i> Grocery Store</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link text-warning px-2 fw-bold" th:href="@{/admin/dashboard}"><i class="fa-solid fa-user-shield me-1"></i> Admin</a></li>
+                    <li class="nav-item"><a class="nav-link text-info px-2 fw-bold" th:href="@{/seller/dashboard}"><i class="fa-solid fa-store me-1"></i> Seller Panel</a></li>
                 </ul>
+
+                <!-- Elastic Search Input Core Box -->
                 <form class="d-flex flex-grow-1 mx-4" th:action="@{/products/search}" method="GET">
-                    <div class="input-group">
-                        <input class="form-control" type="search" name="q" placeholder="Search brands, products..." required />
-                        <button class="btn btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <div class="input-group shadow-sm rounded bg-white p-1" style="max-width: 500px; width: 100%;">
+                        <input class="form-control border-0 ps-3" type="search" name="q" placeholder="Search brands, products..." required style="box-shadow: none;" />
+                        <button class="btn btn-success px-4 fw-bold" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </div>
                 </form>
-                <ul class="navbar-nav gap-2">
+
+                <ul class="navbar-nav gap-2 align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link btn btn-outline-light btn-sm text-white border-0" th:href="@{/profile}">👤 My Account</a>
+                        <a class="btn btn-sm btn-outline-light text-white border-0 px-3 fw-semibold" th:href="@{/profile}">
+                            👤 Profile Dashboard
+                        </a>
                     </li>
-                    <li class="nav-item"><a class="nav-link btn btn-outline-danger btn-sm text-white border-0" th:href="@{/wishlist}">❤️ Wishlist</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-outline-info btn-sm text-white border-0" th:href="@{/cart}">🛒 Cart</a></li>
-                    <li class="nav-item"><a class="btn btn-sm btn-outline-light" th:href="@{/login}">Sign In</a></li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-outline-danger border-0 px-2" th:href="@{/wishlist}">
+                            ❤️ Wishlist
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-info text-white px-3 fw-bold shadow-sm" th:href="@{/cart}">
+                            🛒 Cart
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-light border-0 fw-bold px-3 text-dark" th:href="@{/login}">Sign In</a>
+                    </li>
                 </ul>
             </div>
         </div>

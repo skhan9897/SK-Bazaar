@@ -55,7 +55,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand fw-bold text-success" th:href="@{/}"><i class="fa-solid fa-shop me-2"></i>SK Bazaar</a>
+            <a class="navbar-brand fw-bold text-success" th:href="@{/home-dashboard}"><i class="fa-solid fa-shop me-2"></i>SK Bazaar</a>
         </div>
     </nav>
 
@@ -65,9 +65,13 @@
                 <div class="card login-card">
                     <div class="login-header">
                         <h4 class="m-0 fw-bold"><i class="fa-solid fa-user-lock me-2"></i>Sign In Portal</h4>
-                        <small class="text-muted text-light opacity-75">Access your marketplace dashboard</small>
+                        <small class="text-muted text-light opacity-75">Access your marketplace account</small>
                     </div>
                     <div class="card-body p-4">
+                        <!-- Redirect/Info for Buy Now Action Requirement -->
+                        <div class="alert alert-warning d-flex align-items-center gap-2 small mb-3">
+                            <i class="fa-solid fa-circle-exclamation fs-5"></i> Please Login or Register to proceed with <strong>Buy Now / Order Checkout</strong>.
+                        </div>
 
                         <div th:if="${param.error}" class="alert alert-danger d-flex align-items-center gap-2">
                             <i class="fa-solid fa-triangle-exclamation"></i> Invalid email address or secure password.

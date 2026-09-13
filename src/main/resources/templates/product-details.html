@@ -50,10 +50,10 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-success" th:href="@{/}"><i class="fa-solid fa-shop me-2"></i>SK Bazaar</a>
+            <a class="navbar-brand fw-bold text-success" th:href="@{/home-dashboard}"><i class="fa-solid fa-shop me-2"></i>SK Bazaar</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" th:href="@{/}"><i class="fa-solid fa-house me-1"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white fw-semibold" th:href="@{/home-dashboard}"><i class="fa-solid fa-house me-1"></i> Home</a></li>
                 </ul>
                 <ul class="navbar-nav gap-2">
                     <li class="nav-item"><a class="btn btn-sm btn-outline-light text-white border-0" th:href="@{/profile}">👤 My Account</a></li>
@@ -126,8 +126,12 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa-solid fa-layer-group text-muted"></i></span>
                                 <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" required style="max-width: 90px;" aria-label="Quantity">
-                                <button type="submit" class="btn btn-buy px-4" th:disabled="${product.stock != null and product.stock <= 0}"><i class="fa-solid fa-cart-plus me-2"></i>Add to Shopping Cart</button>
+                                <button type="submit" class="btn btn-warning px-4 fw-bold text-dark" th:disabled="${product.stock != null and product.stock <= 0}"><i class="fa-solid fa-cart-plus me-2"></i>Add to Cart</button>
                             </div>
+                        </form>
+
+                        <form th:action="@{/checkout}" method="GET" class="m-0 flex-grow-1">
+                            <button type="submit" class="btn btn-danger btn-buy w-100 fw-bold py-2"><i class="fa-solid fa-bolt me-2"></i>BUY NOW</button>
                         </form>
 
                         <form th:action="@{/wishlist/add}" method="POST" class="m-0">
