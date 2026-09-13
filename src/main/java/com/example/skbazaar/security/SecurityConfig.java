@@ -32,6 +32,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
+    private final CustomAuthenticationSuccessHandler successHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,13 +43,14 @@ public class SecurityConfig {
                         .requestMatchers("/", "/home-dashboard", "/login", "/register", "/products/**", "/categories/**", "/api/auth/**", "/api/info/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/checkout/**", "/cart/**", "/profile/**", "/address/**", "/orders/**").authenticated()
                         .requestMatchers("/admin/**", "/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/seller/**").hasRole("SELLER")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/home-dashboard", true)
+                        .successHandler(successHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout

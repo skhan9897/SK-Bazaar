@@ -137,9 +137,10 @@ public class DataInitializer implements CommandLineRunner {
 
         // 3. Create Sample Products for different sections as per Front Dashboard requirement (APPROVED status)
         
-        // Product 1: Samsung Earbuds (Flash Sale)
+        // Product 1: Samsung Earbuds (Electronics -> Earbuds)
+        Category earbuds = categoryRepository.findByNameAndParentCategory("Earbuds", electronics).orElse(electronics);
         Product p1 = productRepository.save(Product.builder()
-                .name("Samsung Earbuds")
+                .name("Samsung Galaxy Buds2 Pro")
                 .brand("Samsung")
                 .price(new BigDecimal("1299"))
                 .mrp(new BigDecimal("2499"))
@@ -150,7 +151,7 @@ public class DataInitializer implements CommandLineRunner {
                 .stock(50)
                 .shortDescription("High fidelity wireless noise cancelling earbuds.")
                 .description("High fidelity wireless noise cancelling earbuds with fast pairing.")
-                .category(electronics)
+                .category(earbuds)
                 .seller(seller)
                 .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
                 .offerPrice(new BigDecimal("1199"))
@@ -165,7 +166,8 @@ public class DataInitializer implements CommandLineRunner {
                 .returnAvailable(true)
                 .build());
 
-        // Product 2: Nike Cotton T-Shirt (Fashion Deals)
+        // Product 2: Nike Cotton T-Shirt (Fashion -> Men -> T-Shirts)
+        Category tshirts = categoryRepository.findByNameAndParentCategory("T-Shirts", men).orElse(men);
         Product p2 = productRepository.save(Product.builder()
                 .name("Nike Cotton T-Shirt")
                 .brand("Nike")
@@ -178,7 +180,7 @@ public class DataInitializer implements CommandLineRunner {
                 .stock(100)
                 .shortDescription("100% pure organic breathable cotton material.")
                 .description("100% pure organic breathable cotton material suitable for summer wear.")
-                .category(fashion)
+                .category(tshirts)
                 .seller(seller)
                 .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
                 .offerPrice(new BigDecimal("749"))
@@ -191,6 +193,51 @@ public class DataInitializer implements CommandLineRunner {
                 .deliveryCharge(BigDecimal.ZERO)
                 .estimatedDelivery("3-5 Days")
                 .returnAvailable(true)
+                .build());
+
+        // Product 3: Non-Stick Cookware (Home & Kitchen -> Kitchen -> Cookware)
+        Category cookware = categoryRepository.findByNameAndParentCategory("Cookware", kitchen).orElse(kitchen);
+        productRepository.save(Product.builder()
+                .name("Non-Stick Cookware Set")
+                .brand("Prestige")
+                .price(new BigDecimal("2499"))
+                .mrp(new BigDecimal("3999"))
+                .discount(37.0)
+                .rating(4.3)
+                .reviewCount(530)
+                .isFreeDelivery(true)
+                .stock(60)
+                .category(cookware)
+                .seller(seller)
+                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
+                .build());
+
+        // Product 4: Basmati Rice (Grocery -> Rice & Grains)
+        Category rice = categoryRepository.findByNameAndParentCategory("Rice & Grains", grocery).orElse(grocery);
+        productRepository.save(Product.builder()
+                .name("Organic Basmati Rice 5kg")
+                .brand("India Gate")
+                .price(new BigDecimal("499"))
+                .mrp(new BigDecimal("749"))
+                .discount(33.0)
+                .rating(4.6)
+                .category(rice)
+                .seller(seller)
+                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
+                .build());
+
+        // Product 5: Laptop (Electronics -> Laptops)
+        Category laptops = categoryRepository.findByNameAndParentCategory("Laptops", electronics).orElse(electronics);
+        productRepository.save(Product.builder()
+                .name("MacBook Air M2")
+                .brand("Apple")
+                .price(new BigDecimal("95000"))
+                .mrp(new BigDecimal("115000"))
+                .discount(17.0)
+                .rating(4.9)
+                .category(laptops)
+                .seller(seller)
+                .status(com.example.skbazaar.model.enums.ProductStatus.APPROVED)
                 .build());
 
         // Product 3: Cookware Set (Home & Kitchen)

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -163,33 +163,27 @@
                             <i class="fa-solid fa-house me-1 text-info"></i> Home
                         </a>
                     </li>
-                    <li class="nav-item">
+
+                    <li class="nav-item" sec:authorize="hasRole('CUSTOMER')">
                         <a class="nav-link text-white px-3 fw-semibold rounded" th:href="@{/address}">
                             <i class="fa-solid fa-map-location-dot me-1 text-info"></i> Addresses
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasRole('CUSTOMER')">
                         <a class="nav-link text-white px-3 fw-semibold rounded" th:href="@{/orders}">
                             <i class="fa-solid fa-box-open me-1 text-info"></i> My Orders
                         </a>
                     </li>
 
-                    <!-- Advanced Dropdown Categories Grid Inside Navbar -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white px-3 fw-semibold" href="#" id="catDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fa-solid fa-bars-staggered me-1 text-info"></i> Categories
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-0 p-2 mt-2">
-                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Fashion}"><i class="fa-solid fa-shirt text-warning me-2"></i> Fashion Hub</a></li>
-                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Electronics}"><i class="fa-solid fa-mobile-button text-warning me-2"></i> Electronics</a></li>
-                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Home}"><i class="fa-solid fa-couch text-warning me-2"></i> Home & Kitchen</a></li>
-                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Beauty}"><i class="fa-solid fa-sparkles text-warning me-2"></i> Beauty & Care</a></li>
-                            <li><a class="dropdown-item py-2" th:href="@{/products/search?q=Grocery}"><i class="fa-solid fa-carrot text-warning me-2"></i> Grocery Store</a></li>
-                        </ul>
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link text-warning px-2 fw-bold" th:href="@{/admin/dashboard}"><i class="fa-solid fa-user-shield me-1"></i> Admin</a>
                     </li>
-
-                    <li class="nav-item"><a class="nav-link text-warning px-2 fw-bold" th:href="@{/admin/dashboard}"><i class="fa-solid fa-user-shield me-1"></i> Admin</a></li>
-                    <li class="nav-item"><a class="nav-link text-info px-2 fw-bold" th:href="@{/seller/dashboard}"><i class="fa-solid fa-store me-1"></i> Seller Panel</a></li>
+                    <li class="nav-item" sec:authorize="hasRole('SELLER')">
+                        <a class="nav-link text-info px-2 fw-bold" th:href="@{/seller/dashboard}"><i class="fa-solid fa-store me-1"></i> Merchant Portal</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="nav-link text-info px-2 fw-bold" th:href="@{/register?role=SELLER}"><i class="fa-solid fa-briefcase me-1"></i> Become a Seller</a>
+                    </li>
                 </ul>
 
                 <!-- Elastic Search Input Core Box -->
@@ -201,23 +195,28 @@
                 </form>
 
                 <ul class="navbar-nav gap-2 align-items-center">
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
                         <a class="btn btn-sm btn-outline-light text-white border-0 px-3 fw-semibold" th:href="@{/profile}">
-                            👤 My Account
+                            <i class="fa-regular fa-circle-user me-1 text-info fs-5 align-middle"></i> My Account
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasRole('CUSTOMER')">
                         <a class="btn btn-sm btn-outline-danger border-0 px-2" th:href="@{/wishlist}">
-                            ❤️ Wishlist
+                            <i class="fa-solid fa-heart text-danger fs-4"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-sm btn-info text-white px-3 fw-bold shadow-sm" th:href="@{/cart}">
-                            🛒 Cart
+                    <li class="nav-item" sec:authorize="hasRole('CUSTOMER')">
+                        <a class="btn btn-sm btn-info text-white rounded-pill px-3 fw-bold shadow-sm d-flex align-items-center" th:href="@{/cart}">
+                            <i class="fa-solid fa-cart-shopping me-2"></i> Cart
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-sm btn-light border-0 fw-bold px-3 text-dark" th:href="@{/login}">Sign In</a>
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="btn btn-sm btn-light border-0 fw-bold px-3 text-dark rounded-pill shadow-sm" th:href="@{/login}"><i class="fa-solid fa-right-to-bracket me-1 text-primary"></i> Sign In</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="POST" class="m-0">
+                            <button type="submit" class="btn btn-sm btn-outline-light border-0"><i class="fa-solid fa-power-off"></i></button>
+                        </form>
                     </li>
                 </ul>
             </div>
