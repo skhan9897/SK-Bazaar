@@ -109,6 +109,8 @@ public class HomeController {
     public String searchProducts(@RequestParam String q, Model model) {
         model.addAttribute("query", q);
         model.addAttribute("products", productService.searchProducts(q));
+        model.addAttribute("rootCategories", categoryRepository.findByParentCategoryIsNull());
+        model.addAttribute("appName", AppConstants.APP_NAME);
         return "home";
     }
 

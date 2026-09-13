@@ -80,7 +80,8 @@
         <!-- Left Side: Image & Buttons -->
         <div class="left-col">
             <div class="img-gallery-box">
-                <img th:src="${product.images[0]}" class="main-img" alt="">
+                <img th:if="${product.images != null and !#lists.isEmpty(product.images)}" th:src="${product.images[0]}" class="main-img" alt="">
+                <i th:if="${product.images == null or #lists.isEmpty(product.images)}" class="fa-solid fa-box-open fa-5x text-muted my-5"></i>
             </div>
             <div class="action-buttons">
                 <form th:action="@{/cart/add}" method="POST" style="flex: 1;">

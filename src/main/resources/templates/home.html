@@ -154,7 +154,7 @@
             margin: 10px auto;
             background-color: #fff;
             box-shadow: 0 2px 4px 0 rgba(0,0,0,.08);
-            padding: 15px;
+            padding: 20px 15px;
         }
         .widget-header {
             display: flex;
@@ -165,36 +165,43 @@
             margin-bottom: 20px;
         }
         .widget-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
+            letter-spacing: 0.2px;
         }
         .btn-view-all {
             background-color: var(--fk-blue);
             color: #fff;
-            padding: 10px 20px;
+            padding: 8px 16px;
             font-size: 13px;
             font-weight: 500;
             border-radius: 2px;
             text-decoration: none;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
         }
 
+        /* Standardized Product Tile - Flipkart Style */
         .product-tile {
             text-decoration: none;
             color: var(--text-dark);
-            text-align: center;
-            padding: 15px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             height: 100%;
-            transition: transform 0.2s;
+            border: 1px solid transparent;
+            transition: box-shadow 0.2s;
         }
-        .product-tile:hover { transform: scale(1.03); }
+        .product-tile:hover {
+            box-shadow: 0 4px 12px 0 rgba(0,0,0,0.1);
+            transform: none;
+        }
         .tile-img-box {
-            height: 150px;
+            height: 200px;
             margin-bottom: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
         .tile-img-box img {
             max-height: 100%;
@@ -203,20 +210,62 @@
         }
         .tile-name {
             font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            height: 18px;
+            font-weight: 400;
+            margin-bottom: 5px;
+            height: 36px; /* Two lines */
             overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-height: 1.3;
         }
-        .tile-offer {
-            color: #388e3c;
-            font-size: 14px;
-            font-weight: 500;
+        .tile-rating-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
         }
-        .tile-brand {
+        .tile-rating-badge {
+            background-color: #388e3c;
+            color: #fff;
+            font-size: 12px;
+            padding: 2px 4px 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        .tile-rating-badge i { font-size: 10px; margin-left: 2px; }
+        .tile-review-count {
             color: var(--text-grey);
             font-size: 12px;
+            font-weight: 500;
+        }
+        .tile-price-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             margin-top: 5px;
+        }
+        .tile-selling-price {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .tile-mrp {
+            color: var(--text-grey);
+            text-decoration: line-through;
+            font-size: 13px;
+        }
+        .tile-discount {
+            color: #388e3c;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .tile-delivery-tag {
+            color: #212121;
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 400;
         }
 
         /* --- FLIPKART FRONTEND MODULE: FOOTER --- */
@@ -260,9 +309,11 @@
             </a>
 
             <div class="search-module">
-                <form th:action="@{/products/search}" method="GET">
+                <form th:action="@{/products/search}" method="GET" class="d-flex">
                     <input type="text" name="q" class="search-input" placeholder="Search for products, brands and more" required>
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <button type="submit" class="border-0 bg-white" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                        <i class="fa-solid fa-magnifying-glass" style="color: var(--fk-blue);"></i>
+                    </button>
                 </form>
             </div>
 
@@ -302,14 +353,18 @@
         <div class="category-container">
             <!-- Root categories fetched dynamically from DB -->
             <a th:each="cat : ${rootCategories}" th:href="@{'/products/search?q=' + ${cat.name}}" class="cat-card">
-                <img th:if="${cat.name == 'Fashion'}" src="https://rukminim2.flixcart.com/fk-p-flap/128/128/image/0d7583a015c77127.jpg?q=100" alt="Fashion">
-                <img th:if="${cat.name == 'Electronics'}" src="https://rukminim2.flixcart.com/flap/128/128/image/69cffc0234f6ad09.jpg?q=100" alt="Electronics">
-                <img th:if="${cat.name == 'Home & Kitchen'}" src="https://rukminim2.flixcart.com/flap/128/128/image/ab7e2c021f9b0c05.jpg?q=100" alt="Home">
-                <img th:if="${cat.name == 'Beauty & Personal Care'}" src="https://rukminim2.flixcart.com/flap/128/128/image/0ff83c0d5696fbf2.jpg?q=100" alt="Beauty">
-                <img th:if="${cat.name == 'Grocery'}" src="https://rukminim2.flixcart.com/flap/128/128/image/29327f40e9c4d26b.png?q=100" alt="Grocery">
-                <img th:if="${cat.name == 'Sports & Fitness'}" src="https://rukminim2.flixcart.com/flap/128/128/image/dff3f7adcf3a90c6.png?q=100" alt="Sports">
-                <img th:if="${cat.name == 'Toys & Baby'}" src="https://rukminim2.flixcart.com/flap/128/128/image/dff3f7adcf3a90c6.png?q=100" alt="Toys">
-                <img th:unless="${cat.name == 'Fashion' or cat.name == 'Electronics' or cat.name == 'Home & Kitchen' or cat.name == 'Beauty & Personal Care' or cat.name == 'Grocery' or cat.name == 'Sports & Fitness' or cat.name == 'Toys & Baby'}" src="https://rukminim2.flixcart.com/flap/128/128/image/71050627a56b4693.png?q=100" alt="General">
+                <img th:if="${cat.name.contains('Fashion')}" src="https://rukminim2.flixcart.com/fk-p-flap/128/128/image/0d7583a015c77127.jpg?q=100" alt="Fashion">
+                <img th:if="${cat.name.contains('Electronics')}" src="https://rukminim2.flixcart.com/flap/128/128/image/69cffc0234f6ad09.jpg?q=100" alt="Electronics">
+                <img th:if="${cat.name.contains('Home')}" src="https://rukminim2.flixcart.com/flap/128/128/image/ab7e2c021f9b0c05.jpg?q=100" alt="Home">
+                <img th:if="${cat.name.contains('Beauty')}" src="https://rukminim2.flixcart.com/flap/128/128/image/0ff83c0d5696fbf2.jpg?q=100" alt="Beauty">
+                <img th:if="${cat.name.contains('Grocery')}" src="https://rukminim2.flixcart.com/flap/128/128/image/29327f40e9c4d26b.png?q=100" alt="Grocery">
+                <img th:if="${cat.name.contains('Sports')}" src="https://rukminim2.flixcart.com/flap/128/128/image/dff3f7adcf3a90c6.png?q=100" alt="Sports">
+                <img th:if="${cat.name.contains('Toys')}" src="https://rukminim2.flixcart.com/flap/128/128/image/dff3f7adcf3a90c6.png?q=100" alt="Toys">
+                <img th:if="${cat.name.contains('Automotive')}" src="https://rukminim2.flixcart.com/flap/128/128/image/05d708653beff580.png?q=100" alt="Automotive">
+                <img th:if="${cat.name.contains('Books')}" src="https://rukminim2.flixcart.com/flap/128/128/image/dff3f7adcf3a90c6.png?q=100" alt="Books">
+
+                <!-- Fallback if no specific keyword matches -->
+                <img th:if="${!cat.name.contains('Fashion') and !cat.name.contains('Electronics') and !cat.name.contains('Home') and !cat.name.contains('Beauty') and !cat.name.contains('Grocery') and !cat.name.contains('Sports') and !cat.name.contains('Toys') and !cat.name.contains('Automotive') and !cat.name.contains('Books')}" src="https://rukminim2.flixcart.com/flap/128/128/image/71050627a56b4693.png?q=100" alt="General">
                 <span th:text="${cat.name}">Category</span>
             </a>
         </div>
@@ -324,15 +379,38 @@
                 <div class="widget-title" th:text="'Search results for \'' + ${query} + '\''">Results</div>
                 <a th:href="@{/home-dashboard}" class="btn-view-all">BACK TO HOME</a>
             </div>
-            <div class="row row-cols-2 row-cols-md-5 g-3">
+
+            <div class="row row-cols-2 row-cols-md-5 g-3" th:if="${products != null and !#lists.isEmpty(products)}">
                 <div class="col" th:each="p : ${products}">
-                    <a th:href="@{'/products/' + ${p.id}}" class="product-tile card border-0">
-                        <div class="tile-img-box"><img th:src="${p.images[0]}" alt=""></div>
-                        <div class="tile-name text-truncate" th:text="${p.name}">Product</div>
-                        <div class="tile-offer" th:text="${p.discount} + '% Off'">Offer</div>
-                        <div class="tile-brand" th:text="${p.brand}">Brand</div>
+                    <a th:href="@{'/products/' + ${p.id}}" class="product-tile">
+                        <div class="tile-img-box">
+                            <img th:if="${p.images != null and !#lists.isEmpty(p.images)}" th:src="${p.images[0]}" alt="Product">
+                            <i th:if="${p.images == null or #lists.isEmpty(p.images)}" class="fa-solid fa-image fa-3x text-muted opacity-25"></i>
+                        </div>
+                        <div class="tile-name" th:text="${p.name}">Product Name</div>
+
+                        <div class="tile-rating-row">
+                            <div class="tile-rating-badge" th:text="${#numbers.formatDecimal(p.rating, 1, 1)}">4.4 <i class="fa-solid fa-star"></i></div>
+                            <div class="tile-review-count" th:text="'(' + ${p.reviewCount} + ')'">(1,520)</div>
+                        </div>
+
+                        <div class="tile-price-row">
+                            <span class="tile-selling-price" th:text="'₹' + ${p.price}">₹1,299</span>
+                            <span class="tile-mrp" th:if="${p.mrp != null}" th:text="'₹' + ${p.mrp}">₹2,499</span>
+                            <span class="tile-discount" th:if="${p.discount != null}" th:text="${p.discount} + '% Off'">48% Off</span>
+                        </div>
+
+                        <div class="tile-delivery-tag" th:if="${p.isFreeDelivery == true}">Free delivery</div>
                     </a>
                 </div>
+            </div>
+
+            <!-- No results found logic -->
+            <div class="text-center py-5" th:if="${products == null or #lists.isEmpty(products)}">
+                <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/error-no-search-results_2353c5.png" alt="No Results" style="width: 200px;">
+                <h5 class="mt-4 text-muted">Sorry, no results found for "<span th:text="${query}"></span>"</h5>
+                <p class="text-muted">Please check the spelling or try searching for something else.</p>
+                <a th:href="@{/home-dashboard}" class="btn btn-primary mt-2">Go back Home</a>
             </div>
         </div>
 
@@ -347,7 +425,10 @@
                 <div class="row row-cols-2 row-cols-md-6 g-3">
                     <div class="col" th:each="p : ${flashSale}">
                         <a th:href="@{'/products/' + ${p.id}}" class="product-tile card border-0">
-                            <div class="tile-img-box"><img th:src="${p.images[0]}" alt=""></div>
+                            <div class="tile-img-box">
+                            <img th:if="${p.images != null and !#lists.isEmpty(p.images)}" th:src="${p.images[0]}" alt="">
+                            <i th:if="${p.images == null or #lists.isEmpty(p.images)}" class="fa-solid fa-image fa-2x text-muted"></i>
+                        </div>
                             <div class="tile-name text-truncate" th:text="${p.name}">Product</div>
                             <div class="tile-offer" th:text="'Min. ' + ${p.discount} + '% Off'">Offer</div>
                             <div class="tile-brand" th:text="${p.brand}">Brand</div>
@@ -365,7 +446,10 @@
                 <div class="row row-cols-2 row-cols-md-6 g-3">
                     <div class="col" th:each="p : ${electronicsDeals}">
                         <a th:href="@{'/products/' + ${p.id}}" class="product-tile card border-0">
-                            <div class="tile-img-box"><img th:src="${p.images[0]}" alt=""></div>
+                            <div class="tile-img-box">
+                            <img th:if="${p.images != null and !#lists.isEmpty(p.images)}" th:src="${p.images[0]}" alt="">
+                            <i th:if="${p.images == null or #lists.isEmpty(p.images)}" class="fa-solid fa-image fa-2x text-muted"></i>
+                        </div>
                             <div class="tile-name text-truncate" th:text="${p.name}">Product</div>
                             <div class="tile-offer" th:text="'From ₹' + ${p.price}">Offer</div>
                             <div class="tile-brand" th:text="${p.brand}">Brand</div>
