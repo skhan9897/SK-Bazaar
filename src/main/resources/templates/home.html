@@ -264,6 +264,7 @@
                         <span class="mrp" th:if="${product.mrp != null}" th:text="'₹' + ${product.mrp}">₹0</span>
                         <span class="discount-pct" th:if="${product.discount != null}" th:text="${product.discount} + '% OFF'">0% OFF</span>
                     </div>
+                    <div class="delivery-text" th:if="${product.isFreeDelivery == true}">Free Delivery</div>
                 </a>
                 <form th:action="@{/cart/add}" method="POST" class="mt-3 m-0">
                     <input type="hidden" name="productId" th:value="${product.id}" />
@@ -273,8 +274,29 @@
             </div>
         </div>
 
+        <!-- Search / Category Results Section -->
+        <div class="mb-5" th:if="${query != null}">
+            <div class="section-header">
+                <h4 th:text="'Showing results for: ' + ${query}">Search Results</h4>
+                <a th:href="@{/home-dashboard}" class="view-all">← Back to Dashboard</a>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-4 g-3" th:if="${!#lists.isEmpty(products)}">
+                <div class="col" th:each="product : ${products}">
+                    <div th:replace="::productCard(${product})"></div>
+                </div>
+            </div>
+
+            <div class="text-center py-5" th:if="${#lists.isEmpty(products)}">
+                <i class="fa-solid fa-box-open fa-5x text-muted mb-3"></i>
+                <h4 class="text-muted">No products found in this category yet.</h4>
+                <p class="text-muted">Try searching for something else or check other categories.</p>
+                <a th:href="@{/home-dashboard}" class="btn btn-primary mt-3">Go back Home</a>
+            </div>
+        </div>
+
         <!-- 3. Flash Sale 🔥 -->
-        <div class="mb-5" th:if="${flashSale != null and !#lists.isEmpty(flashSale)}">
+        <div class="mb-5" th:if="${query == null and flashSale != null and !#lists.isEmpty(flashSale)}">
             <div class="section-header">
                 <h4>🔥 Flash Sale</h4>
                 <a th:href="@{/products/search?q=sale}" class="view-all">View All →</a>
@@ -287,7 +309,7 @@
         </div>
 
         <!-- 5. Recommended For You ⭐ -->
-        <div class="mb-5" th:if="${recommendedProducts != null and !#lists.isEmpty(recommendedProducts)}">
+        <div class="mb-5" th:if="${query == null and recommendedProducts != null and !#lists.isEmpty(recommendedProducts)}">
             <div class="section-header">
                 <h4>⭐ Recommended For You</h4>
                 <a th:href="@{/}" class="view-all">View All →</a>
@@ -300,7 +322,7 @@
         </div>
 
         <!-- 4. Trending Electronics ⚡ -->
-        <div class="mb-5" th:if="${trendingProducts != null and !#lists.isEmpty(trendingProducts)}">
+        <div class="mb-5" th:if="${query == null and trendingProducts != null and !#lists.isEmpty(trendingProducts)}">
             <div class="section-header">
                 <h4>⚡ Trending Electronics</h4>
                 <a th:href="@{/products/search?q=Electronics}" class="view-all">View All →</a>
@@ -313,7 +335,7 @@
         </div>
 
         <!-- 8. Fashion Deals 👕 -->
-        <div class="mb-5" th:if="${fashionDeals != null and !#lists.isEmpty(fashionDeals)}">
+        <div class="mb-5" th:if="${query == null and fashionDeals != null and !#lists.isEmpty(fashionDeals)}">
             <div class="section-header">
                 <h4>👕 Fashion Deals</h4>
                 <a th:href="@{/products/search?q=Fashion}" class="view-all">View All →</a>
@@ -326,7 +348,7 @@
         </div>
 
         <!-- 9. Home & Kitchen 🏠 -->
-        <div class="mb-5" th:if="${homeKitchenDeals != null and !#lists.isEmpty(homeKitchenDeals)}">
+        <div class="mb-5" th:if="${query == null and homeKitchenDeals != null and !#lists.isEmpty(homeKitchenDeals)}">
             <div class="section-header">
                 <h4>🏠 Home & Kitchen</h4>
                 <a th:href="@{/products/search?q=Home}" class="view-all">View All →</a>
@@ -339,7 +361,7 @@
         </div>
 
         <!-- 10. Beauty & Personal Care 💄 -->
-        <div class="mb-5" th:if="${beautyDeals != null and !#lists.isEmpty(beautyDeals)}">
+        <div class="mb-5" th:if="${query == null and beautyDeals != null and !#lists.isEmpty(beautyDeals)}">
             <div class="section-header">
                 <h4>💄 Beauty & Personal Care</h4>
                 <a th:href="@{/products/search?q=Beauty}" class="view-all">View All →</a>
@@ -352,7 +374,7 @@
         </div>
 
         <!-- 11. Grocery 🍏 -->
-        <div class="mb-5" th:if="${groceryDeals != null and !#lists.isEmpty(groceryDeals)}">
+        <div class="mb-5" th:if="${query == null and groceryDeals != null and !#lists.isEmpty(groceryDeals)}">
             <div class="section-header">
                 <h4>🍏 Grocery Store</h4>
                 <a th:href="@{/products/search?q=Grocery}" class="view-all">View All →</a>
@@ -365,7 +387,7 @@
         </div>
 
         <!-- 12. Sports & Fitness ⚽ -->
-        <div class="mb-5" th:if="${sportsDeals != null and !#lists.isEmpty(sportsDeals)}">
+        <div class="mb-5" th:if="${query == null and sportsDeals != null and !#lists.isEmpty(sportsDeals)}">
             <div class="section-header">
                 <h4>⚽ Sports & Fitness</h4>
                 <a th:href="@{/products/search?q=Sports}" class="view-all">View All →</a>
@@ -378,7 +400,7 @@
         </div>
 
         <!-- 6. Best Sellers 🏆 -->
-        <div class="mb-5" th:if="${bestSellers != null and !#lists.isEmpty(bestSellers)}">
+        <div class="mb-5" th:if="${query == null and bestSellers != null and !#lists.isEmpty(bestSellers)}">
             <div class="section-header">
                 <h4>🏆 Best Sellers</h4>
                 <a th:href="@{/}" class="view-all">View All →</a>
@@ -391,7 +413,7 @@
         </div>
 
         <!-- 13. Deals Under ₹499 💰 -->
-        <div class="mb-5" th:if="${dealsUnder499 != null and !#lists.isEmpty(dealsUnder499)}">
+        <div class="mb-5" th:if="${query == null and dealsUnder499 != null and !#lists.isEmpty(dealsUnder499)}">
             <div class="section-header">
                 <h4>💰 Deals Under ₹499</h4>
                 <a th:href="@{/}" class="view-all">View All →</a>
