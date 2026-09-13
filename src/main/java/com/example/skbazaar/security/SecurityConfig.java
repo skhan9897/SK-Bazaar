@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home-dashboard", "/login", "/register", "/products/**", "/categories/**", "/api/auth/**", "/api/info/**").permitAll()
+                        .requestMatchers("/", "/home-dashboard", "/login", "/register", "/products/**", "/categories/**", "/api/auth/**", "/api/info/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/admin/**", "/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -54,6 +54,17 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/home-dashboard")
                         .permitAll()
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            // If user tries to access a protected page like /checkout, send to login
+                            if (request.getRequestURI().startsWith("/checkout") || request.getRequestURI().startsWith("/cart") || request.getRequestURI().startsWith("/profile") || request.getRequestURI().startsWith("/address") || request.getRequestURI().startsWith("/orders")) {
+                                response.sendRedirect("/login");
+                            } else {
+                                // Default let them pass to home/splash
+                                response.sendRedirect("/home-dashboard");
+                            }
+                        })
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authenticationProvider(authenticationProvider())
